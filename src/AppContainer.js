@@ -7,21 +7,32 @@ import Login from './Screens/Login'
 import SignUp from './Screens/SignUp'
 import MainScreen from './Screens/MainScreen'
 import CustomSidebarMenu from './CustomSidebarMenu'
-import HomePage from './Screens/HomePage'
+import HomePage from './Screens/HomePage';
+import TransScreen from './Screens/TransScreen'
+
+const TransStack = createStackNavigator(
+    {
+        HomePage: HomePage,
+        TransScreen: TransScreen,
+    },
+    {
+        initialRouteName: 'HomePage',
+    }
+);
 const DrawerNavigator = createDrawerNavigator({
-    HomePage,
+    TransStack,
     MainScreen,
 }, {
     headerMode: 'float',
     navigationOptions: ({ navigation }) => ({
-        headerStyle: { backgroundColor: '#ff7400' },
+        headerStyle: { backgroundColor: '#4868dc' },
         headerTintColor: 'white',
         headerLeft:
             <TouchableHighlight onPress={() => navigation.openDrawer()}>
                 <Image style={{ width: 35, height: 35, marginLeft: 10 }} source={require('../assets/navigation.png')} />
             </TouchableHighlight >
     }),
-    initialRouteName: 'HomePage',
+    initialRouteName: 'TransStack',
     contentComponent: CustomSidebarMenu,
     drawerOpenRoute: 'drawerOpen',
     drawerCloseRoute: 'drawerClose',

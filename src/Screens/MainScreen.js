@@ -44,7 +44,9 @@ export default class MainScreen extends React.Component {
             actions: [NavigationActions.navigate({ routeName: 'MainTabs' })],
         }))
     }
-
+    componentDidMount(){
+        console.log(this.props)
+    }
     render() {
         console.log("state",this.state)
         return (

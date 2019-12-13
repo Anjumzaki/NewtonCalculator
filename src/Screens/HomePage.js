@@ -4,8 +4,9 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { NavigationActions, StackActions } from 'react-navigation';
 import * as Font from 'expo-font';
+import { Calendar, CalendarList, Agenda } from 'react-native-calendars';
 
-export default class Login extends React.Component {
+export default class HomePage extends React.Component {
     static navigationOptions = {
         header: null
     }
@@ -15,8 +16,6 @@ export default class Login extends React.Component {
             userName: '',
             Password: '',
             msg: "",
-            
-            fontLoaded: false,
         };
     }
     login() {
@@ -52,66 +51,76 @@ export default class Login extends React.Component {
     render() {
         console.log("state", this.state)
         return (
-
-            <ImageBackground source={require('../../assets/background.png')} style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-
-{              this.state.fontLoaded &&  <KeyboardAwareScrollView enableOnAndroid={true}>
-                    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', height: Dimensions.get('window').height - 70 }}>
-                        <View style={styles.SectionStyle}>
-                            <TextInput
-                                style={styles.forms
-                                }
-                                onChangeText={userName => this.setState({ userName })}
-                                value={this.state.userName}
-                                placeholder="User Name"
-                                keyboardType="default"
-                                returnKeyType="next"
-                            />
-
-                        </View>
-                        <View style={styles.SectionStyle}>
-
-                            <TextInput
-                                style={styles.forms
-                                }
-                                onChangeText={Password => this.setState({ Password })}
-                                value={this.state.Password}
-                                placeholder="Password"
-                                keyboardType="default"
-                                returnKeyType="next"
-                                secureTextEntry={true}
-                            />
-                        </View>
-
-
-                        <TouchableOpacity onPress={() =>
-                            this.login()
-                        } style={styles.regButton} >
-                            <Text style={styles.regButton1} >LOGIN  </Text>
-                        </TouchableOpacity>
-                        <View>
-                            <Text>
-                                {this.state.msg}
-                            </Text>
-                        </View>
-                    </View>
-                    <View style={{ alignItems: 'center' }}>
-                        <View style={{ flexDirection: 'row' }}>
-                            <Text style={styles.reg1}>  Don't have an account? </Text>
-                            <TouchableOpacity onPress={() => this.props.navigation.navigate('SignUp')}>
-                                <Text style={styles.reg} >REGISTER </Text>
-                            </TouchableOpacity>
-                        </View>
-                    </View>
-
-                    {/* <Button
-                            title="Go to Sign up"
-                            onPress={() => this.props.navigation.navigate('SignUp')}
-                        /> */}
-                        <Text>I am home page</Text>
-                </KeyboardAwareScrollView>}
-            </ImageBackground>
-
+            // style={{ flex: 1, alignItems: 'center', justifyContent: 'center', height: Dimensions.get('window').height - 70 }}
+            <View >
+                {/* <Calendar
+                    // Initially visible month. Default = Date()
+                    current={'2012-03-01'}
+                    // Minimum date that can be selected, dates before minDate will be grayed out. Default = undefined
+                    minDate={'2012-05-10'}
+                    // Maximum date that can be selected, dates after maxDate will be grayed out. Default = undefined
+                    maxDate={'2012-05-30'}
+                    // Handler which gets executed on day press. Default = undefined
+                    onDayPress={(day) => { console.log('selected day', day) }}
+                    // Handler which gets executed on day long press. Default = undefined
+                    onDayLongPress={(day) => { console.log('selected day', day) }}
+                    // Month format in calendar title. Formatting values: http://arshaw.com/xdate/#Formatting
+                    monthFormat={'yyyy MM'}
+                    // Handler which gets executed when visible month changes in calendar. Default = undefined
+                    onMonthChange={(month) => { console.log('month changed', month) }}
+                    // Hide month navigation arrows. Default = false
+                    hideArrows={true}
+                    // Replace default arrows with custom ones (direction can be 'left' or 'right')
+                    renderArrow={(direction) => (<Arrow />)}
+                    // Do not show days of other months in month page. Default = false
+                    hideExtraDays={true}
+                    // If hideArrows=false and hideExtraDays=false do not switch month when tapping on greyed out
+                    // day from another month that is visible in calendar page. Default = false
+                    disableMonthChange={true}
+                    // If firstDay=1 week starts from Monday. Note that dayNames and dayNamesShort should still start from Sunday.
+                    firstDay={1}
+                    // Hide day names. Default = false
+                    hideDayNames={true}
+                    // Show week numbers to the left. Default = false
+                    showWeekNumbers={true}
+                    // Handler which gets executed when press arrow icon left. It receive a callback can go back month
+                    onPressArrowLeft={substractMonth => substractMonth()}
+                    // Handler which gets executed when press arrow icon left. It receive a callback can go next month
+                    onPressArrowRight={addMonth => addMonth()}
+                /> */}
+                <CalendarList
+                    // Enable horizontal scrolling, default = false
+                    horizontal={true}
+                    // Enable paging on horizontal, default = false
+                    pagingEnabled={true}
+                    // Set custom calendarWidth.
+                    calendarWidth={Dimensions.get('window').width  }
+                    // Handler which gets executed on day press. Default = undefined
+                    onDayPress={(day) => {console.log('selected day', day)}}
+                    // Handler which gets executed on day long press. Default = undefined
+                    onDayLongPress={(day) => this.props.navigation.navigate('TransScreen',{sectedDate: day})}
+                    // Month format in calendar title. Formatting values: http://arshaw.com/xdate/#Formatting
+                    monthFormat={'yyyy MM'}
+                    // Handler which gets executed when visible month changes in calendar. Default = undefined
+                    onMonthChange={(month) => {console.log('month changed', month)}}
+                    // Hide month navigation arrows. Default = false
+                    hideArrows={true}
+                    // Replace default arrows with custom ones (direction can be 'left' or 'right')
+                    renderArrow={(direction) => (<Arrow />)}
+                    // Do not show days of other months in month page. Default = false
+                    hideExtraDays={true}
+                    // If hideArrows=false and hideExtraDays=false do not switch month when tapping on greyed out
+                    // day from another month that is visible in calendar page. Default = false
+                    // If firstDay=1 week starts from Monday. Note that dayNames and dayNamesShort should still start from Sunday.
+                    firstDay={1}
+                    // Hide day names. Default = false
+                    // Show week numbers to the left. Default = false
+                    // Handler which gets executed when press arrow icon left. It receive a callback can go back month
+                    onPressArrowLeft={substractMonth => substractMonth()}
+                    // Handler which gets executed when press arrow icon left. It receive a callback can go next month
+                    onPressArrowRight={addMonth => addMonth()}
+              />
+            </View>
         );
     }
 }
@@ -154,33 +163,33 @@ const styles = StyleSheet.create({
         fontFamily: 'open-sans-bold',
         color: 'white'
     },
-    regButton1: { 
-        fontSize: 22, 
+    regButton1: {
+        fontSize: 22,
         fontFamily: 'open-sans-simple',
-        color:'white'
+        color: 'white'
     },
-    regButton: { 
+    regButton: {
         fontFamily: 'open-sans-simple',
         width: Dimensions.get('window').width - 105,
-        alignItems:'center',
-        backgroundColor:'#ff1358',
-        padding:10,
-        borderRadius:100,
-        marginTop:60
-        
-    },
-    reg:{ 
-        textDecorationLine: 'underline', 
-        color: '#ff1358',
-        
-        fontFamily:'open-sans-simple',
-        fontSize:20
-     },
-     reg1:{
-        fontFamily:'open-sans-simple',
-        color:'white',
-        fontSize:20
+        alignItems: 'center',
+        backgroundColor: '#ff1358',
+        padding: 10,
+        borderRadius: 100,
+        marginTop: 60
 
-     }
+    },
+    reg: {
+        textDecorationLine: 'underline',
+        color: '#ff1358',
+
+        fontFamily: 'open-sans-simple',
+        fontSize: 20
+    },
+    reg1: {
+        fontFamily: 'open-sans-simple',
+        color: 'white',
+        fontSize: 20
+
+    }
 
 });
