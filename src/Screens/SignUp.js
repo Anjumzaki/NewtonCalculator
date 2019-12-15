@@ -4,6 +4,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { NavigationActions, StackActions } from 'react-navigation';
 import * as Font from 'expo-font';
+import axios from 'axios';
 
 export default class Login extends React.Component {
     static navigationOptions = {
@@ -17,39 +18,51 @@ export default class Login extends React.Component {
             Password: '',
             confirmPass:'',
             msg: "",
-
+            loading: false,
             fontLoaded: false,
         };
     }
 
-    login() {
-        // console.log("login")
-        // axios
-        //     .post('https://blooming-ridge-94645.herokuapp.com/login',{
-        //         userName: this.state.userName,
-        //         password: this.state.Password
-        //     })
-        //     .then((response) => { 
+    signup() {
+         console.log("in login")
 
-        //         console.log("resp1",response.data)
-        //         if(response.data === "match"){
-        //             this.props.navigation.navigate('MainTabs')
-        //             this.props.navigation.dispatch(StackActions.reset({
-        //                 index: 0,
-        //                 actions: [NavigationActions.navigate({ routeName: 'MainTabs' })],
-        //             }))
-        //         }else if(response.data === "wrong"){
-        //             this.setState({msg: "password is incorrect"})
-        //         }
-        //     }).catch((error) => { 
-        //     console.log("mongodb get register error",error)
-        //     this.setState({msg: "login info is incorrect"})
-        //     })
-        this.props.navigation.navigate('MainTabs')
-        this.props.navigation.dispatch(StackActions.reset({
-            index: 0,
-            actions: [NavigationActions.navigate({ routeName: 'MainTabs' })],
-        }))
+        if(this.state.Password === this.state.confirmPass){
+            this.setState({loading: true})
+            console.log("in login same")
+                axios
+                    .post('http://192.168.0.105:3000/register',{
+                        userName: this.state.userName,
+                        email: this.state.userName,
+                        password: this.state.Password,
+                    })
+                    .then((response) => { 
+                        console.log("resp1",response.data)
+                        if(response.data === "registered"){
+                            this.props.navigation.navigate('MainTabs')
+                            this.props.navigation.dispatch(StackActions.reset({
+                                index: 0,
+                                actions: [NavigationActions.navigate({ routeName: 'MainTabs' })],
+                            }))
+                            this.setState({loading: false})
+
+                        }else if(response.data === "exist"){
+                            this.setState({msg: "username already exist"})
+                        }
+                    }).catch((error) => { 
+                    console.log("mongodb get register error",error)
+                    this.setState({msg: "signup info is incorrect"})
+                    })
+                // this.props.navigation.navigate('MainTabs')
+                // this.props.navigation.dispatch(StackActions.reset({
+                //     index: 0,
+                //     actions: [NavigationActions.navigate({ routeName: 'MainTabs' })],
+                // }))
+        
+        }else {
+            console.log("in login not same")
+
+            this.setState({msg: "Password does not match."})
+        }
     }
 
     render() {
@@ -57,7 +70,7 @@ export default class Login extends React.Component {
         return (
 
             <ImageBackground source={require('../../assets/background.png')} style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-
+                              
  <KeyboardAwareScrollView enableOnAndroid={true}>
                     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', height: Dimensions.get('window').height - 70 }}>
                         <View style={styles.SectionStyle}>
@@ -113,9 +126,15 @@ export default class Login extends React.Component {
 
 
                         <TouchableOpacity onPress={() =>
-                            this.login()
+                            this.signup()
                         } style={styles.regButton} >
-                            <Text style={styles.regButton1} >REGISTER  </Text>
+                            <Text style={styles.regButton1} >{this.state.loading ? 
+                                <Image
+                                source={require('../../assets/Spin-1s.gif')}
+                                 style={{width: 30, height: 30}} 
+                               />: "REGISTER" }  </Text>
+                                
+
                         </TouchableOpacity>
                         <View>
                             <Text>
@@ -127,7 +146,7 @@ export default class Login extends React.Component {
                         <View style={{ flexDirection: 'row' }}>
                             <Text style={styles.reg1}>  Already have an Account </Text>
                             <TouchableOpacity onPress={() => this.props.navigation.navigate('Login')}>
-                                <Text style={styles.reg} >LOGIN </Text>
+                                <Text style={styles.reg} >Login </Text>
                             </TouchableOpacity>
                         </View>
                     </View>

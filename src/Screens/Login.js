@@ -4,6 +4,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { NavigationActions, StackActions } from 'react-navigation';
 import * as Font from 'expo-font';
+import axios from 'axios';
 
 export default class Login extends React.Component {
     static navigationOptions = {
@@ -15,37 +16,40 @@ export default class Login extends React.Component {
             userName: '',
             Password: '',
             msg: "",
+            loading: false
 
         };
     }
     login() {
         // console.log("login")
-        // axios
-        //     .post('https://blooming-ridge-94645.herokuapp.com/login',{
-        //         userName: this.state.userName,
-        //         password: this.state.Password
-        //     })
-        //     .then((response) => { 
+        this.setState({loading: true})
+        axios
+            .post('http://192.168.0.105:3000/login',{
+                userName: this.state.userName,
+                password: this.state.Password
+            })
+            .then((response) => { 
+                console.log("resp1",response.data)
+                if(response.data === "match"){
+                    this.props.navigation.navigate('MainTabs')
+                    this.props.navigation.dispatch(StackActions.reset({
+                        index: 0,
+                        actions: [NavigationActions.navigate({ routeName: 'MainTabs' })],
+                    }))
+                    this.setState({loading: false})
 
-        //         console.log("resp1",response.data)
-        //         if(response.data === "match"){
-        //             this.props.navigation.navigate('MainTabs')
-        //             this.props.navigation.dispatch(StackActions.reset({
-        //                 index: 0,
-        //                 actions: [NavigationActions.navigate({ routeName: 'MainTabs' })],
-        //             }))
-        //         }else if(response.data === "wrong"){
-        //             this.setState({msg: "password is incorrect"})
-        //         }
-        //     }).catch((error) => { 
-        //     console.log("mongodb get register error",error)
-        //     this.setState({msg: "login info is incorrect"})
-        //     })
-        this.props.navigation.navigate('MainTabs')
-        this.props.navigation.dispatch(StackActions.reset({
-            index: 0,
-            actions: [NavigationActions.navigate({ routeName: 'MainTabs' })],
-        }))
+                }else if(response.data === "wrong"){
+                    this.setState({msg: "password is incorrect"})
+                }
+            }).catch((error) => { 
+            console.log("mongodb get register error",error)
+            this.setState({msg: "login info is incorrect"})
+            })
+        // this.props.navigation.navigate('MainTabs')
+        // this.props.navigation.dispatch(StackActions.reset({
+        //     index: 0,
+        //     actions: [NavigationActions.navigate({ routeName: 'MainTabs' })],
+        // }))
     }
 
     render() {
@@ -85,7 +89,11 @@ export default class Login extends React.Component {
                         <TouchableOpacity onPress={() =>
                             this.login()
                         } style={styles.regButton} >
-                            <Text style={styles.regButton1} >LOGIN  </Text>
+                            <Text style={styles.regButton1} >{this.state.loading ? 
+                                <Image
+                                 source={require('../../assets/Spin-1s.gif')}
+                                 style={{width: 30, height: 30}} 
+                               />: "Login" }  </Text>
                         </TouchableOpacity>
                         <View>
                             <Text>
@@ -97,7 +105,7 @@ export default class Login extends React.Component {
                         <View style={{ flexDirection: 'row' }}>
                             <Text style={styles.reg1}>  Don't have an account? </Text>
                             <TouchableOpacity onPress={() => this.props.navigation.navigate('SignUp')}>
-                                <Text style={styles.reg} >REGISTER </Text>
+                                <Text style={styles.reg} >Register</Text>
                             </TouchableOpacity>
                         </View>
                     </View>
