@@ -1,8 +1,9 @@
 import React from 'react';
-import { View, Text, Button, ImageBackground, Image, TextInput, Dimensions, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, Button, ImageBackground, Image, TextInput, Dimensions, StyleSheet,Picker, CheckBox, ScrollView } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { NavigationActions, StackActions } from 'react-navigation';
+import axios from 'axios';
 
 export default class MainScreen extends React.Component {
     static navigationOptions = {
@@ -14,10 +15,18 @@ export default class MainScreen extends React.Component {
             eye: true,
             name: '',
             contact: '',
+            volume: '',
             msg: "",
             downPay:'',
             spiff:'',
-            note:''
+            note:'',
+            commission: '0.0',
+            bonus: '0.0',
+            commType: '%',
+            bonusPer: '',
+            bonusType: '%',
+            pmdDeduction: false,
+            payDate: ''
         };
     }
     login() {
@@ -51,8 +60,10 @@ export default class MainScreen extends React.Component {
     }
     componentDidMount() {
         console.log(this.props.navigation.getParam('sectedDate'))
+        this.setState({payDate: this.props.navigation.getParam('sectedDate')})
     }
     render() {
+        console.log("state",this.state)
         return (
             <KeyboardAwareScrollView enableOnAndroid={true}>
                 <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', height: Dimensions.get('window').height - 70 }}>
@@ -71,8 +82,18 @@ export default class MainScreen extends React.Component {
                             style={styles.forms}
                             onChangeText={contact => this.setState({ contact })}
                             value={this.state.contact}
-                            placeholder="Contact"
+                            placeholder="Contact#"
                             keyboardType="default"
+                            returnKeyType="next"
+                        />
+                    </View>
+                    <View style={styles.SectionStyle}>
+                        <TextInput
+                            style={styles.forms}
+                            onChangeText={volume => this.setState({ volume })}
+                            value={this.state.volume}
+                            placeholder="Volume"
+                            keyboardType="number-pad"
                             returnKeyType="next"
                         />
                     </View>
@@ -106,7 +127,100 @@ export default class MainScreen extends React.Component {
                             returnKeyType="next"
                         />
                     </View>
+                    <View style={{display: "flex", flexDirection: "row", alignItems: "center"}}>
+                        <View>
+                            <Text>Podium/Mentor/Deduction</Text>
+                        </View>
+                        <View>
+                            <CheckBox
+                            value={this.state.pmdDeduction}
+                            onValueChange={() => this.setState({ pmdDeduction: !this.state.pmdDeduction })} />
+                         </View>
+                    </View>
+                    <View>
+                    <View style={styles.commSection}>
+                        <Text>Commision</Text>
+                        <Text>{this.state.commission ? this.state.commission : "0.0"}</Text>
+                        <TextInput
+                             style={{width: Dimensions.get('window').width - 300}}
+                            onChangeText={commPer => {
+                                var calc;
+                                if(this.state.commType === "%"){
+                                    calc= (commPer * this.state.volume)/100
+                                }else{
+                                    calc = commPer
+                                }
+                                this.setState({ commPer, commission: calc })
+                            }}
+                            value={this.state.commPer}
+                            placeholder="Commision "
+                            keyboardType="number-pad"
+                            returnKeyType="next"
+                        />
+                        <Picker
+                            selectedValue={this.state.commType}
+                            style={{height: 50, width: 105}}
+                            onValueChange={(itemValue, itemIndex) =>
+                                this.setState({commType: itemValue, commission: '', commPer: ''})
+                            }>
+                            <Picker.Item label="" value="" />
+                            <Picker.Item label="Fixed" value="Fixed" />
+                            <Picker.Item label="%" value="%" />
+                            </Picker>
+                    </View>
+                     <View style={styles.commSection}>
+                        <Text>Bonus</Text>
+                        <Text>{this.state.bonus ? this.state.bonus : "0.0"}</Text>
+                        <TextInput
+                             style={{width: Dimensions.get('window').width - 300}}
+                            onChangeText={bonusPer =>  { 
+                                var calc;
+                                if(this.state.bonusType === "%"){
+                                    calc= (bonusPer * this.state.volume)/100
+                                }else{
+                                    calc = bonusPer
+                                }
+                                this.setState({ bonusPer, bonus: calc })
+                            }}
+                            value={this.state.bonusPer}
+                            placeholder="Bonus"
+                            keyboardType="number-pad"
+                            returnKeyType="next"
+                        />
+                        <Picker
+                            selectedValue={this.state.bonusType}
+                            style={{height: 50, width: 105}}
+                            onValueChange={(itemValue, itemIndex) =>
+                                this.setState({bonusType: itemValue, bonus: '', bonusPer: ''})
+                            }>
+                            <Picker.Item label="" value="" />
+                            <Picker.Item label="Fixed" value="Fixed" />
+                            <Picker.Item label="%" value="%" />
+                            </Picker>
+                     </View>
                 </View>
+
+                <View>
+                    <TouchableOpacity onPress={() => 
+                        axios.post('http://192.168.0.105:3000/post/transaction',{
+                            payDate: this.state.payDate.dateString,
+                            name: this.state.name,
+                            contact: this.state.contact,
+                            volume: this.state.volume,
+                            downPayment:this.state.downPay,
+                            spiff:this.state.spiff,
+                            note:this.state.note,
+                            commission: this.state.commission,
+                            bonus: this.state.bonus,
+                            pmdDeduction: this.state.pmdDeduction
+                        }).then(resp =>console.log(resp))
+                        .catch(err => console.log(err))   
+                    }>
+                        <Text>Save</Text>
+                    </TouchableOpacity>
+                </View>
+                </View>
+              
                 
             </KeyboardAwareScrollView>
 
@@ -151,7 +265,7 @@ const styles = StyleSheet.create({
         borderColor: 'black',
         height: 50,
         fontFamily: 'open-sans-bold',
-        color: 'white'
+        color: 'black'
     },
     regButton1: {
         fontSize: 22,
@@ -180,6 +294,15 @@ const styles = StyleSheet.create({
         color: 'white',
         fontSize: 20
 
+    },
+    commSection: {
+        // display: "flex",
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "center",
+        // width:"100%"
+        // marginLeft:30,
+        // marginRight: 30
     }
 
 });
