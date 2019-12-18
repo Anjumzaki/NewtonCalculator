@@ -14,28 +14,28 @@ export default class CustomSidebarMenu extends Component {
     this.items = [
       {
         navOptionThumb: require('../assets/Blog_gray.png'),
-        navOptionName: 'Blog',
-        screenToNavigate: 'Blog',
+        navOptionName: 'Home',
+        screenToNavigate: 'HomePage',
       },
       {
         navOptionThumb: require('../assets/Video_gray.png'),
-        navOptionName: 'Videos',
+        navOptionName: 'Yearly Report',
         screenToNavigate: 'Videos',
       },
       {
         navOptionThumb: require('../assets/Contact_Us_gray.png'),
-        navOptionName: 'Contact',
+        navOptionName: 'Monthly Report',
         screenToNavigate: 'Contact',
       },
 
       {
         navOptionThumb: require('../assets/Blog_gray.png'),
-        navOptionName: 'Blog Posting',
+        navOptionName: 'Change Ammounts',
         screenToNavigate: 'BlogPosting',
       },
       {
         navOptionThumb: require('../assets/Video_gray.png'),
-        navOptionName: 'Video Posting ',
+        navOptionName: 'Add Goal  ',
         screenToNavigate: 'VideoPosting',
       },
     ];
@@ -56,10 +56,11 @@ export default class CustomSidebarMenu extends Component {
     return (
       <View style={styles.sideMenuContainer}>
         {/*Top Large Image */}
-        <View style={{ backgroundColor: '#ff7400', width: '100%', margin: 0, alignItems: 'center', padding: 20 }}>
+        <View style={{ backgroundColor: '#0b5f99', width: '100%', margin: 0, alignItems: 'center', padding: 20 }}>
           <Image
-            source={require('../assets/Logo.png')}
-            style={{ width: 150, height: 150 }}
+            source={require('../assets/applogo.png')}
+            style={{ width: 185, height: 150}}
+            resizeMode={'contain'}
           />
         </View>
        
@@ -86,7 +87,7 @@ export default class CustomSidebarMenu extends Component {
                   alignItems: 'center',
                   paddingTop: 10,
                   paddingBottom: 10,
-                  backgroundColor: global.currentScreenIndex === key ? '#ff7400' : '#ffffff',
+                  backgroundColor: global.currentScreenIndex === key ? '#0b5f99' : '#ffffff',
                 }}
 
               >

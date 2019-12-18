@@ -1,9 +1,11 @@
 import React from 'react';
-import { View, Text, Button, ImageBackground, Image, TextInput, Dimensions, StyleSheet,Picker, CheckBox, ScrollView } from 'react-native';
+import { View, Text, Button, ImageBackground, Image, TextInput, Dimensions, StyleSheet, Picker, CheckBox, ScrollView } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { NavigationActions, StackActions } from 'react-navigation';
 import axios from 'axios';
+import DatePicker from 'react-native-datepicker'
+
 
 export default class MainScreen extends React.Component {
     static navigationOptions = {
@@ -17,16 +19,17 @@ export default class MainScreen extends React.Component {
             contact: '',
             volume: '',
             msg: "",
-            downPay:'',
-            spiff:'',
-            note:'',
+            downPay: '',
+            spiff: '',
+            note: '',
             commission: '0.0',
             bonus: '0.0',
             commType: '%',
             bonusPer: '',
             bonusType: '%',
             pmdDeduction: false,
-            payDate: ''
+            payDate: '',
+            soldDate: ''
         };
     }
     login() {
@@ -60,13 +63,58 @@ export default class MainScreen extends React.Component {
     }
     componentDidMount() {
         console.log(this.props.navigation.getParam('sectedDate'))
-        this.setState({payDate: this.props.navigation.getParam('sectedDate')})
+        this.setState({ soldDate: this.props.navigation.getParam('sectedDate') })
     }
     render() {
-        console.log("state",this.state)
+        console.log("state", this.state)
         return (
             <KeyboardAwareScrollView enableOnAndroid={true}>
-                <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', height: Dimensions.get('window').height - 70 }}>
+                <View style={{ flex: 1, alignItems: 'center', marginTop: 10 }}>
+                    <View style={styles.SectionStyle}>
+                        <DatePicker
+                            style={styles.forms}
+                            date={this.state.payDate} //initial date from state
+                            mode="date" //The enum of date, datetime and time
+                            placeholder="Pay date"
+                            allowFontScaling={false}
+                            format="DD-MM-YYYY"
+                            confirmBtnText="Confirm"
+                            cancelBtnText="Cancel"
+                            showIcon={false}
+                            customStyles={{
+                                dateIcon: {
+                                    position: 'absolute',
+                                    left: 0,
+                                    top: 4,
+                                    marginLeft: 0,
+                                },
+                                dateText: {
+                                    fontSize: 19,
+                                    color: 'black'
+                                },
+                                dateInput: {
+                                    borderWidth: 0,
+                                    placeholderTextColor: 'black',
+                                    alignItems: 'flex-start',
+                                    color: 'black',
+                                    position: 'relative',
+                                    paddingBottom: 8
+                                },
+                                dateTouchBody: {
+                                    color: 'black',
+
+                                },
+                                placeholderText: {
+                                    fontSize: 19,
+                                    color: 'gray'
+                                }
+                            }}
+                            onDateChange={payDate => {
+                                this.setState({ payDate });
+                            }}
+                        />
+
+                    </View>
                     <View style={styles.SectionStyle}>
                         <TextInput
                             style={styles.forms}
@@ -127,101 +175,100 @@ export default class MainScreen extends React.Component {
                             returnKeyType="next"
                         />
                     </View>
-                    <View style={{display: "flex", flexDirection: "row", alignItems: "center"}}>
+                    <View style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
                         <View>
                             <Text>Podium/Mentor/Deduction</Text>
                         </View>
                         <View>
                             <CheckBox
-                            value={this.state.pmdDeduction}
-                            onValueChange={() => this.setState({ pmdDeduction: !this.state.pmdDeduction })} />
-                         </View>
+                                value={this.state.pmdDeduction}
+                                onValueChange={() => this.setState({ pmdDeduction: !this.state.pmdDeduction })} />
+                        </View>
                     </View>
                     <View>
-                    <View style={styles.commSection}>
-                        <Text>Commision</Text>
-                        <Text>{this.state.commission ? this.state.commission : "0.0"}</Text>
-                        <TextInput
-                             style={{width: Dimensions.get('window').width - 300}}
-                            onChangeText={commPer => {
-                                var calc;
-                                if(this.state.commType === "%"){
-                                    calc= (commPer * this.state.volume)/100
-                                }else{
-                                    calc = commPer
-                                }
-                                this.setState({ commPer, commission: calc })
-                            }}
-                            value={this.state.commPer}
-                            placeholder="Commision "
-                            keyboardType="number-pad"
-                            returnKeyType="next"
-                        />
-                        <Picker
-                            selectedValue={this.state.commType}
-                            style={{height: 50, width: 105}}
-                            onValueChange={(itemValue, itemIndex) =>
-                                this.setState({commType: itemValue, commission: '', commPer: ''})
-                            }>
-                            <Picker.Item label="" value="" />
-                            <Picker.Item label="Fixed" value="Fixed" />
-                            <Picker.Item label="%" value="%" />
+                        <View style={styles.commSection}>
+                            <Text>Commision</Text>
+                            <Text>{this.state.commission ? this.state.commission : "0.0"}</Text>
+                            <TextInput
+                                style={{ width: Dimensions.get('window').width - 300 }}
+                                onChangeText={commPer => {
+                                    var calc;
+                                    if (this.state.commType === "%") {
+                                        calc = (commPer * this.state.volume) / 100
+                                    } else {
+                                        calc = commPer
+                                    }
+                                    this.setState({ commPer, commission: calc })
+                                }}
+                                value={this.state.commPer}
+                                placeholder="Commision "
+                                keyboardType="number-pad"
+                                returnKeyType="next"
+                            />
+                            <Picker
+                                selectedValue={this.state.commType}
+                                style={{ height: 50, width: 105 }}
+                                onValueChange={(itemValue, itemIndex) =>
+                                    this.setState({ commType: itemValue, commission: '', commPer: '' })
+                                }>
+                                <Picker.Item label="" value="" />
+                                <Picker.Item label="Fixed" value="Fixed" />
+                                <Picker.Item label="%" value="%" />
                             </Picker>
+                        </View>
+                        <View style={styles.commSection}>
+                            <Text>Bonus</Text>
+                            <Text>{this.state.bonus ? this.state.bonus : "0.0"}</Text>
+                            <TextInput
+                                style={{ width: Dimensions.get('window').width - 300 }}
+                                onChangeText={bonusPer => {
+                                    var calc;
+                                    if (this.state.bonusType === "%") {
+                                        calc = (bonusPer * this.state.volume) / 100
+                                    } else {
+                                        calc = bonusPer
+                                    }
+                                    this.setState({ bonusPer, bonus: calc })
+                                }}
+                                value={this.state.bonusPer}
+                                placeholder="Bonus"
+                                keyboardType="number-pad"
+                                returnKeyType="next"
+                            />
+                            <Picker
+                                selectedValue={this.state.bonusType}
+                                style={{ height: 50, width: 105 }}
+                                onValueChange={(itemValue, itemIndex) =>
+                                    this.setState({ bonusType: itemValue, bonus: '', bonusPer: '' })
+                                }>
+                                <Picker.Item label="" value="" />
+                                <Picker.Item label="Fixed" value="Fixed" />
+                                <Picker.Item label="%" value="%" />
+                            </Picker>
+                        </View>
                     </View>
-                     <View style={styles.commSection}>
-                        <Text>Bonus</Text>
-                        <Text>{this.state.bonus ? this.state.bonus : "0.0"}</Text>
-                        <TextInput
-                             style={{width: Dimensions.get('window').width - 300}}
-                            onChangeText={bonusPer =>  { 
-                                var calc;
-                                if(this.state.bonusType === "%"){
-                                    calc= (bonusPer * this.state.volume)/100
-                                }else{
-                                    calc = bonusPer
-                                }
-                                this.setState({ bonusPer, bonus: calc })
-                            }}
-                            value={this.state.bonusPer}
-                            placeholder="Bonus"
-                            keyboardType="number-pad"
-                            returnKeyType="next"
-                        />
-                        <Picker
-                            selectedValue={this.state.bonusType}
-                            style={{height: 50, width: 105}}
-                            onValueChange={(itemValue, itemIndex) =>
-                                this.setState({bonusType: itemValue, bonus: '', bonusPer: ''})
-                            }>
-                            <Picker.Item label="" value="" />
-                            <Picker.Item label="Fixed" value="Fixed" />
-                            <Picker.Item label="%" value="%" />
-                            </Picker>
-                     </View>
-                </View>
 
-                <View>
-                    <TouchableOpacity onPress={() => 
-                        axios.post('http://192.168.0.105:3000/post/transaction',{
-                            payDate: this.state.payDate.dateString,
-                            name: this.state.name,
-                            contact: this.state.contact,
-                            volume: this.state.volume,
-                            downPayment:this.state.downPay,
-                            spiff:this.state.spiff,
-                            note:this.state.note,
-                            commission: this.state.commission,
-                            bonus: this.state.bonus,
-                            pmdDeduction: this.state.pmdDeduction
-                        }).then(resp =>console.log(resp))
-                        .catch(err => console.log(err))   
-                    }>
-                        <Text>Save</Text>
-                    </TouchableOpacity>
+                    <View>
+                        <TouchableOpacity onPress={() =>
+                            axios.post('http://192.168.1.3:3000/post/transaction', {
+                                soldDate: this.state.soldDate.dateString,
+                                payDate: this.state.soldDate.payDate,
+                                name: this.state.name,
+                                contact: this.state.contact,
+                                volume: this.state.volume,
+                                downPayment: this.state.downPay,
+                                spiff: this.state.spiff,
+                                note: this.state.note,
+                                commission: this.state.commission,
+                                bonus: this.state.bonus,
+                                pmdDeduction: this.state.pmdDeduction
+                            }).then(resp => console.log(resp))
+                                .catch(err => console.log(err))
+                        }>
+                            <Text>Save</Text>
+                        </TouchableOpacity>
+                    </View>
                 </View>
-                </View>
-              
-                
             </KeyboardAwareScrollView>
 
         );

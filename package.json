@@ -10,11 +10,13 @@
   "dependencies": {
     "@expo/vector-icons": "^10.0.6",
     "axios": "^0.19.0",
+    "email-validator": "^2.0.4",
     "expo": "~36.0.0",
     "react": "~16.9.0",
     "react-dom": "~16.9.0",
     "react-native": "https://github.com/expo/react-native/archive/sdk-36.0.0.tar.gz",
     "react-native-calendars": "^1.214.0",
+    "react-native-datepicker": "^1.7.2",
     "react-native-gesture-handler": "^1.5.2",
     "react-native-keyboard-aware-scroll-view": "^0.9.1",
     "react-native-keyboard-aware-scrollview": "^2.1.0",
