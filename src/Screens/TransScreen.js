@@ -20,13 +20,17 @@ export default class MainScreen extends React.Component {
             downPay:'',
             spiff:'',
             note:'',
-            commission: '0.0',
-            bonus: '0.0',
+            commission: '',
+            commission1: '',
+            bonus: '',
             commType: '%',
             bonusPer: '',
             bonusType: '%',
-            pmdDeduction: false,
-            payDate: ''
+            pmdDeduction: "",
+            pmdDeductionPer: "",
+            pmdDeductionType: "%",
+            payDate: '',
+            msg: ''
         };
     }
     login() {
@@ -61,6 +65,60 @@ export default class MainScreen extends React.Component {
     componentDidMount() {
         console.log(this.props.navigation.getParam('sectedDate'))
         this.setState({payDate: this.props.navigation.getParam('sectedDate')})
+    }
+
+    saveTrasc(){
+        if( this.state.payDate.dateString &&
+            this.state.name &&
+            this.state.contact &&
+            this.state.volume &&
+            this.state.downPay &&
+            this.state.spiff &&
+            this.state.note &&
+            this.state.commission &&
+            this.state.bonus &&
+            this.state.pmdDeduction ||
+            (this.state.commission === 0 &&
+            this.state.bonus === 0 &&
+            this.state.pmdDeduction === 0)){
+                console.log("In call")
+                axios.post('http://192.168.0.105:3000/post/transaction',{
+                            payDate: this.state.payDate.dateString,
+                            name: this.state.name,
+                            contact: this.state.contact,
+                            volume: this.state.volume,
+                            downPayment:this.state.downPay,
+                            spiff:this.state.spiff,
+                            note:this.state.note,
+                            commission: this.state.commission,
+                            bonus: this.state.bonus,
+                            pmdDeduction: this.state.pmdDeduction
+                        }).then(resp =>console.log(resp))
+                        .catch(err => console.log(err))  
+            }else{
+                console.log("iN ELSEEEEE")
+                if(!this.state.payDate.dateString){
+                    this.setState({msg: "Please Enter Date"})
+                }else if(!this.state.name){
+                    this.setState({msg: "Please Enter Name"})
+                }else if(!this.state.contact){
+                    this.setState({msg: "Please Enter Contact"})
+                }else if(!this.state.volume){
+                    this.setState({msg: "Please Enter Volume"})
+                }else if(!this.state.downPay){
+                    this.setState({msg: "Please Enter Down pay"})
+                }else if(!this.state.spiff){
+                    this.setState({msg: "Please Enter Spiff"})
+                }else if(!this.state.note){
+                    this.setState({msg: "Please Enter Note"})
+                }else if(!this.state.commission){
+                    this.setState({msg: "Please Enter Commission"})
+                }else if(!this.state.bonus){
+                    this.setState({msg: "Please Enter Bonus"})
+                }else if(!this.state.pmdDeduction){
+                    this.setState({msg: "Please Enter Podium/Mentor/Deduction"})
+                }
+            }
     }
     render() {
         console.log("state",this.state)
@@ -127,7 +185,7 @@ export default class MainScreen extends React.Component {
                             returnKeyType="next"
                         />
                     </View>
-                    <View style={{display: "flex", flexDirection: "row", alignItems: "center"}}>
+                    {/* <View style={{display: "flex", flexDirection: "row", alignItems: "center"}}>
                         <View>
                             <Text>Podium/Mentor/Deduction</Text>
                         </View>
@@ -136,7 +194,7 @@ export default class MainScreen extends React.Component {
                             value={this.state.pmdDeduction}
                             onValueChange={() => this.setState({ pmdDeduction: !this.state.pmdDeduction })} />
                          </View>
-                    </View>
+                    </View> */}
                     <View>
                     <View style={styles.commSection}>
                         <Text>Commision</Text>
@@ -146,11 +204,12 @@ export default class MainScreen extends React.Component {
                             onChangeText={commPer => {
                                 var calc;
                                 if(this.state.commType === "%"){
+                                    
                                     calc= (commPer * this.state.volume)/100
                                 }else{
                                     calc = commPer
                                 }
-                                this.setState({ commPer, commission: calc })
+                                this.setState({ commPer, commission: calc, commission1: calc })
                             }}
                             value={this.state.commPer}
                             placeholder="Commision "
@@ -198,24 +257,47 @@ export default class MainScreen extends React.Component {
                             <Picker.Item label="%" value="%" />
                             </Picker>
                      </View>
+                     <View style={styles.commSection}>
+                        <Text>PMD</Text>
+                        <Text>{this.state.pmdDeduction ? this.state.pmdDeduction : "0.0"}</Text>
+                        <TextInput
+                             style={{width: Dimensions.get('window').width - 300}}
+                            onChangeText={pmdDeductionPer =>  { 
+                                var calc;
+                                if(this.state.pmdDeductionType === "%"){
+                                    calc= (pmdDeductionPer * this.state.volume)/100
+                                    this.setState({commission: this.state.commission1 - calc})
+                                    if(this.state.commission < 0){
+                                        this.setState({pmdDeductionPer: 0, msg: "Commission cannot be less than zero"})
+                                    }
+                                }else{
+                                    calc = pmdDeductionPer
+                                    this.setState({commission: this.state.commission1 - calc})
+                                }
+                                this.setState({ pmdDeductionPer, pmdDeduction: calc })
+                            }}
+                            value={this.state.pmdDeductionPer}
+                            placeholder="Podium/Mentor/Deduction"
+                            keyboardType="number-pad"
+                            returnKeyType="next"
+                        />
+                        <Picker
+                            selectedValue={this.state.bonusType}
+                            style={{height: 50, width: 105}}
+                            onValueChange={(itemValue, itemIndex) =>
+                                this.setState({bonusType: itemValue, bonus: '', bonusPer: ''})
+                            }>
+                            <Picker.Item label="" value="" />
+                            <Picker.Item label="Fixed" value="Fixed" />
+                            <Picker.Item label="%" value="%" />
+                            </Picker>
+                     </View>
                 </View>
-
                 <View>
-                    <TouchableOpacity onPress={() => 
-                        axios.post('http://192.168.0.105:3000/post/transaction',{
-                            payDate: this.state.payDate.dateString,
-                            name: this.state.name,
-                            contact: this.state.contact,
-                            volume: this.state.volume,
-                            downPayment:this.state.downPay,
-                            spiff:this.state.spiff,
-                            note:this.state.note,
-                            commission: this.state.commission,
-                            bonus: this.state.bonus,
-                            pmdDeduction: this.state.pmdDeduction
-                        }).then(resp =>console.log(resp))
-                        .catch(err => console.log(err))   
-                    }>
+                    <Text style={{textAlign: "center", color: "red"}}>{this.state.msg}</Text>
+                </View>
+                <View>
+                    <TouchableOpacity onPress={() => this.saveTrasc()}>
                         <Text>Save</Text>
                     </TouchableOpacity>
                 </View>
