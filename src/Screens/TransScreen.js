@@ -274,7 +274,6 @@ export default class MainScreen extends React.Component {
         );
     }
 }
-
 const styles = StyleSheet.create({
     SectionStyle: {
         flexDirection: 'row',

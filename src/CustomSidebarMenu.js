@@ -13,29 +13,34 @@ export default class CustomSidebarMenu extends Component {
     //You can find the Icons from here https://material.io/tools/icons/
     this.items = [
       {
-        navOptionThumb: require('../assets/Blog_gray.png'),
-        navOptionName: 'Home',
+        navOptionThumb: require('../assets/newICons/022-calendar.png'),
+        navOptionName: 'Calendar',
         screenToNavigate: 'HomePage',
       },
       {
-        navOptionThumb: require('../assets/Video_gray.png'),
+        navOptionThumb: require('../assets/newICons/004-notebook.png'),
         navOptionName: 'Yearly Report',
         screenToNavigate: 'Videos',
       },
       {
-        navOptionThumb: require('../assets/Contact_Us_gray.png'),
+        navOptionThumb: require('../assets/newICons/005-bill.png'),
         navOptionName: 'Monthly Report',
         screenToNavigate: 'Contact',
       },
 
       {
-        navOptionThumb: require('../assets/Blog_gray.png'),
+        navOptionThumb: require('../assets/newICons/046-invoice.png'),
         navOptionName: 'Change Ammounts',
         screenToNavigate: 'BlogPosting',
       },
       {
-        navOptionThumb: require('../assets/Video_gray.png'),
+        navOptionThumb: require('../assets/newICons/012-piggy-bank.png'),
         navOptionName: 'Add Goal  ',
+        screenToNavigate: 'VideoPosting',
+      },
+      {
+        navOptionThumb: require('../assets/newICons/047-search.png'),
+        navOptionName: 'Search',
         screenToNavigate: 'VideoPosting',
       },
     ];
@@ -117,7 +122,7 @@ export default class CustomSidebarMenu extends Component {
 
             >
               <View style={{ paddingRight: 10, paddingLeft: 20 }}>
-                <Image source={require('../assets/logout_Gray.png')} style={{ width: 30, height: 30 }}  />
+                <Image source={require('../assets/newICons/028-phone.png')} style={{ width: 30, height: 30 }}  />
               </View>
               <Text
                 style={{
