@@ -48,7 +48,14 @@ export default class HomePage extends React.Component {
         }))
     }
 
+    componentDidMount(){
+    }
+
     render() {
+        const { navigation } = this.props;
+        // console.log(navigation)
+        // console.log(JSON.stringify(navigation.getParam('userId', 'NO-ID')))
+
         console.log("state", this.state)
         return (
             // style={{ flex: 1, alignItems: 'center', justifyContent: 'center', height: Dimensions.get('window').height - 70 }}

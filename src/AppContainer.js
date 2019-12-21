@@ -54,7 +54,7 @@ const RootStack = createStackNavigator(
         MainTabs: DrawerNavigator
     },
     {
-        initialRouteName: 'MainTabs',
+        initialRouteName: 'Login',
     }
 
 );

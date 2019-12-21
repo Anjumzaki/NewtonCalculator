@@ -2,7 +2,8 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import AppContainer from './src/AppContainer';
 import * as Font from 'expo-font';
-
+import store from "./src/store";
+import { Provider as StoreProvider } from 'react-redux';
 
 export default class App extends React.Component {
   state={
@@ -20,7 +21,10 @@ export default class App extends React.Component {
 }
   render() {
     return (
-    this.state.fontLoaded &&  <AppContainer />
+    this.state.fontLoaded &&   
+    <StoreProvider store={store}>
+      <AppContainer />
+    </StoreProvider>
     ) ;
   }
 }

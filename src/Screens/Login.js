@@ -5,8 +5,12 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import { NavigationActions, StackActions } from 'react-navigation';
 import * as Font from 'expo-font';
 import axios from 'axios';
+import Storage from "../Storage";
+import { bindActionCreators } from "redux";
+import { userAsync } from "../store/actions";
+import { connect } from "react-redux";
 
-export default class Login extends React.Component {
+class Login extends React.Component {
     static navigationOptions = {
         header: null
     }
@@ -20,23 +24,34 @@ export default class Login extends React.Component {
 
         };
     }
+
+    async setId(){
+        await Storage.setItem("userId", {userId: response.data.response._id})
+     }
     login() {
+        console.log("Login")
         this.setState({ loading: true })
         if (this.state.userName) {
-            if (this.state.userName.length > 5) {
+            // if (this.state.userName.length > 5) {
                 if (this.state.Password) {
+                    console.log("Loginpass")
+
                     axios
-                        .post('http://192.168.1.3:3000/login', {
+                        .post('http://192.168.0.105:3000/login', {
                             userName: this.state.userName,
                             password: this.state.Password
                         })
                         .then((response) => {
-                            console.log("resp1", response.data)
-                            if (response.data === "match") {
-                                this.props.navigation.navigate('MainTabs')
+                            console.log("resp1", response.data.response._id)
+                            // this.setId();
+                            this.props.userAsync(response.data.response._id)
+                            if (response.data.resp === "match") {
+                                // this.props.navigation.navigate('MainTabs', {
+                                //     userId: response.data.response._id
+                                // })
                                 this.props.navigation.dispatch(StackActions.reset({
                                     index: 0,
-                                    actions: [NavigationActions.navigate({ routeName: 'MainTabs' })],
+                                    actions: [NavigationActions.navigate({ routeName: 'MainTabs'}),],
                                 }))
                                 this.setState({ loading: false })
 
@@ -59,12 +74,12 @@ export default class Login extends React.Component {
                     })
                 }
             }
-            else {
-                this.setState({
-                    msg: 'User Name have to be more than 6 characters'
-                })
-            }
-        }
+            // else {
+            //     this.setState({
+            //         msg: 'User Name have to be more than 6 characters'
+            //     })
+            // }
+        // }
         else {
             this.setState({
                 msg: 'Please enter your Username'
@@ -210,3 +225,20 @@ const styles = StyleSheet.create({
     }
 
 });
+
+
+const mapStateToProps = state => ({
+    user: state.user.userId,
+});
+const mapDispatchToProps = (dispatch, ownProps) =>
+    bindActionCreators(
+        {
+            userAsync
+        },
+        dispatch
+    );
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(Login);
