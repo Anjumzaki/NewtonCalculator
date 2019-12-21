@@ -6,9 +6,11 @@ import { NavigationActions, StackActions } from 'react-navigation';
 import axios from 'axios';
 import DatePicker from 'react-native-datepicker'
 import Storage from "../Storage";
+import { bindActionCreators } from "redux";
+import { userAsync } from "../store/actions";
+import { connect } from "react-redux";
 
-
-export default class MainScreen extends React.Component {
+class MainScreen extends React.Component {
     static navigationOptions = {
         header: null
     }
@@ -74,7 +76,8 @@ export default class MainScreen extends React.Component {
         console.log(this.props.navigation.getParam('sectedDate'))
         this.setState({ soldDate: this.props.navigation.getParam('sectedDate') })
 
-        console.log(this.getId()) 
+        // console.log(this.getId()) 
+        console.log("thiss.props",this.props.user)
     }
 
     saveTrasc(){
@@ -106,7 +109,8 @@ export default class MainScreen extends React.Component {
                             commission: this.state.commission,
                             bonus: this.state.bonus,
                             pmdDeduction: this.state.pmdDeduction,
-                            payDate:this.state.payDate
+                            payDate:this.state.payDate,
+                            userId: this.props.user
                         }).then(resp =>console.log(resp))
                         .catch(err => console.log(err))  
             }else{
@@ -445,3 +449,20 @@ const styles = StyleSheet.create({
     }
 
 });
+
+
+const mapStateToProps = state => ({
+    user: state.user.userId,
+});
+const mapDispatchToProps = (dispatch, ownProps) =>
+    bindActionCreators(
+        {
+            userAsync
+        },
+        dispatch
+    );
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(MainScreen);

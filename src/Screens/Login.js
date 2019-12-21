@@ -6,8 +6,11 @@ import { NavigationActions, StackActions } from 'react-navigation';
 import * as Font from 'expo-font';
 import axios from 'axios';
 import Storage from "../Storage";
+import { bindActionCreators } from "redux";
+import { userAsync } from "../store/actions";
+import { connect } from "react-redux";
 
-export default class Login extends React.Component {
+class Login extends React.Component {
     static navigationOptions = {
         header: null
     }
@@ -40,7 +43,8 @@ export default class Login extends React.Component {
                         })
                         .then((response) => {
                             console.log("resp1", response.data.response._id)
-                            this.setId();
+                            // this.setId();
+                            this.props.userAsync(response.data.response._id)
                             if (response.data.resp === "match") {
                                 // this.props.navigation.navigate('MainTabs', {
                                 //     userId: response.data.response._id
@@ -221,3 +225,20 @@ const styles = StyleSheet.create({
     }
 
 });
+
+
+const mapStateToProps = state => ({
+    user: state.user.userId,
+});
+const mapDispatchToProps = (dispatch, ownProps) =>
+    bindActionCreators(
+        {
+            userAsync
+        },
+        dispatch
+    );
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(Login);
