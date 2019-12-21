@@ -19,22 +19,6 @@ export default class MainScreen extends React.Component {
             contact: '',
             volume: '',
             msg: "",
-<<<<<<< HEAD
-            downPay:'',
-            spiff:'',
-            note:'',
-            commission: -1,
-            commission1: '',
-            bonus: -1,
-            commType: '%',
-            bonusPer: '',
-            bonusType: '%',
-            pmdDeduction: -1,
-            pmdDeductionPer: "",
-            pmdDeductionType: "%",
-            payDate: '',
-            msg: ''
-=======
             downPay: '',
             spiff: '',
             note: '',
@@ -46,7 +30,6 @@ export default class MainScreen extends React.Component {
             pmdDeduction: false,
             payDate: '',
             soldDate: ''
->>>>>>> c141020f44680bef488af34ee600b8739dd7ed93
         };
     }
     login() {
@@ -91,17 +74,17 @@ export default class MainScreen extends React.Component {
             this.state.volume &&
             this.state.downPay &&
             this.state.spiff &&
-            this.state.note &&
-            this.state.commission >= 0 &&
-            this.state.bonus >= 0 &&
-            this.state.pmdDeduction >= 0 
+            this.state.note 
+            // this.state.commPer >= 0 &&
+            // this.state.bonusPer >= 0 &&
+            // this.state.pmdDeduction >= 0 
             // (this.state.commission === 0 &&
             // this.state.bonus === 0 &&
             // this.state.pmdDeduction === 0
             // )
             ){
                 console.log("In call")
-                axios.post('http://192.168.0.105:3000/post/transaction',{
+                axios.post('http://192.168.1.3:3000/post/transaction',{
                             payDate: this.state.payDate.dateString,
                             name: this.state.name,
                             contact: this.state.contact,
@@ -111,12 +94,13 @@ export default class MainScreen extends React.Component {
                             note:this.state.note,
                             commission: this.state.commission,
                             bonus: this.state.bonus,
-                            pmdDeduction: this.state.pmdDeduction
+                            pmdDeduction: this.state.pmdDeduction,
+                            soldDate:this.state.soldDate.dateString
                         }).then(resp =>console.log(resp))
                         .catch(err => console.log(err))  
             }else{
                 console.log("iN ELSEEEEE")
-                if(!this.state.payDate.dateString){
+                if(!this.state.payDate){
                     this.setState({msg: "Please Enter Date"})
                 }else if(!this.state.name){
                     this.setState({msg: "Please Enter Name"})
@@ -261,10 +245,10 @@ export default class MainScreen extends React.Component {
                     </View> */}
                     <View>
                     <View style={styles.commSection}>
-                        <Text>Commision</Text>
-                        <Text>{this.state.commission >=0 ? this.state.commission : "0.0"}</Text>
+                        <Text style={{fontWeight:'bold', marginRight:10}} >Commision</Text>
+                        <Text style={{fontSize:22}}>{this.state.commission >=0 ? this.state.commission : "0.0"}</Text>
                         <TextInput
-                             style={{width: Dimensions.get('window').width - 300}}
+                            style={{width:100,marginLeft:20,padding:10}}
                             onChangeText={commPer => {
                                 var calc;
                                 if(this.state.commType === "%"){
@@ -292,10 +276,10 @@ export default class MainScreen extends React.Component {
                             </Picker>
                     </View>
                      <View style={styles.commSection}>
-                        <Text>Bonus</Text>
-                        <Text>{this.state.bonus >=0 ? this.state.bonus : "0.0"}</Text>
+                        <Text  style={{fontWeight:'bold', marginRight:10}} >Bonus</Text>
+                        <Text style={{fontSize:22}}>{this.state.bonus >=0 ? this.state.bonus : "0.0"}</Text>
                         <TextInput
-                             style={{width: Dimensions.get('window').width - 300}}
+                              style={{width:100,marginLeft:20,padding:10}}
                             onChangeText={bonusPer =>  { 
                                 var calc;
                                 if(this.state.bonusType === "%"){
@@ -403,12 +387,13 @@ const styles = StyleSheet.create({
     forms: {
         fontSize: 19,
         padding: 8,
-        width: Dimensions.get('window').width - 105,
-        borderBottomWidth: 1,
+        width: Dimensions.get('window').width - 15,
+        borderWidth: 1,
         borderColor: 'black',
         height: 50,
         fontFamily: 'open-sans-bold',
-        color: 'black'
+        color: 'black',
+        borderRadius:10
     },
     regButton1: {
         fontSize: 22,

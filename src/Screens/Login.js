@@ -26,7 +26,7 @@ export default class Login extends React.Component {
             if (this.state.userName.length > 5) {
                 if (this.state.Password) {
                     axios
-                        .post('http://192.168.1.8:3000/login', {
+                        .post('http://192.168.1.3:3000/login', {
                             userName: this.state.userName,
                             password: this.state.Password
                         })
