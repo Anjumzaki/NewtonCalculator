@@ -344,9 +344,9 @@ export default class MainScreen extends React.Component {
                 <View>
                     <Text style={{textAlign: "center", color: "red"}}>{this.state.msg}</Text>
                 </View>
-                <View>
-                    <TouchableOpacity onPress={() => this.saveTrasc()}>
-                        <Text>Save</Text>
+                <View style={{justifyContent:'flex-end'}}>
+                    <TouchableOpacity style={styles.saveBtn} onPress={() => this.saveTrasc()}>
+                        <Text style={{color:'white'}}>Save</Text>
                     </TouchableOpacity>
                 </View>
                 </View>
@@ -387,7 +387,7 @@ const styles = StyleSheet.create({
     forms: {
         fontSize: 19,
         padding: 8,
-        width: Dimensions.get('window').width - 15,
+        width: Dimensions.get('window').width - 25,
         borderWidth: 1,
         borderColor: 'black',
         height: 50,
@@ -431,6 +431,16 @@ const styles = StyleSheet.create({
         // width:"100%"
         // marginLeft:30,
         // marginRight: 30
-    }
+    },
+    saveBtn:{
+        paddingTop:10,
+        paddingBottom:10,
+        paddingLeft:20,
+        paddingRight:20,
 
+        backgroundColor:'#0b5f99',
+        color:'white',
+        borderRadius:10,
+        marginBottom:30
+    }        
 });

@@ -9,6 +9,10 @@ import MainScreen from './Screens/MainScreen'
 import CustomSidebarMenu from './CustomSidebarMenu'
 import HomePage from './Screens/HomePage';
 import TransScreen from './Screens/TransScreen'
+import YearlyReport from './Screens/YearlyReport'
+import MonthlyReport from './Screens/MonthlyReport'
+import ChangeFixed from './Screens/ChangeFixed'
+import AddGoal from './Screens/AddGoal'
 
 const TransStack = createStackNavigator(
     {
@@ -22,6 +26,10 @@ const TransStack = createStackNavigator(
 const DrawerNavigator = createDrawerNavigator({
     TransStack,
     MainScreen,
+    YearlyReport,
+    MonthlyReport,
+    ChangeFixed,
+    AddGoal
 }, {
     headerMode: 'float',
     navigationOptions: ({ navigation }) => ({

@@ -20,28 +20,23 @@ export default class CustomSidebarMenu extends Component {
       {
         navOptionThumb: require('../assets/newICons/004-notebook.png'),
         navOptionName: 'Yearly Report',
-        screenToNavigate: 'Videos',
+        screenToNavigate: 'YearlyReport',
       },
       {
         navOptionThumb: require('../assets/newICons/005-bill.png'),
         navOptionName: 'Monthly Report',
-        screenToNavigate: 'Contact',
+        screenToNavigate: 'MonthlyReport',
       },
 
       {
         navOptionThumb: require('../assets/newICons/046-invoice.png'),
         navOptionName: 'Change Ammounts',
-        screenToNavigate: 'BlogPosting',
+        screenToNavigate: 'ChangeFixed',
       },
       {
         navOptionThumb: require('../assets/newICons/012-piggy-bank.png'),
         navOptionName: 'Add Goal  ',
-        screenToNavigate: 'VideoPosting',
-      },
-      {
-        navOptionThumb: require('../assets/newICons/047-search.png'),
-        navOptionName: 'Search',
-        screenToNavigate: 'VideoPosting',
+        screenToNavigate: 'AddGoal',
       },
     ];
   }
