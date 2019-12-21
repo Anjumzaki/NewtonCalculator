@@ -25,7 +25,7 @@ const DrawerNavigator = createDrawerNavigator({
 }, {
     headerMode: 'float',
     navigationOptions: ({ navigation }) => ({
-        headerStyle: { backgroundColor: '#4868dc' },
+        headerStyle: { backgroundColor: '#0b5f99' },
         headerTintColor: 'white',
         headerLeft:
             <TouchableHighlight onPress={() => navigation.openDrawer()}>
@@ -46,7 +46,7 @@ const RootStack = createStackNavigator(
         MainTabs: DrawerNavigator
     },
     {
-        initialRouteName: 'SignUp',
+        initialRouteName: 'MainTabs',
     }
 
 );

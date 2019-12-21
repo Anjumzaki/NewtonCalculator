@@ -1,9 +1,11 @@
 import React from 'react';
-import { View, Text, Button, ImageBackground, Image, TextInput, Dimensions, StyleSheet,Picker, CheckBox, ScrollView } from 'react-native';
+import { View, Text, Button, ImageBackground, Image, TextInput, Dimensions, StyleSheet, Picker, CheckBox, ScrollView } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { NavigationActions, StackActions } from 'react-navigation';
 import axios from 'axios';
+import DatePicker from 'react-native-datepicker'
+
 
 export default class MainScreen extends React.Component {
     static navigationOptions = {
@@ -17,6 +19,7 @@ export default class MainScreen extends React.Component {
             contact: '',
             volume: '',
             msg: "",
+<<<<<<< HEAD
             downPay:'',
             spiff:'',
             note:'',
@@ -31,6 +34,19 @@ export default class MainScreen extends React.Component {
             pmdDeductionType: "%",
             payDate: '',
             msg: ''
+=======
+            downPay: '',
+            spiff: '',
+            note: '',
+            commission: '0.0',
+            bonus: '0.0',
+            commType: '%',
+            bonusPer: '',
+            bonusType: '%',
+            pmdDeduction: false,
+            payDate: '',
+            soldDate: ''
+>>>>>>> c141020f44680bef488af34ee600b8739dd7ed93
         };
     }
     login() {
@@ -64,7 +80,7 @@ export default class MainScreen extends React.Component {
     }
     componentDidMount() {
         console.log(this.props.navigation.getParam('sectedDate'))
-        this.setState({payDate: this.props.navigation.getParam('sectedDate')})
+        this.setState({ soldDate: this.props.navigation.getParam('sectedDate') })
     }
 
     saveTrasc(){
@@ -124,10 +140,55 @@ export default class MainScreen extends React.Component {
             }
     }
     render() {
-        console.log("state",this.state)
+        console.log("state", this.state)
         return (
             <KeyboardAwareScrollView enableOnAndroid={true}>
-                <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', height: Dimensions.get('window').height - 70 }}>
+                <View style={{ flex: 1, alignItems: 'center', marginTop: 10 }}>
+                    <View style={styles.SectionStyle}>
+                        <DatePicker
+                            style={styles.forms}
+                            date={this.state.payDate} //initial date from state
+                            mode="date" //The enum of date, datetime and time
+                            placeholder="Pay date"
+                            allowFontScaling={false}
+                            format="DD-MM-YYYY"
+                            confirmBtnText="Confirm"
+                            cancelBtnText="Cancel"
+                            showIcon={false}
+                            customStyles={{
+                                dateIcon: {
+                                    position: 'absolute',
+                                    left: 0,
+                                    top: 4,
+                                    marginLeft: 0,
+                                },
+                                dateText: {
+                                    fontSize: 19,
+                                    color: 'black'
+                                },
+                                dateInput: {
+                                    borderWidth: 0,
+                                    placeholderTextColor: 'black',
+                                    alignItems: 'flex-start',
+                                    color: 'black',
+                                    position: 'relative',
+                                    paddingBottom: 8
+                                },
+                                dateTouchBody: {
+                                    color: 'black',
+
+                                },
+                                placeholderText: {
+                                    fontSize: 19,
+                                    color: 'gray'
+                                }
+                            }}
+                            onDateChange={payDate => {
+                                this.setState({ payDate });
+                            }}
+                        />
+
+                    </View>
                     <View style={styles.SectionStyle}>
                         <TextInput
                             style={styles.forms}
@@ -305,14 +366,11 @@ export default class MainScreen extends React.Component {
                     </TouchableOpacity>
                 </View>
                 </View>
-              
-                
             </KeyboardAwareScrollView>
 
         );
     }
 }
-
 const styles = StyleSheet.create({
     SectionStyle: {
         flexDirection: 'row',

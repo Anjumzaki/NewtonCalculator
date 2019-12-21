@@ -13,29 +13,34 @@ export default class CustomSidebarMenu extends Component {
     //You can find the Icons from here https://material.io/tools/icons/
     this.items = [
       {
-        navOptionThumb: require('../assets/Blog_gray.png'),
-        navOptionName: 'Blog',
-        screenToNavigate: 'Blog',
+        navOptionThumb: require('../assets/newICons/022-calendar.png'),
+        navOptionName: 'Calendar',
+        screenToNavigate: 'HomePage',
       },
       {
-        navOptionThumb: require('../assets/Video_gray.png'),
-        navOptionName: 'Videos',
+        navOptionThumb: require('../assets/newICons/004-notebook.png'),
+        navOptionName: 'Yearly Report',
         screenToNavigate: 'Videos',
       },
       {
-        navOptionThumb: require('../assets/Contact_Us_gray.png'),
-        navOptionName: 'Contact',
+        navOptionThumb: require('../assets/newICons/005-bill.png'),
+        navOptionName: 'Monthly Report',
         screenToNavigate: 'Contact',
       },
 
       {
-        navOptionThumb: require('../assets/Blog_gray.png'),
-        navOptionName: 'Blog Posting',
+        navOptionThumb: require('../assets/newICons/046-invoice.png'),
+        navOptionName: 'Change Ammounts',
         screenToNavigate: 'BlogPosting',
       },
       {
-        navOptionThumb: require('../assets/Video_gray.png'),
-        navOptionName: 'Video Posting ',
+        navOptionThumb: require('../assets/newICons/012-piggy-bank.png'),
+        navOptionName: 'Add Goal  ',
+        screenToNavigate: 'VideoPosting',
+      },
+      {
+        navOptionThumb: require('../assets/newICons/047-search.png'),
+        navOptionName: 'Search',
         screenToNavigate: 'VideoPosting',
       },
     ];
@@ -56,10 +61,11 @@ export default class CustomSidebarMenu extends Component {
     return (
       <View style={styles.sideMenuContainer}>
         {/*Top Large Image */}
-        <View style={{ backgroundColor: '#ff7400', width: '100%', margin: 0, alignItems: 'center', padding: 20 }}>
+        <View style={{ backgroundColor: '#0b5f99', width: '100%', margin: 0, alignItems: 'center', padding: 20 }}>
           <Image
-            source={require('../assets/Logo.png')}
-            style={{ width: 150, height: 150 }}
+            source={require('../assets/applogo.png')}
+            style={{ width: 185, height: 150}}
+            resizeMode={'contain'}
           />
         </View>
        
@@ -86,7 +92,7 @@ export default class CustomSidebarMenu extends Component {
                   alignItems: 'center',
                   paddingTop: 10,
                   paddingBottom: 10,
-                  backgroundColor: global.currentScreenIndex === key ? '#ff7400' : '#ffffff',
+                  backgroundColor: global.currentScreenIndex === key ? '#0b5f99' : '#ffffff',
                 }}
 
               >
@@ -116,7 +122,7 @@ export default class CustomSidebarMenu extends Component {
 
             >
               <View style={{ paddingRight: 10, paddingLeft: 20 }}>
-                <Image source={require('../assets/logout_Gray.png')} style={{ width: 30, height: 30 }}  />
+                <Image source={require('../assets/newICons/028-phone.png')} style={{ width: 30, height: 30 }}  />
               </View>
               <Text
                 style={{

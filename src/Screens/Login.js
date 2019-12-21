@@ -21,35 +21,58 @@ export default class Login extends React.Component {
         };
     }
     login() {
-        // console.log("login")
-        this.setState({loading: true})
-        axios
-            .post('http://192.168.0.105:3000/login',{
-                userName: this.state.userName,
-                password: this.state.Password
-            })
-            .then((response) => { 
-                console.log("resp1",response.data)
-                if(response.data === "match"){
-                    this.props.navigation.navigate('MainTabs')
-                    this.props.navigation.dispatch(StackActions.reset({
-                        index: 0,
-                        actions: [NavigationActions.navigate({ routeName: 'MainTabs' })],
-                    }))
-                    this.setState({loading: false})
+        this.setState({ loading: true })
+        if (this.state.userName) {
+            if (this.state.userName.length > 5) {
+                if (this.state.Password) {
+                    axios
+                        .post('http://192.168.1.8:3000/login', {
+                            userName: this.state.userName,
+                            password: this.state.Password
+                        })
+                        .then((response) => {
+                            console.log("resp1", response.data)
+                            if (response.data === "match") {
+                                this.props.navigation.navigate('MainTabs')
+                                this.props.navigation.dispatch(StackActions.reset({
+                                    index: 0,
+                                    actions: [NavigationActions.navigate({ routeName: 'MainTabs' })],
+                                }))
+                                this.setState({ loading: false })
 
-                }else if(response.data === "wrong"){
-                    this.setState({msg: "password is incorrect"})
+                            } else if (response.data === "wrong") {
+                                this.setState({ msg: "password is incorrect" })
+                            }
+                        }).catch((error) => {
+                            console.log("mongodb get register error", error)
+                            this.setState({ msg: "login info is incorrect" })
+                        })
+                    // this.props.navigation.navigate('MainTabs')
+                    // this.props.navigation.dispatch(StackActions.reset({
+                    //     index: 0,
+                    //     actions: [NavigationActions.navigate({ routeName: 'MainTabs' })],
+                    // }))
                 }
-            }).catch((error) => { 
-            console.log("mongodb get register error",error)
-            this.setState({msg: "login info is incorrect"})
+                else {
+                    this.setState({
+                        msg: 'Please enter your Password'
+                    })
+                }
+            }
+            else {
+                this.setState({
+                    msg: 'User Name have to be more than 6 characters'
+                })
+            }
+        }
+        else {
+            this.setState({
+                msg: 'Please enter your Username'
             })
-        // this.props.navigation.navigate('MainTabs')
-        // this.props.navigation.dispatch(StackActions.reset({
-        //     index: 0,
-        //     actions: [NavigationActions.navigate({ routeName: 'MainTabs' })],
-        // }))
+        }
+        this.setState({
+            loading: false
+        })
     }
 
     render() {
@@ -84,22 +107,20 @@ export default class Login extends React.Component {
                                 secureTextEntry={true}
                             />
                         </View>
-
-
-                        <TouchableOpacity onPress={() =>
-                            this.login()
-                        } style={styles.regButton} >
-                            <Text style={styles.regButton1} >{this.state.loading ? 
-                                <Image
-                                 source={require('../../assets/Spin-1s.gif')}
-                                 style={{width: 30, height: 30}} 
-                               />: "Login" }  </Text>
-                        </TouchableOpacity>
                         <View>
-                            <Text>
+                            <Text style={{ fontWeight: 'bold', color: '#ff1358', marginTop: 20, fontSize: 17 }}>
                                 {this.state.msg}
                             </Text>
                         </View>
+                        <TouchableOpacity onPress={() =>
+                            this.login()
+                        } style={styles.regButton} >
+                            <Text style={styles.regButton1} >{this.state.loading ?
+                                <Image
+                                    source={require('../../assets/Spin-1s.gif')}
+                                    style={{ width: 30, height: 30 }}
+                                /> : "Login"}  </Text>
+                        </TouchableOpacity>
                     </View>
                     <View style={{ alignItems: 'center' }}>
                         <View style={{ flexDirection: 'row' }}>
@@ -159,33 +180,33 @@ const styles = StyleSheet.create({
         fontFamily: 'open-sans-bold',
         color: 'white'
     },
-    regButton1: { 
-        fontSize: 22, 
+    regButton1: {
+        fontSize: 22,
         fontFamily: 'open-sans-simple',
-        color:'white'
+        color: 'white'
     },
-    regButton: { 
+    regButton: {
         fontFamily: 'open-sans-simple',
         width: Dimensions.get('window').width - 105,
-        alignItems:'center',
-        backgroundColor:'#ff1358',
-        padding:10,
-        borderRadius:100,
-        marginTop:60
-        
-    },
-    reg:{ 
-        textDecorationLine: 'underline', 
-        color: '#ff1358',
-        
-        fontFamily:'open-sans-simple',
-        fontSize:20
-     },
-     reg1:{
-        fontFamily:'open-sans-simple',
-        color:'white',
-        fontSize:20
+        alignItems: 'center',
+        backgroundColor: '#ff1358',
+        padding: 10,
+        borderRadius: 100,
+        marginTop: 60
 
-     }
+    },
+    reg: {
+        textDecorationLine: 'underline',
+        color: '#ff1358',
+
+        fontFamily: 'open-sans-simple',
+        fontSize: 20
+    },
+    reg1: {
+        fontFamily: 'open-sans-simple',
+        color: 'white',
+        fontSize: 20
+
+    }
 
 });
