@@ -5,6 +5,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import { NavigationActions, StackActions } from 'react-navigation';
 import axios from 'axios';
 import DatePicker from 'react-native-datepicker'
+import Storage from "../Storage";
 
 
 export default class MainScreen extends React.Component {
@@ -23,13 +24,17 @@ export default class MainScreen extends React.Component {
             spiff: '',
             note: '',
             commission: '0.0',
+            commPer: -1,
             bonus: '0.0',
             commType: '%',
-            bonusPer: '',
+            bonusPer: -1,
             bonusType: '%',
             pmdDeduction: false,
+            pmdDeductionPer: -1,
+            pmdType: '%',
             payDate: '',
-            soldDate: ''
+            soldDate: '',
+            userId: ''
         };
     }
     login() {
@@ -61,30 +66,36 @@ export default class MainScreen extends React.Component {
             actions: [NavigationActions.navigate({ routeName: 'MainTabs' })],
         }))
     }
+
+    async getId(){
+        return await Storage.getItem("userId")
+    }
     componentDidMount() {
         console.log(this.props.navigation.getParam('sectedDate'))
         this.setState({ soldDate: this.props.navigation.getParam('sectedDate') })
+
+        console.log(this.getId()) 
     }
 
     saveTrasc(){
         console.log("ceck",this.state.commission >= 0,this.state.bonus >= 0,this.state.pmdDeduction >= 0)
-        if( this.state.payDate.dateString &&
+        if( this.state.payDate &&
             this.state.name &&
             this.state.contact &&
             this.state.volume &&
             this.state.downPay &&
             this.state.spiff &&
-            this.state.note 
-            // this.state.commPer >= 0 &&
-            // this.state.bonusPer >= 0 &&
-            // this.state.pmdDeduction >= 0 
+            this.state.note &&
+            this.state.commPer >= 0 &&
+            this.state.bonusPer >= 0 &&
+            this.state.pmdDeductionPer >= 0 
             // (this.state.commission === 0 &&
             // this.state.bonus === 0 &&
             // this.state.pmdDeduction === 0
             // )
             ){
                 console.log("In call")
-                axios.post('http://192.168.1.3:3000/post/transaction',{
+                axios.post('http://192.168.0.105:3000/post/transaction',{
                             payDate: this.state.payDate.dateString,
                             name: this.state.name,
                             contact: this.state.contact,
@@ -95,7 +106,7 @@ export default class MainScreen extends React.Component {
                             commission: this.state.commission,
                             bonus: this.state.bonus,
                             pmdDeduction: this.state.pmdDeduction,
-                            soldDate:this.state.soldDate.dateString
+                            payDate:this.state.payDate
                         }).then(resp =>console.log(resp))
                         .catch(err => console.log(err))  
             }else{
@@ -312,7 +323,7 @@ export default class MainScreen extends React.Component {
                              style={{width: Dimensions.get('window').width - 300}}
                             onChangeText={pmdDeductionPer =>  { 
                                 var calc;
-                                if(this.state.pmdDeductionType === "%"){
+                                if(this.state.pmdType === "%"){
                                     calc= (pmdDeductionPer * this.state.volume)/100
                                     this.setState({commission: this.state.commission1 - calc})
                                     if(this.state.commission < 0){
@@ -330,10 +341,10 @@ export default class MainScreen extends React.Component {
                             returnKeyType="next"
                         />
                         <Picker
-                            selectedValue={this.state.bonusType}
+                            selectedValue={this.state.pmdType}
                             style={{height: 50, width: 105}}
                             onValueChange={(itemValue, itemIndex) =>
-                                this.setState({bonusType: itemValue, bonus: '', bonusPer: ''})
+                                this.setState({pmdType: itemValue})
                             }>
                             <Picker.Item label="" value="" />
                             <Picker.Item label="Fixed" value="Fixed" />
