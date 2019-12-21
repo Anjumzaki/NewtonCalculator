@@ -20,13 +20,13 @@ export default class MainScreen extends React.Component {
             downPay:'',
             spiff:'',
             note:'',
-            commission: '',
+            commission: -1,
             commission1: '',
-            bonus: '',
+            bonus: -1,
             commType: '%',
             bonusPer: '',
             bonusType: '%',
-            pmdDeduction: "",
+            pmdDeduction: -1,
             pmdDeductionPer: "",
             pmdDeductionType: "%",
             payDate: '',
@@ -68,6 +68,7 @@ export default class MainScreen extends React.Component {
     }
 
     saveTrasc(){
+        console.log("ceck",this.state.commission >= 0,this.state.bonus >= 0,this.state.pmdDeduction >= 0)
         if( this.state.payDate.dateString &&
             this.state.name &&
             this.state.contact &&
@@ -75,12 +76,14 @@ export default class MainScreen extends React.Component {
             this.state.downPay &&
             this.state.spiff &&
             this.state.note &&
-            this.state.commission &&
-            this.state.bonus &&
-            this.state.pmdDeduction ||
-            (this.state.commission === 0 &&
-            this.state.bonus === 0 &&
-            this.state.pmdDeduction === 0)){
+            this.state.commission >= 0 &&
+            this.state.bonus >= 0 &&
+            this.state.pmdDeduction >= 0 
+            // (this.state.commission === 0 &&
+            // this.state.bonus === 0 &&
+            // this.state.pmdDeduction === 0
+            // )
+            ){
                 console.log("In call")
                 axios.post('http://192.168.0.105:3000/post/transaction',{
                             payDate: this.state.payDate.dateString,
@@ -111,11 +114,11 @@ export default class MainScreen extends React.Component {
                     this.setState({msg: "Please Enter Spiff"})
                 }else if(!this.state.note){
                     this.setState({msg: "Please Enter Note"})
-                }else if(!this.state.commission){
+                }else if(!(this.state.commission >= 0)){
                     this.setState({msg: "Please Enter Commission"})
-                }else if(!this.state.bonus){
+                }else if(!(this.state.bonus  >= 0)){
                     this.setState({msg: "Please Enter Bonus"})
-                }else if(!this.state.pmdDeduction){
+                }else if(!(this.state.pmdDeduction  >= 0)){
                     this.setState({msg: "Please Enter Podium/Mentor/Deduction"})
                 }
             }
@@ -198,7 +201,7 @@ export default class MainScreen extends React.Component {
                     <View>
                     <View style={styles.commSection}>
                         <Text>Commision</Text>
-                        <Text>{this.state.commission ? this.state.commission : "0.0"}</Text>
+                        <Text>{this.state.commission >=0 ? this.state.commission : "0.0"}</Text>
                         <TextInput
                              style={{width: Dimensions.get('window').width - 300}}
                             onChangeText={commPer => {
@@ -229,7 +232,7 @@ export default class MainScreen extends React.Component {
                     </View>
                      <View style={styles.commSection}>
                         <Text>Bonus</Text>
-                        <Text>{this.state.bonus ? this.state.bonus : "0.0"}</Text>
+                        <Text>{this.state.bonus >=0 ? this.state.bonus : "0.0"}</Text>
                         <TextInput
                              style={{width: Dimensions.get('window').width - 300}}
                             onChangeText={bonusPer =>  { 
@@ -259,7 +262,7 @@ export default class MainScreen extends React.Component {
                      </View>
                      <View style={styles.commSection}>
                         <Text>PMD</Text>
-                        <Text>{this.state.pmdDeduction ? this.state.pmdDeduction : "0.0"}</Text>
+                        <Text>{this.state.pmdDeduction >=0 ? this.state.pmdDeduction : "0.0"}</Text>
                         <TextInput
                              style={{width: Dimensions.get('window').width - 300}}
                             onChangeText={pmdDeductionPer =>  { 
