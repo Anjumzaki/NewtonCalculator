@@ -21,7 +21,7 @@ export default class ChangeFixed extends React.Component {
             pmdDeduction: '',
             pmdDeductionType: '%',
             years: ['2019', '2020', '2021', '2022', '2023', '2024', '2025'],
-            selectedYear: '2020',
+            selectedYear: '2019',
         };
     }
     login() {
@@ -59,7 +59,30 @@ export default class ChangeFixed extends React.Component {
     }
 
     saveTrasc() {
-
+        if( this.state.selectedYear &&
+            this.state.commission &&
+            this.state.bonus &&
+            this.state.spiff 
+            ){
+                console.log("In call")
+                axios.post('http://192.168.0.105:3000/post/goals',{
+                            selectedYear: this.state.selectedYear,
+                            commission: this.state.commission,
+                            bonus: this.state.bonus,
+                            spiff: this.state.spiff,
+                        }).then(resp =>console.log(resp))
+                        .catch(err => console.log(err))  
+            }else{
+                if(!this.state.selectedYear){
+                    this.setState({msg: "Please Enter Year"})
+                }else if(!this.state.commission){
+                    this.setState({msg: "Please Enter Commission"})
+                }else if(!this.state.bonus){
+                    this.setState({msg: "Please Enter Bonus"})
+                }else if(!this.state.spiff){
+                    this.setState({msg: "Please Enter Spiff"})
+                }
+            } 
     }
     render() {
         console.log("state", this.state)

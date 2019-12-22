@@ -7,6 +7,7 @@ import axios from 'axios';
 import DatePicker from 'react-native-datepicker'
 
 
+
 export default class ChangeFixed extends React.Component {
     static navigationOptions = {
         header: null
@@ -21,7 +22,7 @@ export default class ChangeFixed extends React.Component {
             pmdDeduction: '',
             pmdDeductionType: '%',
             years: ['2019', '2020', '2021', '2022', '2023', '2024', '2025'],
-            selectedYear: '2020',
+            selectedYear: '2019',
             months: ['Jan', 'Feb', 'Mar', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', "Nov", "Dec"],
             selectedMonth: 'Jan'
         };
@@ -61,7 +62,34 @@ export default class ChangeFixed extends React.Component {
     }
 
     saveTrasc() {
-
+        if( this.state.selectedYear &&
+            this.state.selectedMonth &&
+            this.state.commission &&
+            this.state.bonus &&
+            this.state.pmdDeduction 
+            ){
+                console.log("In call")
+                axios.post('http://192.168.0.105:3000/post/goals',{
+                            selectedYear: this.state.selectedYear,
+                            selectedMonth: this.state.selectedMonth,
+                            commission: this.state.commission,
+                            bonus: this.state.bonus,
+                            spiff: this.state.pmdDeduction,
+                        }).then(resp =>console.log(resp))
+                        .catch(err => console.log(err))  
+            }else{
+                if(!this.state.selectedYear){
+                    this.setState({msg: "Please Enter Year"})
+                }else if(!this.state.selectedMonth){
+                    this.setState({msg: "Please Enter Month"})
+                }else if(!this.state.commission){
+                    this.setState({msg: "Please Enter Commission"})
+                }else if(!this.state.bonus){
+                    this.setState({msg: "Please Enter Bonus"})
+                }else if(!this.state.pmdDeduction){
+                    this.setState({msg: "Please Enter PMDeduction"})
+                }
+            } 
     }
     render() {
         console.log("state", this.state)

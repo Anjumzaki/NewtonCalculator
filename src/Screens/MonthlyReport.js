@@ -4,8 +4,12 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { NavigationActions, StackActions } from 'react-navigation';
 import TransCard from './TransCard'
+import { bindActionCreators } from "redux";
+import { userAsync } from "../store/actions";
+import { connect } from "react-redux";
+import axios from 'axios';
 
-export default class MonthlyReport extends React.Component {
+class MonthlyReport extends React.Component {
     static navigationOptions = {
         header: null
     }
@@ -16,7 +20,9 @@ export default class MonthlyReport extends React.Component {
             years: ['2019', '2020', '2021', '2022', '2023', '2024', '2025'],
             selectedYear: '2020',
             months: ['Jan', 'Feb', 'Mar', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', "Nov", "Dec"],
-            selectedMonth: 'Jan'
+            selectedMonth: 'Jan',
+            transctions: null
+
         };
     }
     login() {
@@ -50,6 +56,13 @@ export default class MonthlyReport extends React.Component {
     }
     componentDidMount() {
         console.log(this.props)
+
+        axios.get('http://192.168.0.105:3000/get/all/transactions/'+this.props.user)
+        .then(resp => {
+            // console.log(resp.data)
+            this.setState({transctions: resp.data})
+        })
+        .catch(err => console.log(err))
     }
     render() {
         console.log("state", this.state)
@@ -98,9 +111,8 @@ export default class MonthlyReport extends React.Component {
                         <Image style={{ padding: 10, marginRight: 10, width: 20, height: 20 }} source={require('../../assets/newICons/042-magnifying-glass.png')} />
                     </View>
 
-                    <TransCard />
-                    <TransCard />
-                    <TransCard />
+                    {this.state.transctions !== null ? this.state.transctions.map((transc, index) => <TransCard transc={transc} key={index}/>): null}
+
 
                 </View>
             </KeyboardAwareScrollView>
@@ -166,3 +178,19 @@ const styles = StyleSheet.create({
 
     }
 });
+
+const mapStateToProps = state => ({
+    user: state.user.userId,
+});
+const mapDispatchToProps = (dispatch, ownProps) =>
+    bindActionCreators(
+        {
+            userAsync
+        },
+        dispatch
+    );
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(MonthlyReport);

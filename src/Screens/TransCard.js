@@ -19,7 +19,7 @@ export default class TransCard extends React.Component {
         };
     }
     componentDidMount() {
-        console.log(this.props)
+        console.log("card",this.props.transc)
     }
     render() {
         return (
@@ -27,53 +27,53 @@ export default class TransCard extends React.Component {
                 <CardItem style={styles.cardHead1} >
                     <View>
                         <Text style={styles.head}>Sold Date: </Text>
-                        <Text style={styles.head1}> 10-12-2019</Text>
+                        <Text style={styles.head1}> {this.props.transc.payDate}</Text>
                     </View>
                     <View>
                         <Text style={styles.head}>Pay Date: </Text>
-                        <Text style={styles.head1}>10-12-2019</Text>
+                        <Text style={styles.head1}>{this.props.transc.payDate}</Text>
                     </View>
                 </CardItem>
                 <CardItem style={styles.cardHead} >
                     <Text style={styles.head}>Name: </Text>
-                    <Text style={styles.head1}>Anjum Muneer </Text>
+                    <Text style={styles.head1}>{this.props.transc.name} </Text>
                 </CardItem>
                 <CardItem style={styles.cardHead} >
                     <Text style={styles.head}>Contact: </Text>
-                    <Text style={styles.head1}>01313123123 </Text>
+                    <Text style={styles.head1}>{this.props.transc.contact} </Text>
                 </CardItem>
                 <CardItem style={styles.cardHead1} >
                     <View>
                         <Text style={styles.head}>Volume: </Text>
-                        <Text style={styles.head1}> 10 $</Text>
+                        <Text style={styles.head1}> {this.props.transc.volume} $</Text>
                     </View>
                     <View>
                         <Text style={styles.head}>Downpayment: </Text>
-                        <Text style={styles.head1}> 10 %</Text>
+                        <Text style={styles.head1}> {this.props.transc.downPayment} %</Text>
                     </View>
                     <View>
                         <Text style={styles.head}>Spiff: </Text>
-                        <Text style={styles.head1}> 10 $</Text>
+                        <Text style={styles.head1}> {this.props.transc.spiff} $</Text>
                     </View>
                 </CardItem>
                 <CardItem style={styles.cardHead1} >
                     <View>
                         <Text style={styles.head}>Bonus: </Text>
-                        <Text style={styles.head1}> 10 %</Text>
+                        <Text style={styles.head1}> {this.props.transc.bonus} %</Text>
                     </View>
                     <View>
                         <Text style={styles.head}>Commission: </Text>
-                        <Text style={styles.head1}> 10 $</Text>
+                        <Text style={styles.head1}> {this.props.transc.commission} $</Text>
                     </View>
 
                     <View>
                         <Text style={styles.head}>PMD: </Text>
-                        <Text style={styles.head1}> 10 $</Text>
+                        <Text style={styles.head1}> {this.props.transc.pmdDeduction} $</Text>
                     </View>
                 </CardItem>
 
                 <CardItem>
-                    <Text>I am here as a note</Text>
+                    <Text>{this.props.transc.note}</Text>
                 </CardItem>
             </Card>
 

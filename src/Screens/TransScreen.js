@@ -459,7 +459,7 @@ const styles = StyleSheet.create({
         marginBottom:30
     }        
 });
-
+ 
 
 const mapStateToProps = state => ({
     user: state.user.userId,

@@ -4,8 +4,12 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { NavigationActions, StackActions } from 'react-navigation';
 import TransCard from './TransCard'
+import { bindActionCreators } from "redux";
+import { userAsync } from "../store/actions";
+import { connect } from "react-redux";
+import axios from 'axios';
 
-export default class YearlyReport extends React.Component {
+class YearlyReport extends React.Component {
     static navigationOptions = {
         header: null
     }
@@ -14,7 +18,8 @@ export default class YearlyReport extends React.Component {
         this.state = {
             eye: true,
             years: ['2019', '2020', '2021', '2022', '2023', '2024', '2025'],
-            selectedYear: '2020'
+            selectedYear: '2019',
+            transctions: null
         };
     }
     login() {
@@ -45,9 +50,15 @@ export default class YearlyReport extends React.Component {
             index: 0,
             actions: [NavigationActions.navigate({ routeName: 'MainTabs' })],
         }))
-    }
+    } 
     componentDidMount() {
         console.log(this.props)
+        axios.get('http://192.168.0.105:3000/get/all/transactions/'+this.props.user)
+        .then(resp => {
+            // console.log(resp.data)
+            this.setState({transctions: resp.data})
+        })
+        .catch(err => console.log(err))
     }
     render() {
         console.log("state", this.state)
@@ -81,10 +92,10 @@ export default class YearlyReport extends React.Component {
                             <Image style={{ padding: 10, marginRight: 10, width: 20, height: 20 }} source={require('../../assets/newICons/042-magnifying-glass.png')} />
                         </View>
                     </View>
+                    
+                    {this.state.transctions !== null ? this.state.transctions.map((transc, index) => <TransCard transc={transc} key={index}/>): null}
+                    
 
-                    <TransCard />
-                    <TransCard />
-                    <TransCard />
 
                 </View>
             </KeyboardAwareScrollView>
@@ -147,3 +158,20 @@ const styles = StyleSheet.create({
 
     }
 });
+
+
+const mapStateToProps = state => ({
+    user: state.user.userId,
+});
+const mapDispatchToProps = (dispatch, ownProps) =>
+    bindActionCreators(
+        {
+            userAsync
+        },
+        dispatch
+    );
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(YearlyReport);
