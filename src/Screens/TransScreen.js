@@ -83,6 +83,7 @@ class MainScreen extends React.Component {
     saveTrasc(){
         console.log("ceck",this.state.commission >= 0,this.state.bonus >= 0,this.state.pmdDeduction >= 0)
         if( this.state.payDate &&
+            this.state.soldDate &&
             this.state.name &&
             this.state.contact &&
             this.state.volume &&
@@ -99,7 +100,8 @@ class MainScreen extends React.Component {
             ){
                 console.log("In call")
                 axios.post('http://192.168.0.105:3000/post/transaction',{
-                            payDate: this.state.payDate.dateString,
+                            payDate: this.state.payDate,
+                            soldDate: this.state.soldDate.dateString,
                             name: this.state.name,
                             contact: this.state.contact,
                             volume: this.state.volume,

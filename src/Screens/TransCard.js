@@ -27,7 +27,7 @@ export default class TransCard extends React.Component {
                 <CardItem style={styles.cardHead1} >
                     <View>
                         <Text style={styles.head}>Sold Date: </Text>
-                        <Text style={styles.head1}> {this.props.transc.payDate}</Text>
+                        <Text style={styles.head1}> {this.props.transc.soldDate}</Text>
                     </View>
                     <View>
                         <Text style={styles.head}>Pay Date: </Text>
