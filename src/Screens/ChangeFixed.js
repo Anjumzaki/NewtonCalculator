@@ -69,7 +69,7 @@ export default class ChangeFixed extends React.Component {
             this.state.pmdDeduction 
             ){
                 console.log("In call")
-                axios.post('http://192.168.0.105:3000/post/goals',{
+                axios.post('http://192.168.1.3:3000/post/goals',{
                             selectedYear: this.state.selectedYear,
                             selectedMonth: this.state.selectedMonth,
                             commission: this.state.commission,

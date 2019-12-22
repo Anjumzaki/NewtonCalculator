@@ -30,7 +30,7 @@ export default class Login extends React.Component {
         if (this.state.userName) {
             if (this.state.userName.length > 5) {
                 if (this.state.email) {
-                    if(validator.validate(this.state.email) ){
+                    if (validator.validate(this.state.email)) {
                         if (this.state.Password) {
                             if (this.state.Password == this.state.confirmPass) {
                                 axios
@@ -48,7 +48,7 @@ export default class Login extends React.Component {
                                                 actions: [NavigationActions.navigate({ routeName: 'MainTabs' })],
                                             }))
                                             this.setState({ loading: false })
-    
+
                                         } else if (response.data === "exist") {
                                             this.setState({ msg: "username already exist" })
                                         }
@@ -69,9 +69,9 @@ export default class Login extends React.Component {
                             })
                         }
                     }
-                    else{
+                    else {
                         this.setState({
-                            msg:'Please Enter Correct Email'
+                            msg: 'Please Enter Correct Email'
                         })
                     }
                 }
@@ -99,9 +99,7 @@ export default class Login extends React.Component {
     }
 
     render() {
-        console.log("state", this.state)
         return (
-
             <ImageBackground source={require('../../assets/background.png')} style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
                 <KeyboardAwareScrollView enableOnAndroid={true}>
                     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', height: Dimensions.get('window').height - 70 }}>
@@ -155,7 +153,7 @@ export default class Login extends React.Component {
                             />
                         </View>
                         <View>
-                            <Text style={{fontWeight:'bold',color:'#ff1358',marginTop:20,fontSize:17}}>
+                            <Text style={{ fontWeight: 'bold', color: '#ff1358', marginTop: 20, fontSize: 17 }}>
                                 {this.state.msg}
                             </Text>
                         </View>

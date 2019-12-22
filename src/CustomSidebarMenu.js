@@ -125,7 +125,7 @@ export default class CustomSidebarMenu extends Component {
                   color: 'black',
                 }}
               >
-                Logout
+                See Goals
               </Text>
             </View>
           </TouchableOpacity>

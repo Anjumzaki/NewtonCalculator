@@ -1,8 +1,9 @@
 import React from 'react';
-import { View, Text, Button, ImageBackground, Image, TextInput, Dimensions, StyleSheet, Picker, CheckBox, ScrollView } from 'react-native';
+import { View, Text, Button, ImageBackground, Image, TextInput, Dimensions, StyleSheet, Picker, CheckBox, ScrollView,Alert } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { NavigationActions, StackActions } from 'react-navigation';
+import { Spinner } from 'native-base'
 import axios from 'axios';
 import DatePicker from 'react-native-datepicker'
 import Storage from "../Storage";
@@ -36,7 +37,8 @@ class MainScreen extends React.Component {
             pmdType: '%',
             payDate: '',
             soldDate: '',
-            userId: ''
+            userId: '',
+            loading: false
         };
     }
     login() {
@@ -69,7 +71,7 @@ class MainScreen extends React.Component {
         }))
     }
 
-    async getId(){
+    async getId() {
         return await Storage.getItem("userId")
     }
     componentDidMount() {
@@ -77,12 +79,15 @@ class MainScreen extends React.Component {
         this.setState({ soldDate: this.props.navigation.getParam('sectedDate') })
 
         // console.log(this.getId()) 
-        console.log("thiss.props",this.props.user)
+        console.log("thiss.props", this.props.user)
     }
 
-    saveTrasc(){
-        console.log("ceck",this.state.commission >= 0,this.state.bonus >= 0,this.state.pmdDeduction >= 0)
-        if( this.state.payDate &&
+    saveTrasc() {
+        console.log("ceck", this.state.commission >= 0, this.state.bonus >= 0, this.state.pmdDeduction >= 0)
+        this.setState({
+            loading: true
+        })
+        if (this.state.payDate &&
             this.state.soldDate &&
             this.state.name &&
             this.state.contact &&
@@ -92,53 +97,63 @@ class MainScreen extends React.Component {
             this.state.note &&
             this.state.commPer >= 0 &&
             this.state.bonusPer >= 0 &&
-            this.state.pmdDeductionPer >= 0 
-            // (this.state.commission === 0 &&
-            // this.state.bonus === 0 &&
-            // this.state.pmdDeduction === 0
-            // )
-            ){
-                console.log("In call")
-                axios.post('http://192.168.0.105:3000/post/transaction',{
-                            payDate: this.state.payDate,
-                            soldDate: this.state.soldDate.dateString,
-                            name: this.state.name,
-                            contact: this.state.contact,
-                            volume: this.state.volume,
-                            downPayment:this.state.downPay,
-                            spiff:this.state.spiff,
-                            note:this.state.note,
-                            commission: this.state.commission,
-                            bonus: this.state.bonus,
-                            pmdDeduction: this.state.pmdDeduction,
-                            payDate:this.state.payDate,
-                            userId: this.props.user
-                        }).then(resp =>console.log(resp))
-                        .catch(err => console.log(err))  
-            }else{
-                console.log("iN ELSEEEEE")
-                if(!this.state.payDate){
-                    this.setState({msg: "Please Enter Date"})
-                }else if(!this.state.name){
-                    this.setState({msg: "Please Enter Name"})
-                }else if(!this.state.contact){
-                    this.setState({msg: "Please Enter Contact"})
-                }else if(!this.state.volume){
-                    this.setState({msg: "Please Enter Volume"})
-                }else if(!this.state.downPay){
-                    this.setState({msg: "Please Enter Down pay"})
-                }else if(!this.state.spiff){
-                    this.setState({msg: "Please Enter Spiff"})
-                }else if(!this.state.note){
-                    this.setState({msg: "Please Enter Note"})
-                }else if(!(this.state.commission >= 0)){
-                    this.setState({msg: "Please Enter Commission"})
-                }else if(!(this.state.bonus  >= 0)){
-                    this.setState({msg: "Please Enter Bonus"})
-                }else if(!(this.state.pmdDeduction  >= 0)){
-                    this.setState({msg: "Please Enter Podium/Mentor/Deduction"})
-                }
+            this.state.pmdDeductionPer >= 0
+        ) {
+            console.log("In call")
+            axios.post('http://192.168.1.3:3000/post/transaction', {
+                payDate: this.state.payDate,
+                soldDate: this.state.soldDate.dateString,
+                name: this.state.name,
+                contact: this.state.contact,
+                volume: this.state.volume,
+                downPayment: this.state.downPay,
+                spiff: this.state.spiff,
+                note: this.state.note,
+                commission: this.state.commission,
+                bonus: this.state.bonus,
+                pmdDeduction: this.state.pmdDeduction,
+                payDate: this.state.payDate,
+                userId: this.props.user
+            }).
+                then(
+                    resp => {
+                        if(resp.status == 200){
+                            Alert.alert("Transaction Posted!")
+                        }
+                        else{
+                            Alert.alert("Something Went Wrong!")
+                        }
+                        console.log(resp.status)
+                    }
+                )
+                .catch(err => Alert.alert("Something Went Wrong!"))
+        } else {
+            console.log("iN ELSEEEEE")
+            if (!this.state.payDate) {
+                this.setState({ msg: "Please Enter Date" })
+            } else if (!this.state.name) {
+                this.setState({ msg: "Please Enter Name" })
+            } else if (!this.state.contact) {
+                this.setState({ msg: "Please Enter Contact" })
+            } else if (!this.state.volume) {
+                this.setState({ msg: "Please Enter Volume" })
+            } else if (!this.state.downPay) {
+                this.setState({ msg: "Please Enter Down pay" })
+            } else if (!this.state.spiff) {
+                this.setState({ msg: "Please Enter Spiff" })
+            } else if (!this.state.note) {
+                this.setState({ msg: "Please Enter Note" })
+            } else if (!(this.state.commission >= 0)) {
+                this.setState({ msg: "Please Enter Commission" })
+            } else if (!(this.state.bonus >= 0)) {
+                this.setState({ msg: "Please Enter Bonus" })
+            } else if (!(this.state.pmdDeduction >= 0)) {
+                this.setState({ msg: "Please Enter Podium/Mentor/Deduction" })
             }
+        }
+        this.setState({
+            loading: false
+        })
     }
     render() {
         console.log("state", this.state)
@@ -146,13 +161,22 @@ class MainScreen extends React.Component {
             <KeyboardAwareScrollView enableOnAndroid={true}>
                 <View style={{ flex: 1, alignItems: 'center', marginTop: 10 }}>
                     <View style={styles.SectionStyle}>
+                        <TextInput
+                            style={styles.forms}
+                            value={this.state.soldDate.dateString}
+                            placeholder="Soll Date"
+                            keyboardType="default"
+                            returnKeyType="next"
+                        />
+                    </View>
+                    <View style={styles.SectionStyle}>
                         <DatePicker
                             style={styles.forms}
                             date={this.state.payDate} //initial date from state
                             mode="date" //The enum of date, datetime and time
                             placeholder="Pay date"
                             allowFontScaling={false}
-                            format="DD-MM-YYYY"
+                            format="YYYY-MM-DD"
                             confirmBtnText="Confirm"
                             cancelBtnText="Cancel"
                             showIcon={false}
@@ -190,6 +214,7 @@ class MainScreen extends React.Component {
                         />
 
                     </View>
+
                     <View style={styles.SectionStyle}>
                         <TextInput
                             style={styles.forms}
@@ -261,111 +286,116 @@ class MainScreen extends React.Component {
                          </View>
                     </View> */}
                     <View>
-                    <View style={styles.commSection}>
-                        <Text style={{fontWeight:'bold', marginRight:10}} >Commision</Text>
-                        <Text style={{fontSize:22}}>{this.state.commission >=0 ? this.state.commission : "0.0"}</Text>
-                        <TextInput
-                            style={{width:100,marginLeft:20,padding:10}}
-                            onChangeText={commPer => {
-                                var calc;
-                                if(this.state.commType === "%"){
-                                    
-                                    calc= (commPer * this.state.volume)/100
-                                }else{
-                                    calc = commPer
-                                }
-                                this.setState({ commPer, commission: calc, commission1: calc })
-                            }}
-                            value={this.state.commPer}
-                            placeholder="Commision "
-                            keyboardType="number-pad"
-                            returnKeyType="next"
-                        />
-                        <Picker
-                            selectedValue={this.state.commType}
-                            style={{height: 50, width: 105}}
-                            onValueChange={(itemValue, itemIndex) =>
-                                this.setState({commType: itemValue, commission: '', commPer: ''})
-                            }>
-                            <Picker.Item label="" value="" />
-                            <Picker.Item label="Fixed" value="Fixed" />
-                            <Picker.Item label="%" value="%" />
-                            </Picker>
-                    </View>
-                     <View style={styles.commSection}>
-                        <Text  style={{fontWeight:'bold', marginRight:10}} >Bonus</Text>
-                        <Text style={{fontSize:22}}>{this.state.bonus >=0 ? this.state.bonus : "0.0"}</Text>
-                        <TextInput
-                              style={{width:100,marginLeft:20,padding:10}}
-                            onChangeText={bonusPer =>  { 
-                                var calc;
-                                if(this.state.bonusType === "%"){
-                                    calc= (bonusPer * this.state.volume)/100
-                                }else{
-                                    calc = bonusPer
-                                }
-                                this.setState({ bonusPer, bonus: calc })
-                            }}
-                            value={this.state.bonusPer}
-                            placeholder="Bonus"
-                            keyboardType="number-pad"
-                            returnKeyType="next"
-                        />
-                        <Picker
-                            selectedValue={this.state.bonusType}
-                            style={{height: 50, width: 105}}
-                            onValueChange={(itemValue, itemIndex) =>
-                                this.setState({bonusType: itemValue, bonus: '', bonusPer: ''})
-                            }>
-                            <Picker.Item label="" value="" />
-                            <Picker.Item label="Fixed" value="Fixed" />
-                            <Picker.Item label="%" value="%" />
-                            </Picker>
-                     </View>
-                     <View style={styles.commSection}>
-                        <Text>PMD</Text>
-                        <Text>{this.state.pmdDeduction >=0 ? this.state.pmdDeduction : "0.0"}</Text>
-                        <TextInput
-                             style={{width: Dimensions.get('window').width - 300}}
-                            onChangeText={pmdDeductionPer =>  { 
-                                var calc;
-                                if(this.state.pmdType === "%"){
-                                    calc= (pmdDeductionPer * this.state.volume)/100
-                                    this.setState({commission: this.state.commission1 - calc})
-                                    if(this.state.commission < 0){
-                                        this.setState({pmdDeductionPer: 0, msg: "Commission cannot be less than zero"})
+                        <View style={styles.commSection}>
+                            <Text style={{ fontWeight: 'bold', marginRight: 10 }} >Commision</Text>
+                            <Text style={{ fontSize: 22 }}>{this.state.commission >= 0 ? this.state.commission : "0.0"}</Text>
+                            <TextInput
+                                style={{ width: 100, marginLeft: 20, padding: 10 }}
+                                onChangeText={commPer => {
+                                    var calc;
+                                    if (this.state.commType === "%") {
+
+                                        calc = (commPer * this.state.volume) / 100
+                                    } else {
+                                        calc = commPer
                                     }
-                                }else{
-                                    calc = pmdDeductionPer
-                                    this.setState({commission: this.state.commission1 - calc})
-                                }
-                                this.setState({ pmdDeductionPer, pmdDeduction: calc })
-                            }}
-                            value={this.state.pmdDeductionPer}
-                            placeholder="Podium/Mentor/Deduction"
-                            keyboardType="number-pad"
-                            returnKeyType="next"
-                        />
-                        <Picker
-                            selectedValue={this.state.pmdType}
-                            style={{height: 50, width: 105}}
-                            onValueChange={(itemValue, itemIndex) =>
-                                this.setState({pmdType: itemValue})
-                            }>
-                            <Picker.Item label="" value="" />
-                            <Picker.Item label="Fixed" value="Fixed" />
-                            <Picker.Item label="%" value="%" />
+                                    this.setState({ commPer, commission: calc, commission1: calc })
+                                }}
+                                value={this.state.commPer}
+                                placeholder="Commision "
+                                keyboardType="number-pad"
+                                returnKeyType="next"
+                            />
+                            <Picker
+                                selectedValue={this.state.commType}
+                                style={{ height: 50, width: 105 }}
+                                onValueChange={(itemValue, itemIndex) =>
+                                    this.setState({ commType: itemValue, commission: '', commPer: '' })
+                                }>
+                                <Picker.Item label="" value="" />
+                                <Picker.Item label="Fixed" value="Fixed" />
+                                <Picker.Item label="%" value="%" />
                             </Picker>
-                     </View>
-                </View>
-                <View>
-                    <Text style={{textAlign: "center", color: "red"}}>{this.state.msg}</Text>
-                </View>
-                <View style={{justifyContent:'flex-end'}}>
-                    <TouchableOpacity style={styles.saveBtn} onPress={() => this.saveTrasc()}>
-                        <Text style={{color:'white'}}>Save</Text>
-                    </TouchableOpacity>
-                </View>
+                        </View>
+                        <View style={styles.commSection}>
+                            <Text style={{ fontWeight: 'bold', marginRight: 10 }} >Bonus</Text>
+                            <Text style={{ fontSize: 22 }}>{this.state.bonus >= 0 ? this.state.bonus : "0.0"}</Text>
+                            <TextInput
+                                style={{ width: 100, marginLeft: 20, padding: 10 }}
+                                onChangeText={bonusPer => {
+                                    var calc;
+                                    if (this.state.bonusType === "%") {
+                                        calc = (bonusPer * this.state.volume) / 100
+                                    } else {
+                                        calc = bonusPer
+                                    }
+                                    this.setState({ bonusPer, bonus: calc })
+                                }}
+                                value={this.state.bonusPer}
+                                placeholder="Bonus"
+                                keyboardType="number-pad"
+                                returnKeyType="next"
+                            />
+                            <Picker
+                                selectedValue={this.state.bonusType}
+                                style={{ height: 50, width: 105 }}
+                                onValueChange={(itemValue, itemIndex) =>
+                                    this.setState({ bonusType: itemValue, bonus: '', bonusPer: '' })
+                                }>
+                                <Picker.Item label="" value="" />
+                                <Picker.Item label="Fixed" value="Fixed" />
+                                <Picker.Item label="%" value="%" />
+                            </Picker>
+                        </View>
+                        <View style={styles.commSection}>
+                            <Text>PMD</Text>
+                            <Text>{this.state.pmdDeduction >= 0 ? this.state.pmdDeduction : "0.0"}</Text>
+                            <TextInput
+                                style={{ width: Dimensions.get('window').width - 300 }}
+                                onChangeText={pmdDeductionPer => {
+                                    var calc;
+                                    if (this.state.pmdType === "%") {
+                                        calc = (pmdDeductionPer * this.state.volume) / 100
+                                        this.setState({ commission: this.state.commission1 - calc })
+                                        if (this.state.commission < 0) {
+                                            this.setState({ pmdDeductionPer: 0, msg: "Commission cannot be less than zero" })
+                                        }
+                                    } else {
+                                        calc = pmdDeductionPer
+                                        this.setState({ commission: this.state.commission1 - calc })
+                                    }
+                                    this.setState({ pmdDeductionPer, pmdDeduction: calc })
+                                }}
+                                value={this.state.pmdDeductionPer}
+                                placeholder="Podium/Mentor/Deduction"
+                                keyboardType="number-pad"
+                                returnKeyType="next"
+                            />
+                            <Picker
+                                selectedValue={this.state.pmdType}
+                                style={{ height: 50, width: 105 }}
+                                onValueChange={(itemValue, itemIndex) =>
+                                    this.setState({ pmdType: itemValue })
+                                }>
+                                <Picker.Item label="" value="" />
+                                <Picker.Item label="Fixed" value="Fixed" />
+                                <Picker.Item label="%" value="%" />
+                            </Picker>
+                        </View>
+                    </View>
+                    <View>
+                        <Text style={{ textAlign: "center", color: "red" }}>{this.state.msg}</Text>
+                    </View>
+                    <View style={{ justifyContent: 'flex-end' }}>
+                        {this.state.loading ?
+                            <Spinner color='#0b5f99' /> :
+                            <TouchableOpacity style={styles.saveBtn} onPress={() => this.saveTrasc()}>
+                                <Text style={{ color: 'white' }}>Save</Text>
+                            </TouchableOpacity>
+                        }
+
+
+                    </View>
                 </View>
             </KeyboardAwareScrollView>
 
@@ -410,7 +440,7 @@ const styles = StyleSheet.create({
         height: 50,
         fontFamily: 'open-sans-bold',
         color: 'black',
-        borderRadius:10
+        borderRadius: 10
     },
     regButton1: {
         fontSize: 22,
@@ -449,19 +479,18 @@ const styles = StyleSheet.create({
         // marginLeft:30,
         // marginRight: 30
     },
-    saveBtn:{
-        paddingTop:10,
-        paddingBottom:10,
-        paddingLeft:20,
-        paddingRight:20,
-
-        backgroundColor:'#0b5f99',
-        color:'white',
-        borderRadius:10,
-        marginBottom:30
-    }        
+    saveBtn: {
+        paddingTop: 10,
+        paddingBottom: 10,
+        paddingLeft: 20,
+        paddingRight: 20,
+        backgroundColor: '#0b5f99',
+        color: 'white',
+        borderRadius: 10,
+        marginBottom: 30
+    }
 });
- 
+
 
 const mapStateToProps = state => ({
     user: state.user.userId,
