@@ -37,7 +37,7 @@ class Login extends React.Component {
                     console.log("Loginpass")
 
                     axios
-                        .post('http://192.168.1.3:3000/login', {
+                        .post('http://192.168.0.105:3000/login', {
                             userName: this.state.userName,
                             password: this.state.Password
                         })
@@ -55,7 +55,7 @@ class Login extends React.Component {
                                 }))
                                 this.setState({ loading: false })
 
-                            } else if (response.data === "wrong") {
+                            } else if (response.data.resp === "wrong") {
                                 this.setState({ msg: "password is incorrect" })
                             }
                         }).catch((error) => {

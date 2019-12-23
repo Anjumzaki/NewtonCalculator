@@ -30,7 +30,7 @@ export default class CustomSidebarMenu extends Component {
 
       {
         navOptionThumb: require('../assets/newICons/046-invoice.png'),
-        navOptionName: 'Change Ammounts',
+        navOptionName: 'Change Amounts',
         screenToNavigate: 'ChangeFixed',
       },
       {

@@ -77,8 +77,26 @@ class MainScreen extends React.Component {
     componentDidMount() {
         console.log(this.props.navigation.getParam('sectedDate'))
         this.setState({ soldDate: this.props.navigation.getParam('sectedDate') })
-
-        // console.log(this.getId()) 
+        var date =this.props.navigation.getParam('sectedDate').dateString;
+        var year =new Date(date).getFullYear();
+        var month = new Date(date).getMonth()
+        console.log("dateeeeeeeeeeeeeeeeeeeeeeeeeeeeee",date,year,month)
+        axios.get('http://192.168.0.105:3000/get/fixedAmount/'+this.props.user+"/"+year.toString()+"/"+month.toString())
+        .then(resp => {
+            console.log(resp.data)
+            if(resp.data !== null){
+            this.setState({
+                commPer: resp.data.commission, 
+                bonusPer: resp.data.bonus, 
+                pmdDeductionPer: resp.data.pmdDeduction,
+                commType: resp.data.commType,
+                bonusType: resp.data.bonusType,
+                pmdType: resp.data.pmdDeductionType
+            })
+       
+            }} )
+        .catch(err => console.log(err))
+        console.log(this.getId()) 
         console.log("thiss.props", this.props.user)
     }
 
@@ -100,7 +118,7 @@ class MainScreen extends React.Component {
             this.state.pmdDeductionPer >= 0
         ) {
             console.log("In call")
-            axios.post('http://192.168.1.3:3000/post/transaction', {
+            axios.post('http://192.168.0.105:3000/post/transaction', {
                 payDate: this.state.payDate,
                 soldDate: this.state.soldDate.dateString,
                 name: this.state.name,
@@ -238,11 +256,42 @@ class MainScreen extends React.Component {
                     <View style={styles.SectionStyle}>
                         <TextInput
                             style={styles.forms}
-                            onChangeText={volume => this.setState({ volume })}
+                            onChangeText={volume => {
+                                this.setState({ volume })
+                            }}
                             value={this.state.volume}
                             placeholder="Volume"
                             keyboardType="number-pad"
                             returnKeyType="next"
+                            onBlur={() =>{
+                                var calc;
+                                if (this.state.commType === "%") {
+                    
+                                    calc = (this.state.commPer * this.state.volume) / 100
+                                } else {
+                                    calc = this.state.commPer
+                                }
+                                this.setState({ commission: calc, commission1: calc })
+                                var calc1;
+                                if (this.state.bonusType === "%") {
+                                    calc1 = (this.state.bonusPer * this.state.volume) / 100
+                                } else {
+                                    calc1 = this.state.bonusPer
+                                }
+                                this.setState({  bonus: calc1 })
+                               var calc2;
+                                if (this.state.pmdType === "%") {
+                                    calc2 = (this.state.pmdDeductionPer * this.state.volume) / 100
+                                    this.setState({ commission: calc - calc2 })
+                                    if (this.state.commission < 0) {
+                                        this.setState({ pmdDeductionPer: 0, msg: "Commission cannot be less than zero" })
+                                    }
+                                } else {
+                                    calc2 = this.state.pmdDeductionPer
+                                    this.setState({ commission: calc - calc2 })
+                                }
+                                this.setState({  pmdDeduction: calc2 })
+                            }}
                         />
                     </View>
                     <View style={styles.SectionStyle}>

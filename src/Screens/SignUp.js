@@ -34,14 +34,16 @@ export default class Login extends React.Component {
                         if (this.state.Password) {
                             if (this.state.Password == this.state.confirmPass) {
                                 axios
-                                    .post('http://192.168.1.3:3000/register', {
+                                    .post('http://192.168.0.105:3000/register', {
                                         userName: this.state.userName,
                                         email: this.state.userName,
                                         password: this.state.Password,
                                     })
                                     .then((response) => {
                                         console.log("resp1", response.data)
-                                        if (response.data === "registered") {
+                                        this.props.userAsync(response.data.response._id)
+
+                                        if (response.data.resp === "registered") {
                                             this.props.navigation.navigate('MainTabs')
                                             this.props.navigation.dispatch(StackActions.reset({
                                                 index: 0,
@@ -49,7 +51,7 @@ export default class Login extends React.Component {
                                             }))
                                             this.setState({ loading: false })
 
-                                        } else if (response.data === "exist") {
+                                        } else if (response.data.resp === "exist") {
                                             this.setState({ msg: "username already exist" })
                                         }
                                     }).catch((error) => {

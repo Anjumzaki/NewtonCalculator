@@ -5,9 +5,11 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import { NavigationActions, StackActions } from 'react-navigation';
 import axios from 'axios';
 import DatePicker from 'react-native-datepicker'
+import { bindActionCreators } from "redux";
+import { userAsync } from "../store/actions";
+import { connect } from "react-redux";
 
-
-export default class ChangeFixed extends React.Component {
+class ChangeFixed extends React.Component {
     static navigationOptions = {
         header: null
     }
@@ -65,11 +67,12 @@ export default class ChangeFixed extends React.Component {
             this.state.spiff 
             ){
                 console.log("In call")
-                axios.post('http://192.168.1.3:3000/post/goals',{
+                axios.post('http://192.168.0.105:3000/post/goals',{
                             selectedYear: this.state.selectedYear,
                             commission: this.state.commission,
                             bonus: this.state.bonus,
                             spiff: this.state.spiff,
+                            userId: this.props.user
                         }).then(resp =>console.log(resp))
                         .catch(err => console.log(err))  
             }else{
@@ -259,3 +262,19 @@ const styles = StyleSheet.create({
         color: '#0b5f99',
     },
 });
+
+const mapStateToProps = state => ({
+    user: state.user.userId,
+});
+const mapDispatchToProps = (dispatch, ownProps) =>
+    bindActionCreators(
+        {
+            userAsync
+        },
+        dispatch
+    );
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(ChangeFixed);

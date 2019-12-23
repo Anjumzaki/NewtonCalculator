@@ -5,10 +5,12 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import { NavigationActions, StackActions } from 'react-navigation';
 import axios from 'axios';
 import DatePicker from 'react-native-datepicker'
+import { bindActionCreators } from "redux";
+import { userAsync } from "../store/actions";
+import { connect } from "react-redux";
 
 
-
-export default class ChangeFixed extends React.Component {
+class ChangeFixed extends React.Component {
     static navigationOptions = {
         header: null
     }
@@ -24,7 +26,7 @@ export default class ChangeFixed extends React.Component {
             years: ['2019', '2020', '2021', '2022', '2023', '2024', '2025'],
             selectedYear: '2019',
             months: ['Jan', 'Feb', 'Mar', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', "Nov", "Dec"],
-            selectedMonth: 'Jan'
+            selectedMonth: '1'
         };
     }
     login() {
@@ -69,12 +71,16 @@ export default class ChangeFixed extends React.Component {
             this.state.pmdDeduction 
             ){
                 console.log("In call")
-                axios.post('http://192.168.1.3:3000/post/goals',{
+                axios.post('http://192.168.0.105:3000/post/amount',{
                             selectedYear: this.state.selectedYear,
-                            selectedMonth: this.state.selectedMonth,
+                            selectedMonth: this.state.selectedMonthNo,
                             commission: this.state.commission,
                             bonus: this.state.bonus,
-                            spiff: this.state.pmdDeduction,
+                            pmdDeduction: this.state.pmdDeduction,
+                            userId: this.props.user,
+                            commType: this.state.commType,
+                            bonusType: this.state.bonusType,
+                            pmdDeductionType: this.state.pmdDeductionType
                         }).then(resp =>console.log(resp))
                         .catch(err => console.log(err))  
             }else{
@@ -110,10 +116,10 @@ export default class ChangeFixed extends React.Component {
                             <View style={styles.myDrops}>
                                 <Picker
                                     style={styles.myDrop}
-                                    selectedValue={this.state.selectedyear}
+                                    selectedValue={this.state.selectedYear}
                                     style={{ height: 50, width: 105 }}
                                     onValueChange={(itemValue, itemIndex) =>
-                                        this.setState({ selectedyear: itemValue })
+                                        this.setState({ selectedYear: itemValue })
                                     }>
                                     {this.state.years.map((item, i) => (
                                         <Picker.Item key={i} label={item} value={item} />
@@ -126,7 +132,7 @@ export default class ChangeFixed extends React.Component {
                                     selectedValue={this.state.selectedMonth}
                                     style={{ height: 50, width: 105 }}
                                     onValueChange={(itemValue, itemIndex) =>
-                                        this.setState({ selectedMonth: itemValue })
+                                        this.setState({ selectedMonth: itemValue, selectedMonthNo: itemIndex })
                                     }>
                                     {this.state.months.map((item, i) => (
                                         <Picker.Item key={i} label={item} value={item} />
@@ -338,3 +344,19 @@ const styles = StyleSheet.create({
         color: '#0b5f99',
     },
 });
+
+const mapStateToProps = state => ({
+    user: state.user.userId,
+});
+const mapDispatchToProps = (dispatch, ownProps) =>
+    bindActionCreators(
+        {
+            userAsync
+        },
+        dispatch
+    );
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(ChangeFixed);
