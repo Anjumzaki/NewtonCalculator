@@ -6,8 +6,11 @@ import { NavigationActions, StackActions } from 'react-navigation';
 import * as Font from 'expo-font';
 import axios from 'axios';
 import * as validator from 'email-validator';
+import { bindActionCreators } from "redux";
+import { userAsync } from "../store/actions";
+import { connect } from "react-redux";
 
-export default class Login extends React.Component {
+class Login extends React.Component {
     static navigationOptions = {
         header: null
     }
@@ -260,3 +263,20 @@ const styles = StyleSheet.create({
     }
 
 });
+
+
+const mapStateToProps = state => ({
+    user: state.user.userId,
+});
+const mapDispatchToProps = (dispatch, ownProps) =>
+    bindActionCreators(
+        {
+            userAsync
+        },
+        dispatch
+    );
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(Login);
