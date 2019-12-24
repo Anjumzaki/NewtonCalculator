@@ -55,7 +55,7 @@ class HomePage extends React.Component {
 
     }
     getdata = () => {
-        axios.get('http://192.168.1.2:3000/get/all/transactions/' + this.props.user)
+        axios.get('https://intense-harbor-45607.herokuapp.com/get/all/transactions/' + this.props.user)
             .then(resp => {
                 // console.log(resp.data)
                 this.setState({ transctions: resp.data, refreshing: false })

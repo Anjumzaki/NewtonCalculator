@@ -37,7 +37,7 @@ class Login extends React.Component {
                         if (this.state.Password) {
                             if (this.state.Password == this.state.confirmPass) {
                                 axios
-                                    .post('http://192.168.1.2:3000/register', {
+                                    .post('https://intense-harbor-45607.herokuapp.com/register', {
                                         userName: this.state.userName,
                                         email: this.state.userName,
                                         password: this.state.Password,

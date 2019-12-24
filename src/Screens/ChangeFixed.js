@@ -71,7 +71,7 @@ class ChangeFixed extends React.Component {
             this.state.pmdDeduction 
             ){
                 console.log("In call")
-                axios.post('http://192.168.1.2:3000/post/amount',{
+                axios.post('https://intense-harbor-45607.herokuapp.com/post/amount',{
                             selectedYear: this.state.selectedYear,
                             selectedMonth: this.state.selectedMonthNo,
                             commission: this.state.commission,
