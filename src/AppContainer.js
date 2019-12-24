@@ -13,11 +13,13 @@ import YearlyReport from './Screens/YearlyReport'
 import MonthlyReport from './Screens/MonthlyReport'
 import ChangeFixed from './Screens/ChangeFixed'
 import AddGoal from './Screens/AddGoal'
-
+import SeeGoal from './Screens/SeeGoal'
+import SingleTransactions from './Screens/SingleTransactions'
 const TransStack = createStackNavigator(
     {
         HomePage: HomePage,
         TransScreen: TransScreen,
+        SingleTransactions:SingleTransactions
     },
     {
         initialRouteName: 'HomePage',
@@ -29,11 +31,12 @@ const DrawerNavigator = createDrawerNavigator({
     YearlyReport,
     MonthlyReport,
     ChangeFixed,
-    AddGoal
+    AddGoal,
+    SeeGoal
 }, {
     headerMode: 'float',
     navigationOptions: ({ navigation }) => ({
-        headerStyle: { backgroundColor: '#0b5f99' },
+        headerStyle: { backgroundColor: '#3f3fb9' },
         headerTintColor: 'white',
         headerLeft:
             <TouchableHighlight onPress={() => navigation.openDrawer()}>

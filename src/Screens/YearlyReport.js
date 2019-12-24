@@ -53,7 +53,7 @@ class YearlyReport extends React.Component {
     }
     componentDidMount() {
         console.log(this.props)
-        axios.get('http://192.168.0.105:3000/get/all/transactions/' + this.props.user)
+        axios.get('http://192.168.1.2:3000/get/all/transactions/' + this.props.user)
             .then(resp => {
                 // console.log(resp.data)
                 this.setState({ transctions: resp.data })
@@ -157,7 +157,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         margin: 10,
         borderWidth: 1,
-        borderColor: '#0b5f99',
+        borderColor: '#3f3fb9',
         fontSize: 20,
         borderRadius: 5,
         backgroundColor: '#F6F6F6',
@@ -165,7 +165,7 @@ const styles = StyleSheet.create({
     myDrop: {
         height: 40,
         width: '100%',
-        color: '#0b5f99',
+        color: '#3f3fb9',
     },
     SectionStyle: {
         flexDirection: 'row',
@@ -173,14 +173,14 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         backgroundColor: '#fff',
         borderRadius: 5,
-        borderColor: "#0b5f99",
+        borderColor: "#3f3fb9",
         borderWidth: 1,
         margin: 10
     },
     forms: {
         padding: 10,
         backgroundColor: '#fff',
-        color: '#0b5f99',
+        color: '#3f3fb9',
         width: (Dimensions.get('window').width - (Dimensions.get('window').width / 3)) - 75,
         fontSize: 18,
     },
@@ -200,7 +200,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-evenly',
     },
     head1: {
-        color: '#0b5f99',
+        color: '#3f3fb9',
         alignSelf: 'center',
         fontSize: 19
 

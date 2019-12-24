@@ -39,13 +39,13 @@ export default class TransCard extends React.Component {
                     <Text style={styles.head1}>{this.props.transc.name} </Text>
                 </CardItem>
                 <CardItem style={styles.cardHead} >
-                    <Text style={styles.head}>Contact: </Text>
+                    <Text style={styles.head}>Contract # </Text>
                     <Text style={styles.head1}>{this.props.transc.contact} </Text>
                 </CardItem>
                 <CardItem style={styles.cardHead1} >
                     <View>
                         <Text style={styles.head}>Volume: </Text>
-                        <Text style={styles.head1}> {this.props.transc.volume} $</Text>
+                        <Text style={styles.head1}> {this.props.transc.volume} </Text>
                     </View>
                     <View>
                         <Text style={styles.head}>Downpayment: </Text>
@@ -53,7 +53,7 @@ export default class TransCard extends React.Component {
                     </View>
                     <View>
                         <Text style={styles.head}>Spiff: </Text>
-                        <Text style={styles.head1}> {this.props.transc.spiff} $</Text>
+                        <Text style={styles.head1}> $ {this.props.transc.spiff} </Text>
                     </View>
                 </CardItem>
                 <CardItem style={styles.cardHead1} >
@@ -63,12 +63,12 @@ export default class TransCard extends React.Component {
                     </View>
                     <View>
                         <Text style={styles.head}>Commission: </Text>
-                        <Text style={styles.head1}> {this.props.transc.commission} $</Text>
+                        <Text style={styles.head1}>$ {this.props.transc.commission} </Text>
                     </View>
 
                     <View>
                         <Text style={styles.head}>PMD: </Text>
-                        <Text style={styles.head1}> {this.props.transc.pmdDeduction} $</Text>
+                        <Text style={styles.head1}>$ {this.props.transc.pmdDeduction} </Text>
                     </View>
                 </CardItem>
 
@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         margin: 10,
         borderWidth: 1,
-        borderColor: '#0b5f99',
+        borderColor: '#3f3fb9',
         fontSize: 20,
         borderRadius: 5,
         backgroundColor: '#F6F6F6',
@@ -94,7 +94,7 @@ const styles = StyleSheet.create({
     myDrop: {
         height: 40,
         width: '100%',
-        color: '#0b5f99',
+        color: '#3f3fb9',
     },
     SectionStyle: {
         flexDirection: 'row',
@@ -102,14 +102,14 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         backgroundColor: '#fff',
         borderRadius: 5,
-        borderColor: "#0b5f99",
+        borderColor: "#3f3fb9",
         borderWidth: 1,
         margin: 10
     },
     forms: {
         padding: 10,
         backgroundColor: '#fff',
-        color: '#0b5f99',
+        color: '#3f3fb9',
         width: (Dimensions.get('window').width - (Dimensions.get('window').width / 3)) - 75,
         fontSize: 18,
     },
@@ -130,7 +130,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
     },
     head1: {
-        color: '#0b5f99',
+        color: '#3f3fb9',
         fontSize: 19
 
     }
