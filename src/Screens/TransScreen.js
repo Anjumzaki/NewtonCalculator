@@ -79,9 +79,9 @@ class MainScreen extends React.Component {
         this.setState({ soldDate: this.props.navigation.getParam('sectedDate') })
         var date =this.props.navigation.getParam('sectedDate').dateString;
         var year =new Date(date).getFullYear();
-        var month = new Date(date).getMonth()
+        var month = new Date(date).getMonth() + 1
         console.log("dateeeeeeeeeeeeeeeeeeeeeeeeeeeeee",date,year,month)
-        axios.get('http://192.168.0.105:3000/get/fixedAmount/'+this.props.user+"/"+year.toString()+"/"+month.toString())
+        axios.get('http://192.168.1.2:3000/get/fixedAmount/'+this.props.user+"/"+year.toString()+"/"+month.toString())
         .then(resp => {
             console.log(resp.data)
             if(resp.data !== null){
@@ -118,7 +118,7 @@ class MainScreen extends React.Component {
             this.state.pmdDeductionPer >= 0
         ) {
             console.log("In call")
-            axios.post('http://192.168.0.105:3000/post/transaction', {
+            axios.post('http://192.168.1.2:3000/post/transaction', {
                 payDate: this.state.payDate,
                 soldDate: this.state.soldDate.dateString,
                 name: this.state.name,
@@ -248,7 +248,7 @@ class MainScreen extends React.Component {
                             style={styles.forms}
                             onChangeText={contact => this.setState({ contact })}
                             value={this.state.contact}
-                            placeholder="Contact#"
+                            placeholder="Contract#"
                             keyboardType="default"
                             returnKeyType="next"
                         />
@@ -437,7 +437,7 @@ class MainScreen extends React.Component {
                     </View>
                     <View style={{ justifyContent: 'flex-end' }}>
                         {this.state.loading ?
-                            <Spinner color='#0b5f99' /> :
+                            <Spinner color='#3f3fb9' /> :
                             <TouchableOpacity style={styles.saveBtn} onPress={() => this.saveTrasc()}>
                                 <Text style={{ color: 'white' }}>Save</Text>
                             </TouchableOpacity>
@@ -533,7 +533,7 @@ const styles = StyleSheet.create({
         paddingBottom: 10,
         paddingLeft: 20,
         paddingRight: 20,
-        backgroundColor: '#0b5f99',
+        backgroundColor: '#3f3fb9',
         color: 'white',
         borderRadius: 10,
         marginBottom: 30

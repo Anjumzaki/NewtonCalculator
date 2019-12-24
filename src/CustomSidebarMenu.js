@@ -33,10 +33,16 @@ export default class CustomSidebarMenu extends Component {
         navOptionName: 'Change Amounts',
         screenToNavigate: 'ChangeFixed',
       },
+      
       {
         navOptionThumb: require('../assets/newICons/012-piggy-bank.png'),
         navOptionName: 'Add Goal  ',
         screenToNavigate: 'AddGoal',
+      },
+      {
+        navOptionThumb: require('../assets/newICons/026-check.png'),
+        navOptionName: 'See Goal  ',
+        screenToNavigate: 'SeeGoal',
       },
     ];
   }
@@ -56,7 +62,7 @@ export default class CustomSidebarMenu extends Component {
     return (
       <View style={styles.sideMenuContainer}>
         {/*Top Large Image */}
-        <View style={{ backgroundColor: '#0b5f99', width: '100%', margin: 0, alignItems: 'center', padding: 20 }}>
+        <View style={{ backgroundColor: '#3f3fb9', width: '100%', margin: 0, alignItems: 'center', padding: 20 }}>
           <Image
             source={require('../assets/applogo.png')}
             style={{ width: 185, height: 150}}
@@ -87,7 +93,7 @@ export default class CustomSidebarMenu extends Component {
                   alignItems: 'center',
                   paddingTop: 10,
                   paddingBottom: 10,
-                  backgroundColor: global.currentScreenIndex === key ? '#0b5f99' : '#ffffff',
+                  backgroundColor: global.currentScreenIndex === key ? '#3f3fb9' : '#ffffff',
                 }}
 
               >

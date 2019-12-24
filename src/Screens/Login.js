@@ -24,7 +24,6 @@ class Login extends React.Component {
 
         };
     }
-
     async setId(){
         await Storage.setItem("userId", {userId: response.data.response._id})
      }
@@ -37,7 +36,7 @@ class Login extends React.Component {
                     console.log("Loginpass")
 
                     axios
-                        .post('http://192.168.0.105:3000/login', {
+                        .post('http://192.168.1.2:3000/login', {
                             userName: this.state.userName,
                             password: this.state.Password
                         })

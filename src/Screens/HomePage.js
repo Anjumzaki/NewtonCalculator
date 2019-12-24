@@ -55,7 +55,7 @@ class HomePage extends React.Component {
 
     }
     getdata = () => {
-        axios.get('http://192.168.0.105:3000/get/all/transactions/' + this.props.user)
+        axios.get('http://192.168.1.2:3000/get/all/transactions/' + this.props.user)
             .then(resp => {
                 // console.log(resp.data)
                 this.setState({ transctions: resp.data, refreshing: false })
@@ -94,11 +94,11 @@ class HomePage extends React.Component {
             }
         }
         nextDays.forEach(day => {
-            mark[day] = { selected: true, selectedDotColor: 'yellow' };
+            mark[day] = {  marked: true, selectedDotColor: 'yellow' };
             console.log(day)
         });
         payDates.forEach(day => {
-            mark[day] = { marked: true, selectedDotColor: 'yellow' };
+            mark[day] = { selected: true, selectedDotColor: 'yellow' };
         });
 
         matched.forEach(day => {
@@ -158,7 +158,7 @@ class HomePage extends React.Component {
                         // Set custom calendarWidth.
                         calendarWidth={Dimensions.get('window').width}
                         // Handler which gets executed on day press. Default = undefined
-                        onDayPress={(day) => { console.log('selected day', day) }}
+                        onDayPress={(day) => { this.props.navigation.navigate('SingleTransactions',{sectedDate:day,transctions: this.state.transctions}) }}
                         // Handler which gets executed on day long press. Default = undefined
                         onDayLongPress={(day) => this.props.navigation.navigate('TransScreen', { sectedDate: day })}
                         // Month format in calendar title. Formatting values: http://arshaw.com/xdate/#Formatting
@@ -166,9 +166,9 @@ class HomePage extends React.Component {
                         // Handler which gets executed when visible month changes in calendar. Default = undefined
                         onMonthChange={(month) => { console.log('month changed', month) }}
                         // Hide month navigation arrows. Default = false
-                        hideArrows={true}
+                        hideArrows={false}
                         // Replace default arrows with custom ones (direction can be 'left' or 'right')
-                        renderArrow={(direction) => (<Arrow />)}
+                        // renderArrow={(direction) => (<Arrow />)}
                         // Do not show days of other months in month page. Default = false
                         hideExtraDays={true}
                         // If hideArrows=false and hideExtraDays=false do not switch month when tapping on greyed out
@@ -224,8 +224,8 @@ class HomePage extends React.Component {
                 <View style={{paddingLeft:20}}>
                     <Text>1-Press to see details</Text>
                     <Text>2-Press and Hold to Add Transaction</Text>
-                    <Text>3-Blue date Represents the Sold Date</Text>
-                    <Text>4-Dot Represents the Pay Date</Text>
+                    <Text>3-Dot  Represents the Sold Date</Text>
+                    <Text>4-Blue date Represents the Pay Date</Text>
                 </View>
             </ScrollView>
         );

@@ -67,7 +67,7 @@ class ChangeFixed extends React.Component {
             this.state.spiff 
             ){
                 console.log("In call")
-                axios.post('http://192.168.0.105:3000/post/goals',{
+                axios.post('http://192.168.1.2:3000/post/goals',{
                             selectedYear: this.state.selectedYear,
                             commission: this.state.commission,
                             bonus: this.state.bonus,
@@ -233,14 +233,14 @@ const styles = StyleSheet.create({
         paddingBottom: 10,
         paddingLeft: 20,
         paddingRight: 20,
-        backgroundColor: '#0b5f99',
+        backgroundColor: '#3f3fb9',
         color: 'white',
         borderRadius: 10,
         marginBottom: 30
     },
     dropUpText: {
         borderWidth: 1,
-        borderColor: '#0b5f99',
+        borderColor: '#3f3fb9',
         borderRadius: 10,
         marginBottom: 10,
         alignSelf: 'center',
@@ -251,7 +251,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         margin: 10,
         borderWidth: 1,
-        borderColor: '#0b5f99',
+        borderColor: '#3f3fb9',
         fontSize: 20,
         borderRadius: 5,
         backgroundColor: '#F6F6F6',
@@ -259,7 +259,7 @@ const styles = StyleSheet.create({
     myDrop: {
         height: 40,
         width: '100%',
-        color: '#0b5f99',
+        color: '#3f3fb9',
     },
 });
 
