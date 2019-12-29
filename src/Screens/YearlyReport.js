@@ -53,7 +53,7 @@ class YearlyReport extends React.Component {
     }
     componentDidMount() {
         console.log(this.props)
-        axios.get('http://192.168.1.2:3000/get/all/transactions/' + this.props.user)
+        axios.get('http://192.168.0.105:3000/get/all/transactions/' + this.props.user)
             .then(resp => {
                 // console.log(resp.data)
                 this.setState({ transctions: resp.data })
@@ -88,10 +88,21 @@ class YearlyReport extends React.Component {
                 }
             }
         }
+
+        var key = this.state.seName;
+        var serachedTractions =[]
+        if (this.state.seName) {
+
+            myTransctions = this.state.transctions.filter(function (transc) {
+                return transc.name.toLowerCase().includes(key.toLowerCase())
+                    
+            });
+        }
+
         return (
             <KeyboardAwareScrollView>
                 <View >
-                    {console.log(this.state.selectedYear, 'i maslect4e')}
+                    {/* {console.log(this.state.selectedYear, 'i maslect4e')} */}
 
                     <View style={{ flexDirection: 'row' }}>
                         <View style={styles.myDrops}>
@@ -139,12 +150,11 @@ class YearlyReport extends React.Component {
                             <Image style={{ padding: 10, marginRight: 10, width: 20, height: 20 }} source={require('../../assets/newICons/042-magnifying-glass.png')} />
                         </View>
                     </View>
-
-                    {this.state.transctions !== null ? myTransctions !== null ?
+                    {(this.state.transctions !== null ? myTransctions !== null ?
                         myTransctions.map(
                             (transc, index) => <TransCard transc={transc} key={index} />
                         )
-                        : <Text> NO Data in Year {this.state.selectedYear} </Text> : <Text> NO I coming in Year {this.state.selectedYear} </Text>}
+                        : <Text> NO Data in Year {this.state.selectedYear} </Text> : <Text> NO I coming in Year {this.state.selectedYear} </Text>)}
                 </View>
             </KeyboardAwareScrollView>
         );

@@ -67,7 +67,7 @@ class ChangeFixed extends React.Component {
             this.state.spiff 
             ){
                 console.log("In call")
-                axios.post('http://192.168.1.2:3000/post/goals',{
+                axios.post('http://192.168.0.105:3000/post/goals',{
                             selectedYear: this.state.selectedYear,
                             commission: this.state.commission,
                             bonus: this.state.bonus,

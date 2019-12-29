@@ -24,7 +24,7 @@ class SeeGoal extends React.Component {
         };
     }
     getdata = () => {
-        axios.get('http://192.168.1.2:3000/get/all/transactions/' + this.props.user)
+        axios.get('http://192.168.0.105:3000/get/all/transactions/' + this.props.user)
             .then(resp => {
                 // console.log(resp.data)
                 var crBonus = 0;
@@ -45,7 +45,7 @@ class SeeGoal extends React.Component {
             })
             .catch(err => console.log(err))
 
-        axios.get('http://192.168.1.2:3000/get/goal/' + this.props.user + '/' + new Date().getFullYear())
+        axios.get('http://192.168.0.105:3000/get/goal/' + this.props.user + '/' + new Date().getFullYear())
             .then(resp => {
                 // console.log(resp.data)
                 this.setState({ goal: resp.data })
