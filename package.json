@@ -36,5 +36,8 @@
   "devDependencies": {
     "babel-preset-expo": "~8.0.0"
   },
+  "engines": {
+    "node": "10.x"
+  },
   "private": true
 }

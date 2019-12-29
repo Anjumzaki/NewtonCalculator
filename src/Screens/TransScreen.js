@@ -81,7 +81,7 @@ class MainScreen extends React.Component {
         var year =new Date(date).getFullYear();
         var month = new Date(date).getMonth() + 1
         console.log("dateeeeeeeeeeeeeeeeeeeeeeeeeeeeee",date,year,month)
-        axios.get('http://192.168.0.105:3000/get/fixedAmount/'+this.props.user+"/"+year.toString()+"/"+month.toString())
+        axios.get('https://intense-harbor-45607.herokuapp.com/get/fixedAmount/'+this.props.user+"/"+year.toString()+"/"+month.toString())
         .then(resp => {
             console.log(resp.data)
             if(resp.data !== null){
@@ -118,7 +118,7 @@ class MainScreen extends React.Component {
             this.state.pmdDeductionPer >= 0
         ) {
             console.log("In call")
-            axios.post('http://192.168.0.105:3000/post/transaction', {
+            axios.post('https://intense-harbor-45607.herokuapp.com/post/transaction', {
                 payDate: this.state.payDate,
                 soldDate: this.state.soldDate.dateString,
                 name: this.state.name,
