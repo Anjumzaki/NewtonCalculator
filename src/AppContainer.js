@@ -16,6 +16,8 @@ import AddGoal from './Screens/AddGoal'
 import SeeGoal from './Screens/SeeGoal'
 import SingleTransactions from './Screens/SingleTransactions'
 import SingleTransDetails from './Screens/SingleTransDetail'
+import YearlyGoal from './Screens/YearlyGoal'
+
 const TransStack = createStackNavigator(
     {
         HomePage: HomePage,
@@ -34,6 +36,7 @@ const DrawerNavigator = createDrawerNavigator({
     MonthlyReport,
     ChangeFixed,
     AddGoal,
+    YearlyGoal
 }, {
     headerMode: 'float',
     navigationOptions: ({ navigation }) => ({

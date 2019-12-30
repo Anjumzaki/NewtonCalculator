@@ -115,7 +115,8 @@ class HomePage extends React.Component {
         matched.forEach(day => {
             mark[day] = { selected: true, marked: true, selectedDotColor: 'yellow' };
         });
-
+        // var monthToDate = 0
+        // var 
         // console.log(nextDays, 'I am the next Dates')
         // console.log(payDates, 'I am the next Dates')
         return (
