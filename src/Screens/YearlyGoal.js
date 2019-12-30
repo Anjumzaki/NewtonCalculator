@@ -21,7 +21,9 @@ class YearlyGoal extends React.Component {
             eye: true,
             years: ['2019', '2020', '2021', '2022', '2023', '2024', '2025'],
             selectedYear: '',
-            transctions: null
+            transctions: [],
+            goal: [],
+            yearlyIncomeGoal: 0
         };
     }
     login() {
@@ -54,21 +56,49 @@ class YearlyGoal extends React.Component {
         }))
     }
     componentDidMount() {
-        console.log(this.props)
-        axios.get('https://intense-harbor-45607.herokuapp.com/get/all/transactions/' + this.props.user)
-            .then(resp => {
-                // console.log(resp.data)
-                this.setState({ transctions: resp.data })
-            })
-            .catch(err => console.log(err))
+       
     }
     changeDrop = (itemValue) => {
         this.setState({ selectedYear: itemValue })
         console.log('i am chgnes')
         console.log(this.state.selectedYear)
         console.log(itemValue)
+
+        axios.get('http://192.168.0.105:3000/get/all/transactions/yearly/' + this.props.user+'/'+itemValue)
+        .then(resp => {
+            // console.log(resp.data)
+            this.setState({ transctions: resp.data })
+        })
+        .catch(err => console.log(err))
+
+    axios.get('http://192.168.0.105:3000/get/goal/' + this.props.user+'/'+itemValue)
+        .then(resp => {
+            // console.log(resp.data)
+            this.setState({ goal: resp.data, yearlyIncomeGoal: parseFloat(resp.data.commission) + parseFloat(resp.data.bonus) + parseFloat(resp.data.spiff) })
+
+        })
+        .catch(err => console.log(err))
+
+        
     }
     render() {
+        console.log("stateeeee",this.state, this.props.user)
+
+        if(this.state.transctions.length >0){
+        var totalVolume=0, totalSpiff=0, totalCommission=0, totalBonus=0;
+        for(var i=0; i<this.state.transctions.length; i++){
+            console.log("sssssssssssssssssss")
+            // console.log(totalVolume, totalSpiff, totalCommission, totalBonus)
+
+            totalVolume+= parseFloat(this.state.transctions[i].volume);
+            totalBonus+= parseFloat(this.state.transctions[i].bonus);
+            totalCommission+= parseFloat(this.state.transctions[i].commission);
+            totalSpiff+= parseFloat(this.state.transctions[i].spiff);
+        }
+        console.log(totalVolume, totalSpiff, totalCommission, totalBonus)
+        var totalIncome = totalSpiff+ totalCommission+ totalBonus
+    }
+    
         const placeholder = {
             label: 'Year',
             value: null,
@@ -142,55 +172,55 @@ class YearlyGoal extends React.Component {
                     <CardItem style={styles.cardHead1} >
                         <View style={{ flexDirection: 'row' }}>
                             <Text style={{fontSize:20,width:Dimensions.get('window').width /2 +30}} >Yeary Volume Goal: </Text>
-                            <Text style={styles.head1}>asd</Text>
+                            <Text style={styles.head1}>{this.state.goal.volume ? this.state.goal.volume : "0.00" } $</Text>
                         </View>
                     </CardItem>
                     <CardItem style={styles.cardHead1} >
                         <View style={{ flexDirection: 'row' }}>
                             <Text style={styles.head}>Current: </Text>
-                            <Text style={styles.head1}>asd</Text>
+                            <Text style={styles.head1}>{totalVolume ? totalVolume : "0.00" } $</Text>
                         </View>
                     </CardItem>
                     <CardItem style={styles.cardHead1} >
                         <View style={{ flexDirection: 'row' }}>
                             <Text style={styles.head}>Remaining Goal </Text>
-                            <Text style={styles.head1}>asd</Text>
+                            <Text style={styles.head1}>{totalVolume && this.state.goal.volume ? this.state.goal.volume - totalVolume : "0.00" } $</Text>
                         </View>
                     </CardItem>
                     <CardItem style={styles.cardHead1} >
                         <View style={{ flexDirection: 'row' }}>
                             <Text style={styles.head}>Total Commisions </Text>
-                            <Text style={styles.head1}>asd</Text>
+                            <Text style={styles.head1}>{totalCommission ? totalCommission : "0.00" } $</Text>
                         </View>
                     </CardItem>
                     <CardItem style={styles.cardHead1} >
                         <View style={{ flexDirection: 'row' }}>
                             <Text style={styles.head}>Total Bonus </Text>
-                            <Text style={styles.head1}>asd</Text>
+                            <Text style={styles.head1}>{totalBonus ? totalBonus : "0.00" } $</Text>
                         </View>
                     </CardItem>
                     <CardItem style={styles.cardHead1} >
                         <View style={{ flexDirection: 'row' }}>
                             <Text style={styles.head}>Total Spiff </Text>
-                            <Text style={styles.head1}>asd</Text>
+                            <Text style={styles.head1}>{totalSpiff ? totalSpiff : "0.00" } $</Text>
                         </View>
                     </CardItem>
                     <CardItem style={styles.cardHead1} >
                         <View style={{ flexDirection: 'row' }}>
                             <Text style={styles.head}>Total Income </Text>
-                            <Text style={styles.head1}>asd</Text>
+                            <Text style={styles.head1}>{totalIncome ? totalIncome : "0.00" } $</Text>
                         </View>
                     </CardItem>
                     <CardItem style={styles.cardHead1} >
                         <View style={{ flexDirection: 'row' }}>
                             <Text style={styles.head}>Yearly Income Goal </Text>
-                            <Text style={styles.head1}>asd</Text>
+                            <Text style={styles.head1}>{this.state.yearlyIncomeGoal ? this.state.yearlyIncomeGoal : "0.00" } $</Text>
                         </View>
                     </CardItem>
                     <CardItem style={styles.cardHead1} >
                         <View style={{ flexDirection: 'row' }}>
                             <Text style={styles.head}>Remaining Income Goal</Text>
-                            <Text style={styles.head1}>asd</Text>
+                            <Text style={styles.head1}>{this.state.yearlyIncomeGoal && totalIncome ? this.state.yearlyIncomeGoal - totalIncome: "0.00" } $</Text>
                         </View>
                     </CardItem>
                 </Card>

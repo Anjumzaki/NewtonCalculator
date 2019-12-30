@@ -59,7 +59,10 @@ class YearlyReport extends React.Component {
                 this.setState({ transctions: resp.data })
             })
             .catch(err => console.log(err))
+
     }
+
+   
     changeDrop = (itemValue) => {
         this.setState({ selectedYear: itemValue })
         console.log('i am chgnes')

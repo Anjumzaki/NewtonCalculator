@@ -24,6 +24,7 @@ class ChangeFixed extends React.Component {
             pmdDeductionType: '%',
             years: ['2019', '2020', '2021', '2022', '2023', '2024', '2025'],
             selectedYear: '2019',
+            msg: ''
         };
     }
     login() {
@@ -64,19 +65,26 @@ class ChangeFixed extends React.Component {
         if( this.state.selectedYear &&
             this.state.commission &&
             this.state.bonus &&
-            this.state.spiff 
+            this.state.spiff &&
+            this.state.volume
             ){
                 console.log("In call")
-                axios.post('https://intense-harbor-45607.herokuapp.com/post/goals',{
-                            selectedYear: this.state.selectedYear,
+                axios.post('http://192.168.0.105:3000/post/goals',{
+                            selectedYear: this.state.selectedyear,
+                            volume: this.state.volume,
                             commission: this.state.commission,
                             bonus: this.state.bonus,
                             spiff: this.state.spiff,
                             userId: this.props.user
-                        }).then(resp =>console.log(resp))
+                        }).then(resp =>{
+                            console.log(resp)
+                            this.setState({msg: "Goal saved",volume: '' ,spiff: '', commission: '', bonus: ''})
+                        })
                         .catch(err => console.log(err))  
             }else{
-                if(!this.state.selectedYear){
+                if(!this.state.volume){
+                    this.setState({msg: "Please Enter Volume"})
+                }else if(!this.state.selectedYear){
                     this.setState({msg: "Please Enter Year"})
                 }else if(!this.state.commission){
                     this.setState({msg: "Please Enter Commission"})
@@ -107,7 +115,17 @@ class ChangeFixed extends React.Component {
                             </Picker>
                         </View>
                     </View>
-                    <Text style={{ textAlign: "center", color: "red" }}>{this.state.msg}</Text>
+                    <Text style={{ textAlign: "center", color: "green" }}>{this.state.msg}</Text>
+                </View>
+                <View style={styles.SectionStyle}>
+                    <TextInput
+                        style={styles.forms}
+                        onChangeText={volume => this.setState({ volume })}
+                        value={this.state.volume}
+                        placeholder="Volume "
+                        keyboardType="number-pad"
+                        returnKeyType="next"
+                    />
                 </View>
                 <View style={styles.SectionStyle}>
                     <TextInput
@@ -139,6 +157,7 @@ class ChangeFixed extends React.Component {
                         returnKeyType="next"
                     />
                 </View>
+            
                 <View style={{ flex: 1, alignItems: 'center', marginTop: 10 }}>
                     <View >
                         <TouchableOpacity style={styles.saveBtn} onPress={() => this.saveTrasc()}>
