@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Button, ImageBackground, Image, TextInput, Dimensions, StyleSheet, ScrollView, RefreshControl } from 'react-native';
+import { View, Text, Button, ImageBackground, Image, TextInput, Dimensions, StyleSheet, ScrollView, RefreshControl, Alert } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { NavigationActions, StackActions } from 'react-navigation';
@@ -7,8 +7,15 @@ import * as Font from 'expo-font';
 import axios from 'axios'
 import { bindActionCreators } from "redux";
 import { userAsync } from "../store/actions";
+import { Container, Header, Content, Card, CardItem, Body } from "native-base";
+
 import { connect } from "react-redux";
 import { Calendar, CalendarList, Agenda } from 'react-native-calendars';
+import {
+    AntDesign, Feather,
+    MaterialCommunityIcons
+} from '@expo/vector-icons';
+import SeeGoal from './SeeGoal'
 
 class HomePage extends React.Component {
     static navigationOptions = {
@@ -21,46 +28,30 @@ class HomePage extends React.Component {
             Password: '',
             msg: "",
             transctions: null,
-            refreshing: true
+            refreshing: true,
+            goal: null,
+            calDate: new Date().getMonth()
         };
     }
-    login() {
-        // console.log("login")
-        // axios
-        //     .post('https://blooming-ridge-94645.herokuapp.com/login',{
-        //         userName: this.state.userName,
-        //         password: this.state.Password
-        //     })
-        //     .then((response) => { 
 
-        //         console.log("resp1",response.data)
-        //         if(response.data === "match"){
-        //             this.props.navigation.navigate('MainTabs')
-        //             this.props.navigation.dispatch(StackActions.reset({
-        //                 index: 0,
-        //                 actions: [NavigationActions.navigate({ routeName: 'MainTabs' })],
-        //             }))
-        //         }else if(response.data === "wrong"){
-        //             this.setState({msg: "password is incorrect"})
-        //         }
-        //     }).catch((error) => { 
-        //     console.log("mongodb get register error",error)
-        //     this.setState({msg: "login info is incorrect"})
-        //     })
-        this.props.navigation.navigate('MainTabs')
-        this.props.navigation.dispatch(StackActions.reset({
-            index: 0,
-            actions: [NavigationActions.navigate({ routeName: 'MainTabs' })],
-        }))
-
+    
+    getGoal = () => {
+        axios.get('https://intense-harbor-45607.herokuapp.com/get/goal/' + this.props.user + '/' + new Date().getFullYear())
+            .then(resp => {
+                console.log(resp.data, 'goal')
+                console.log(this.props.user)
+                this.setState({ goal: resp.data, refreshing: false })
+            })
+            .catch(err => console.log(err))
     }
     getdata = () => {
         axios.get('https://intense-harbor-45607.herokuapp.com/get/all/transactions/' + this.props.user)
             .then(resp => {
                 // console.log(resp.data)
-                this.setState({ transctions: resp.data, refreshing: false })
+                this.setState({ transctions: resp.data })
             })
             .catch(err => console.log(err))
+        this.getGoal()
     }
 
     componentDidMount() {
@@ -71,12 +62,32 @@ class HomePage extends React.Component {
         this.getdata()
     }
 
-
+    showAlert = (navigation, myDate) => {
+        Alert.alert(
+            "Actions",
+            "You want to add a Transaction",
+            [
+                {
+                    text: "Add Transaction",
+                    onPress: () => navigation.navigate('TransScreen', { sectedDate: myDate })
+                },
+                {
+                    text: "Show Details",
+                    onPress: () => navigation.navigate('SingleTransactions', { sectedDate: myDate, transctions: this.state.transctions }),
+                },
+                {
+                    text: "Cancel", onPress: () => console.log("cancel Pressed", myDate),
+                    style: 'cancel'
+                }
+            ],
+            { cancelable: false }
+        );
+    }
     render() {
         const { navigation } = this.props;
         var nextDays = [];
         var payDates = []
-        console.log("state", this.state)
+        // console.log("state", this.state)
         if (this.state.transctions !== null) {
             var trans = this.state.transctions
             for (var i = 0; i < trans.length; i++) {
@@ -94,7 +105,7 @@ class HomePage extends React.Component {
             }
         }
         nextDays.forEach(day => {
-            mark[day] = {  marked: true, selectedDotColor: 'yellow' };
+            mark[day] = { marked: true, selectedDotColor: 'yellow' };
             console.log(day)
         });
         payDates.forEach(day => {
@@ -104,7 +115,10 @@ class HomePage extends React.Component {
         matched.forEach(day => {
             mark[day] = { selected: true, marked: true, selectedDotColor: 'yellow' };
         });
-
+        // var monthToDate = 0
+        // var 
+        // console.log(nextDays, 'I am the next Dates')
+        // console.log(payDates, 'I am the next Dates')
         return (
             // style={{ flex: 1, alignItems: 'center', justifyContent: 'center', height: Dimensions.get('window').height - 70 }}
             <ScrollView
@@ -151,6 +165,34 @@ class HomePage extends React.Component {
                     onPressArrowRight={addMonth => addMonth()}
                 /> */}
                     <CalendarList
+                        style={{
+                            width: Dimensions.get('window').width
+                        }}
+                        theme={{
+                            backgroundColor: '#ffffff',
+                            calendarBackground: '#ffffff',
+                            textSectionTitleColor: '#b6c1cd',
+                            selectedDayBackgroundColor: '#3f3fb9',
+                            selectedDayTextColor: '#ffffff',
+                            todayTextColor: '#00adf5',
+                            dayTextColor: '#2d4150',
+                            textDisabledColor: '#d9e1e8',
+                            dotColor: '#3f3fb9',
+                            selectedDotColor: '#3f3fb9',
+                            arrowColor: 'orange',
+                            monthTextColor: 'blue',
+                            indicatorColor: 'blue',
+                            textDayFontFamily: 'monospace',
+                            textMonthFontFamily: 'monospace',
+                            textDayHeaderFontFamily: 'monospace',
+                            textDayFontWeight: '300',
+                            textMonthFontWeight: 'bold',
+                            textDayHeaderFontWeight: '300',
+                            textDayFontSize: 18,
+                            textMonthFontSize: 20,
+                            textDayHeaderFontSize: 16
+                        }}
+                        // current={new Date()}
                         // Enable horizontal scrolling, default = false
                         horizontal={true}
                         // Enable paging on horizontal, default = false
@@ -158,13 +200,13 @@ class HomePage extends React.Component {
                         // Set custom calendarWidth.
                         calendarWidth={Dimensions.get('window').width}
                         // Handler which gets executed on day press. Default = undefined
-                        onDayPress={(day) => { this.props.navigation.navigate('SingleTransactions',{sectedDate:day,transctions: this.state.transctions}) }}
+                        onDayPress={(day) => { this.props.navigation.navigate('SingleTransactions', { sectedDate: day, transctions: this.state.transctions }) }}
                         // Handler which gets executed on day long press. Default = undefined
                         onDayLongPress={(day) => this.props.navigation.navigate('TransScreen', { sectedDate: day })}
                         // Month format in calendar title. Formatting values: http://arshaw.com/xdate/#Formatting
-                        monthFormat={'yyyy MM'}
-                        // Handler which gets executed when visible month changes in calendar. Default = undefined
-                        onMonthChange={(month) => { console.log('month changed', month) }}
+                        monthFormat={'MMM yyyy'}
+                        firstDay={2}
+                        onMonthChange={(month) => {console.log('month changed', month)}}
                         // Hide month navigation arrows. Default = false
                         hideArrows={false}
                         // Replace default arrows with custom ones (direction can be 'left' or 'right')
@@ -174,59 +216,74 @@ class HomePage extends React.Component {
                         // If hideArrows=false and hideExtraDays=false do not switch month when tapping on greyed out
                         // day from another month that is visible in calendar page. Default = false
                         // If firstDay=1 week starts from Monday. Note that dayNames and dayNamesShort should still start from Sunday.
-                        firstDay={1}
+                        firstDay={7}
                         // Hide day names. Default = false
                         // Show week numbers to the left. Default = false
                         // Handler which gets executed when press arrow icon left. It receive a callback can go back month
                         onPressArrowLeft={substractMonth => substractMonth()}
                         // Handler which gets executed when press arrow icon left. It receive a callback can go next month
-                        onPressArrowRight={addMonth => addMonth()}
+                        onPressArrowRight={addMonth => addMonth(addMonth,console.log('rigtt preses',this.state.calDate + 1))}
                         // markingType={'custom'}
                         markedDates={mark}
-                    // markedDates={{
-                    //     '2019-12-16': {
-                    //         customStyles: {
-                    //             container: {
-                    //                 backgroundColor: 'blue',
-                    //                 borderColor: 'red',
-                    //                 borderWidth: 5,
-                    //                 width: 40,
-                    //                 height: 40,
-                    //                 borderRadius: 100,
-                    //             },
-                    //             text: {
-                    //                 color: 'white',
-                    //                 fontWeight: 'bold',
-                    //                 fontSize: 15,
-                    //             },
-                    //         },
-                    //     },
-                    //     '2019-12-18': {
-                    //         customStyles: {
-                    //             container: {
-                    //                 backgroundColor: 'blue',
-                    //                 borderColor: 'red',
-                    //                 borderWidth: 5,
-                    //                 width: 40,
-                    //                 height: 40,
-                    //                 borderRadius: 100,
-                    //             },
-                    //             text: {
-                    //                 color: 'white',
-                    //                 fontWeight: 'bold',
-                    //                 fontSize: 15,
-                    //             },
-                    //         },
-                    //     },
-                    // }}
+                        dayComponent={({ date, state }) => {
+                            return (<View >
+                                {/* {console.log(date,'i am the calwendar')} */}
+                                {/* {console.log(date.dateString, 'date String')} */}
+                                {nextDays.indexOf(date.dateString) > -1 ?
+                                    payDates.indexOf(date.dateString) > -1 ?
+                                        <TouchableOpacity style={styles.both} onPress={() => this.showAlert(this.props.navigation, date)}>
+                                            <Text style={{ textAlign: 'center', color: 'white' }}>{date.day}</Text>
+                                            <View >
+                                                <Feather style={styles.myIcons1} name="dollar-sign" size={32} color="white" />
+                                                <MaterialCommunityIcons style={styles.myIcons1} name="cash-refund" size={32} color="white" />
+                                            </View>
+                                        </TouchableOpacity>
+                                        :
+                                        <TouchableOpacity style={styles.sold} onPress={() => this.showAlert(this.props.navigation, date)}>
+                                            <Text style={{ textAlign: 'center', color: 'green' }}>{date.day}</Text>
+                                            <Feather style={styles.myIcons} name="dollar-sign" size={32} color="green" />
+                                        </TouchableOpacity>
+                                    : payDates.indexOf(date.dateString) > -1 ?
+                                        <TouchableOpacity style={styles.pay} onPress={() => this.showAlert(this.props.navigation, date)}>
+                                            <Text style={{ textAlign: 'center', color: 'blue' }}>{date.day}</Text>
+                                            <MaterialCommunityIcons style={styles.myIcons} name="cash-refund" size={32} color="green" />
+                                        </TouchableOpacity> :
+                                        <TouchableOpacity style={styles.simple} onPress={() => this.showAlert(this.props.navigation, date)}>
+                                            <Text style={{ textAlign: 'center', color: 'black' }}>{date.day}</Text>
+                                        </TouchableOpacity>
+                                }
+                            </View>);
+                        }}
+
                     />
                 </View>
-                <View style={{paddingLeft:20}}>
-                    <Text>1-Press to see details</Text>
+                <Card style={{ marginLeft: 10, marginRight: 10, padding: 0 }}>
+                    <CardItem style={styles.cardHead1} >
+                        <View style={{ flexDirection: 'row' }}>
+                            <Text style={styles.head}>Total Commissions(to Pay): </Text>
+                            <Text style={styles.head1}>asd</Text>
+                        </View>
+                    </CardItem>
+                    <CardItem style={styles.cardHead1} >
+                        <View style={{ flexDirection: 'row' }}>
+                            <Text style={styles.head}>Total Deductions: </Text>
+                            <Text style={styles.head1}>asd</Text>
+                        </View>
+                    </CardItem>
+                    <CardItem style={styles.cardHead1} >
+                        <View style={{ flexDirection: 'row' }}>
+                            <Text style={styles.head}>Total Sales: </Text>
+                            <Text style={styles.head1}>asd</Text>
+                        </View>
+                    </CardItem>
+                </Card>
+                {/* <SeeGoal/> */}
+                {/* <View style={{ paddingLeft: 20 }}>
+                    <Text>{this.state.goal && this.state.goal.spiff}</Text>
                     <Text>2-Press and Hold to Add Transaction</Text>
                     <Text>3-Dot  Represents the Sold Date</Text>
                     <Text>4-Blue date Represents the Pay Date</Text>
-                </View>
+                </View> */}
             </ScrollView>
         );
     }
@@ -297,7 +354,79 @@ const styles = StyleSheet.create({
         color: 'white',
         fontSize: 20
 
-    }
+    },
+    myIcons: {
+        fontSize: 14,
+    },
+    sold: {
+        flexDirection: 'row',
+        borderWidth: 0.5,
+        borderColor: 'silver',
+        borderStyle: 'solid',
+        width: (Dimensions.get('window').width / 7) - 2.7,
+        height: (Dimensions.get('window').width / 7) - 2.7,
+        justifyContent: 'center',
+        alignContent: 'center',
+        margin: 0,
+        paddingTop: 8,
+        marginBottom: -2,
+        alignContent: 'center',
+        marginTop: -12
+
+    },
+    pay: {
+        flexDirection: 'row',
+        backgroundColor: 'yellow',
+        padding: 5,
+        borderWidth: 0.5,
+        borderColor: 'silver',
+        borderStyle: 'solid',
+        width: (Dimensions.get('window').width / 7) - 2.7,
+        height: (Dimensions.get('window').width / 7) - 2.7,
+        margin: 0,
+        paddingTop: 8,
+        marginBottom: -2,
+        alignContent: 'center',
+        marginTop: -12
+    },
+    both: {
+        padding: 5,
+        flexDirection: 'row',
+        backgroundColor: 'red',
+        borderWidth: 0.5,
+        borderColor: 'silver',
+        borderStyle: 'solid',
+        width: (Dimensions.get('window').width / 7) - 2.7,
+        height: (Dimensions.get('window').width / 7) - 2.7,
+        margin: 0,
+        paddingTop: 8,
+        marginTop: -12,
+        alignContent: 'center',
+        marginBottom: -2,
+
+
+
+
+    },
+    simple: {
+        padding: 5,
+        borderWidth: 0.5,
+        borderColor: 'silver',
+        borderStyle: 'solid',
+        width: (Dimensions.get('window').width / 7) - 2.7,
+        height: (Dimensions.get('window').width / 7) - 2.7,
+        margin: 0,
+        paddingTop: 8,
+        marginBottom: -2,
+        marginTop: -12,
+        alignContent: 'center',
+    },
+    myIcons1: {
+        fontSize: 10,
+
+    },
+
+
 
 });
 const mapStateToProps = state => ({

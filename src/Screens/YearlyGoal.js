@@ -6,10 +6,12 @@ import { NavigationActions, StackActions } from 'react-navigation';
 import TransCard from './TransCard'
 import { bindActionCreators } from "redux";
 import { userAsync } from "../store/actions";
+import { Container, Header, Content, Card, CardItem, Body } from "native-base";
+
 import { connect } from "react-redux";
 import axios from 'axios';
 import RNPickerSelect from 'react-native-picker-select';
-class YearlyReport extends React.Component {
+class YearlyGoal extends React.Component {
     static navigationOptions = {
         header: null
     }
@@ -135,24 +137,68 @@ class YearlyReport extends React.Component {
                                 ))} 
                             </Picker> */}
                         </View>
-                        <View style={styles.SectionStyle}>
-                            <TextInput
-                                style={styles.forms}
-                                placeholderTextColor={'gray'}
-                                onChangeText={seName => this.setState({ seName })}
-                                value={this.state.seName}
-                                placeholder="Search"
-                                keyboardType="default"
-                                returnKeyType="next"
-                            />
-                            <Image style={{ padding: 10, marginRight: 10, width: 20, height: 20 }} source={require('../../assets/newICons/042-magnifying-glass.png')} />
-                        </View>
                     </View>
-                    {(this.state.transctions !== null ? myTransctions !== null ?
+                    <Card style={{ marginLeft: 10, marginRight: 10, padding: 0 }}>
+                    <CardItem style={styles.cardHead1} >
+                        <View style={{ flexDirection: 'row' }}>
+                            <Text style={{fontSize:20,width:Dimensions.get('window').width /2 +30}} >Yeary Volume Goal: </Text>
+                            <Text style={styles.head1}>asd</Text>
+                        </View>
+                    </CardItem>
+                    <CardItem style={styles.cardHead1} >
+                        <View style={{ flexDirection: 'row' }}>
+                            <Text style={styles.head}>Current: </Text>
+                            <Text style={styles.head1}>asd</Text>
+                        </View>
+                    </CardItem>
+                    <CardItem style={styles.cardHead1} >
+                        <View style={{ flexDirection: 'row' }}>
+                            <Text style={styles.head}>Remaining Goal </Text>
+                            <Text style={styles.head1}>asd</Text>
+                        </View>
+                    </CardItem>
+                    <CardItem style={styles.cardHead1} >
+                        <View style={{ flexDirection: 'row' }}>
+                            <Text style={styles.head}>Total Commisions </Text>
+                            <Text style={styles.head1}>asd</Text>
+                        </View>
+                    </CardItem>
+                    <CardItem style={styles.cardHead1} >
+                        <View style={{ flexDirection: 'row' }}>
+                            <Text style={styles.head}>Total Bonus </Text>
+                            <Text style={styles.head1}>asd</Text>
+                        </View>
+                    </CardItem>
+                    <CardItem style={styles.cardHead1} >
+                        <View style={{ flexDirection: 'row' }}>
+                            <Text style={styles.head}>Total Spiff </Text>
+                            <Text style={styles.head1}>asd</Text>
+                        </View>
+                    </CardItem>
+                    <CardItem style={styles.cardHead1} >
+                        <View style={{ flexDirection: 'row' }}>
+                            <Text style={styles.head}>Total Income </Text>
+                            <Text style={styles.head1}>asd</Text>
+                        </View>
+                    </CardItem>
+                    <CardItem style={styles.cardHead1} >
+                        <View style={{ flexDirection: 'row' }}>
+                            <Text style={styles.head}>Yearly Income Goal </Text>
+                            <Text style={styles.head1}>asd</Text>
+                        </View>
+                    </CardItem>
+                    <CardItem style={styles.cardHead1} >
+                        <View style={{ flexDirection: 'row' }}>
+                            <Text style={styles.head}>Remaining Income Goal</Text>
+                            <Text style={styles.head1}>asd</Text>
+                        </View>
+                    </CardItem>
+                </Card>
+                    {/* {(this.state.transctions !== null ? myTransctions !== null ?
                         myTransctions.map(
                             (transc, index) => <TransCard transc={transc} key={index} />
                         )
-                        : <Text> NO Data in Year {this.state.selectedYear} </Text> : <Text> NO I coming in Year {this.state.selectedYear} </Text>)}
+                        : <Text> NO Data in Year {this.state.selectedYear} </Text> : <Text> NO I coming in Year {this.state.selectedYear} </Text>)} */}
                 </View>
             </KeyboardAwareScrollView>
         );
@@ -160,8 +206,28 @@ class YearlyReport extends React.Component {
 }
 
 const styles = StyleSheet.create({
+    cardRow: {
+        flexDirection: 'row',
+
+        padding: 10,
+        paddingTop: 15,
+        paddingBottom: 15,
+        backgroundColor: '#e8f1ff',
+        width: '100%',
+        justifyContent: 'space-between',
+        borderRadius: 5,
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+
+        elevation: 5,
+    },
     myDrops: {
-        width: Dimensions.get('window').width / 3,
+        width: Dimensions.get('window').width / 2 - 20,
         alignItems: 'center',
         margin: 10,
         borderWidth: 1,
@@ -186,16 +252,20 @@ const styles = StyleSheet.create({
         margin: 10
     },
     forms: {
-        padding: 10,
+        paddingTop: 12,
+        paddingBottom: 12,
+        paddingLeft: 20,
+        paddingRight: 20,
         backgroundColor: '#fff',
         color: '#3f3fb9',
-        width: (Dimensions.get('window').width - (Dimensions.get('window').width / 3)) - 75,
+        width: Dimensions.get('window').width - 55,
         fontSize: 18,
     },
     head: {
         fontSize: 16,
         fontWeight: 'bold',
         color: 'gray',
+        width: Dimensions.get('window').width / 2 + 30
     },
 
     cardHead: {
@@ -204,14 +274,14 @@ const styles = StyleSheet.create({
         justifyContent: 'space-evenly',
     },
     cardHead1: {
+        flex: 1,
         flexDirection: "row",
-        justifyContent: 'space-evenly',
+        justifyContent: 'flex-start',
     },
     head1: {
         color: '#3f3fb9',
-        alignSelf: 'center',
-        fontSize: 19
-
+        alignSelf: 'flex-end',
+        fontSize: 19,
     }
 });
 
@@ -230,4 +300,4 @@ const mapDispatchToProps = (dispatch, ownProps) =>
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(YearlyReport);
+)(YearlyGoal);

@@ -18,51 +18,45 @@ export default class SingleTransaction extends React.Component {
         super(props);
         this.state = {
             eye: true,
-            transctions: null,
+            transction: null,
             date: '',
         };
     }
     componentWillMount() {
-        this.setState({ date: this.props.navigation.getParam('sectedDate').dateString, transctions: this.props.navigation.getParam('transctions') }, this.renderTrans())
+        this.setState({ transction: this.props.navigation.getParam('transction') })
     }
-    renderTrans = () => {
-        console.log(this.state.date, 'I am the date')
-    }
-
+    
     render() {
         const months = ['Jan', 'Feb', 'Mar', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', "Nov", "Dec"]
-        const myTrans = this.state.transctions
-        var commission = 0
-        var deduction = 0
-        var numberOfSales = myTrans.length
-        var todays = []
-        if (myTrans.length > 0) {
-            for (var i = 0; i < myTrans.length; i++) {
-                console.log(myTrans[i].payDate)
-                if (myTrans[i].soldDate == this.state.date) {
-                    todays.push(myTrans[i])
+        // const myTrans = this.state.transctions
+        // var commission = 0
+        // var deduction = 0
+        // var numberOfSales = myTrans.length
+        // var todays = []
+        // if (myTrans.length > 0) {
+        //     for (var i = 0; i < myTrans.length; i++) {
 
-                    deduction = deduction + Number(myTrans[i].pmdDeduction)
-                }
-                if (myTrans[i].payDate == this.state.date) {
-                    commission = commission + Number(myTrans[i].commission)
-                }
-            }
-        }
+        //         if (myTrans[i].soldDate == this.state.date) {
+        //             todays.push(myTrans[i])
+        //             commission = commission + Number(myTrans[i].commission)
+        //             deduction = deduction + Number(myTrans[i].pmdDeduction)
+        //         }
+        //     }
+        // }
 
         return (
             <KeyboardAwareScrollView>
-                <Card style={{ marginLeft: 10, marginRight: 10, padding: 0 }}>
+                {/* <Card style={{ marginLeft: 10, marginRight: 10, padding: 0 }}>
                     <CardItem style={styles.cardHead1} >
                         <View style={{ flexDirection: 'row' }}>
-                            <Text style={styles.head}>Total Commissions(to Pay): </Text>
+                            <Text style={styles.head}>Total Commissions: </Text>
                             <Text style={styles.head1}>$ {Math.round(commission)}</Text>
                         </View>
                     </CardItem>
                     <CardItem style={styles.cardHead1} >
                         <View style={{ flexDirection: 'row' }}>
                             <Text style={styles.head}>Total Deductions: </Text>
-                            <Text style={styles.head1}>-$ {Math.round(deduction)}</Text>
+                            <Text style={styles.head1}>$ {Math.round(deduction)}</Text>
                         </View>
                     </CardItem>
                     <CardItem style={styles.cardHead1} >
@@ -78,18 +72,21 @@ export default class SingleTransaction extends React.Component {
                         !== null && this.state.date &&
                         todays.map((transc, index) => this.state.date == transc.soldDate || this.state.date == transc.payDate ?
                             // <TransCard transc={transc} key={index} /> 
-                            <TouchableOpacity onPress={() => this.props.navigation.navigate('SingleTransDetails', { transction: transc })}>
-                                <CardItem key={index} style={styles.cardHead1} >
-                                    <View style={styles.cardRow}>
-                                        <Text style={styles.heada}>{transc.name} </Text>
-                                        <Text style={styles.headb}>{months[new Date(this.state.date).getMonth() + 1]}  {new Date(this.state.date).getDate()}</Text>
-                                        <Text style={styles.headc}>$ {transc.volume} </Text>
-                                    </View>
-                                </CardItem>
-                            </TouchableOpacity>
+                            <CardItem key={index} style={styles.cardHead1} >
+                                <View style={styles.cardRow}>
+                                    <Text style={styles.heada}>{transc.name} </Text>
+                                    <Text style={styles.headb}>{months[new Date(this.state.date).getMonth() + 1]}  {new Date(this.state.date).getDate()}</Text>
+                                    <Text style={styles.headc}>$ {transc.volume} </Text>
+                                </View>
+                            </CardItem>
                             : console.log(transc.payDate, transc.soldDate, 'Dates', this.state.date))
                     }
-                </View>
+                </View> */}
+                  {this.state.transction !== null ?
+                  <TransCard transc={this.state.transction}/>
+                       
+                            : console.log(transc.payDate, transc.soldDate, 'Dates', this.state.date)
+                    }
             </KeyboardAwareScrollView>
         );
     }
@@ -115,6 +112,9 @@ const styles = StyleSheet.create({
         shadowRadius: 3.84,
 
         elevation: 5,
+    },
+    heada: {
+        fontSize: 20,
     },
     myDrops: {
         width: Dimensions.get('window').width / 2 - 20,
