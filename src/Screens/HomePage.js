@@ -34,7 +34,7 @@ class HomePage extends React.Component {
         };
     }
 
-    
+
     getGoal = () => {
         axios.get('https://intense-harbor-45607.herokuapp.com/get/goal/' + this.props.user + '/' + new Date().getFullYear())
             .then(resp => {
@@ -206,7 +206,7 @@ class HomePage extends React.Component {
                         // Month format in calendar title. Formatting values: http://arshaw.com/xdate/#Formatting
                         monthFormat={'MMM yyyy'}
                         firstDay={2}
-                        onMonthChange={(month) => {console.log('month changed', month)}}
+                        onMonthChange={(month) => { console.log('month changed', month) }}
                         // Hide month navigation arrows. Default = false
                         hideArrows={false}
                         // Replace default arrows with custom ones (direction can be 'left' or 'right')
@@ -222,7 +222,7 @@ class HomePage extends React.Component {
                         // Handler which gets executed when press arrow icon left. It receive a callback can go back month
                         onPressArrowLeft={substractMonth => substractMonth()}
                         // Handler which gets executed when press arrow icon left. It receive a callback can go next month
-                        onPressArrowRight={addMonth => addMonth(addMonth,console.log('rigtt preses',this.state.calDate + 1))}
+                        onPressArrowRight={addMonth => addMonth(addMonth, console.log('rigtt preses', this.state.calDate + 1))}
                         // markingType={'custom'}
                         markedDates={mark}
                         dayComponent={({ date, state }) => {
@@ -258,21 +258,46 @@ class HomePage extends React.Component {
                     />
                 </View>
                 <Card style={{ marginLeft: 10, marginRight: 10, padding: 0 }}>
-                    <CardItem style={styles.cardHead1} >
-                        <View style={{ flexDirection: 'row' }}>
-                            <Text style={styles.head}>Total Commissions(to Pay): </Text>
-                            <Text style={styles.head1}>asd</Text>
-                        </View>
-                    </CardItem>
-                    <CardItem style={styles.cardHead1} >
-                        <View style={{ flexDirection: 'row' }}>
-                            <Text style={styles.head}>Total Deductions: </Text>
-                            <Text style={styles.head1}>asd</Text>
-                        </View>
-                    </CardItem>
+
                     <CardItem style={styles.cardHead1} >
                         <View style={{ flexDirection: 'row' }}>
                             <Text style={styles.head}>Total Sales: </Text>
+                            <Text style={styles.head1}>asd</Text>
+                        </View>
+                    </CardItem>
+                    <CardItem style={styles.cardHead1} >
+                        <View style={{ flexDirection: 'row' }}>
+                            <Text style={styles.head}>Month to Date: </Text>
+                            <Text style={styles.head1}>asd</Text>
+                        </View>
+                    </CardItem>
+                    <CardItem style={styles.cardHead1} >
+                        <View style={{ flexDirection: 'row' }}>
+                            <Text style={styles.head}>Commission: </Text>
+                            <Text style={styles.head1}>asd</Text>
+                        </View>
+                    </CardItem>
+                    <CardItem style={styles.cardHead1} >
+                        <View style={{ flexDirection: 'row' }}>
+                            <Text style={styles.head}>Bonus: </Text>
+                            <Text style={styles.head1}>asd</Text>
+                        </View>
+                    </CardItem>
+                    <CardItem style={styles.cardHead1} >
+                        <View style={{ flexDirection: 'row' }}>
+                            <Text style={styles.head}>Spiff: </Text>
+                            <Text style={styles.head1}>asd</Text>
+                        </View>
+                    </CardItem>
+                    <CardItem style={styles.cardHead1} >
+                        <View style={{ flexDirection: 'row' }}>
+                            <Text style={styles.head}>Goal: </Text>
+                            <Text style={styles.head1}>asd</Text>
+                        </View>
+                    </CardItem>
+                    <CardItem style={styles.cardHead1} >
+                        <View style={{ flexDirection: 'row' }}>
+                            <Text style={styles.head}>Remaining Goal: </Text>
                             <Text style={styles.head1}>asd</Text>
                         </View>
                     </CardItem>
@@ -425,6 +450,59 @@ const styles = StyleSheet.create({
         fontSize: 10,
 
     },
+    myDrops: {
+        width: Dimensions.get('window').width / 3,
+        alignItems: 'center',
+        margin: 10,
+        borderWidth: 1,
+        borderColor: '#3f3fb9',
+        fontSize: 20,
+        borderRadius: 5,
+        backgroundColor: '#F6F6F6',
+    },
+    myDrop: {
+        height: 40,
+        width: '100%',
+        color: '#3f3fb9',
+    },
+    SectionStyle: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#fff',
+        borderRadius: 5,
+        borderColor: "#3f3fb9",
+        borderWidth: 1,
+        margin: 10
+    },
+    forms: {
+        padding: 10,
+        backgroundColor: '#fff',
+        color: '#3f3fb9',
+        width: (Dimensions.get('window').width - (Dimensions.get('window').width / 3)) - 75,
+        fontSize: 18,
+    },
+    head: {
+        fontSize: 16,
+        fontWeight: 'bold',
+        color: 'gray',
+        width: Dimensions.get('window').width / 2 + 30
+    },
+    cardHead: {
+        flex: 1,
+        flexDirection: "row",
+        justifyContent: 'space-evenly',
+    },
+    cardHead1: {
+        flexDirection: "row",
+        justifyContent: 'space-between',
+    },
+    head1: {
+        color: '#3f3fb9',
+        alignSelf: 'center',
+        fontSize: 19
+
+    }
 
 
 
