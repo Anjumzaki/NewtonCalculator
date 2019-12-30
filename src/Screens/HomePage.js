@@ -30,7 +30,8 @@ class HomePage extends React.Component {
             transctions: null,
             refreshing: true,
             goal: null,
-            calDate: new Date().getMonth()
+            calDate: new Date().getMonth(),
+            monthC: new Date().getMonth() +1
         };
     }
 
@@ -45,7 +46,7 @@ class HomePage extends React.Component {
             .catch(err => console.log(err))
     }
     getdata = () => {
-        axios.get('https://intense-harbor-45607.herokuapp.com/get/all/transactions/' + this.props.user)
+        axios.get('http://192.168.0.105:3000/get/all/transactions/monthly/' + this.props.user+'/'+this.state.calDate+1)
             .then(resp => {
                 // console.log(resp.data)
                 this.setState({ transctions: resp.data })
@@ -84,7 +85,11 @@ class HomePage extends React.Component {
         );
     }
     render() {
+        console.log("stateeeee",this.state, this.props.user)
         const { navigation } = this.props;
+
+        console.log("month cehck:",parseInt(this.state.monthC) % 12)
+
         var nextDays = [];
         var payDates = []
         // console.log("state", this.state)
@@ -119,6 +124,22 @@ class HomePage extends React.Component {
         // var 
         // console.log(nextDays, 'I am the next Dates')
         // console.log(payDates, 'I am the next Dates')
+
+        if(this.state.transctions !== null && this.state.transctions.length >0){
+            var totalVolume=0, totalSpiff=0, totalCommission=0, totalBonus=0;
+            for(var i=0; i<this.state.transctions.length; i++){
+                console.log("sssssssssssssssssss")
+                // console.log(totalVolume, totalSpiff, totalCommission, totalBonus)
+    
+                totalVolume+= parseFloat(this.state.transctions[i].volume);
+                totalBonus+= parseFloat(this.state.transctions[i].bonus);
+                totalCommission+= parseFloat(this.state.transctions[i].commission);
+                totalSpiff+= parseFloat(this.state.transctions[i].spiff);
+            }
+            console.log(totalVolume, totalSpiff, totalCommission, totalBonus)
+            var totalIncome = totalSpiff+ totalCommission+ totalBonus
+        }
+
         return (
             // style={{ flex: 1, alignItems: 'center', justifyContent: 'center', height: Dimensions.get('window').height - 70 }}
             <ScrollView
@@ -220,9 +241,9 @@ class HomePage extends React.Component {
                         // Hide day names. Default = false
                         // Show week numbers to the left. Default = false
                         // Handler which gets executed when press arrow icon left. It receive a callback can go back month
-                        onPressArrowLeft={substractMonth => substractMonth()}
+                        onPressArrowLeft={substractMonth => substractMonth(this.setState({monthC: this.state.monthC+1}))}
                         // Handler which gets executed when press arrow icon left. It receive a callback can go next month
-                        onPressArrowRight={addMonth => addMonth(addMonth, console.log('rigtt preses', this.state.calDate + 1))}
+                        onPressArrowRight={addMonth => addMonth(addMonth, console.log('rigtt preses',this.state.calDate + 1), this.setState({monthC: (this.state.monthC+1 % 12)}))}
                         // markingType={'custom'}
                         markedDates={mark}
                         dayComponent={({ date, state }) => {
@@ -262,43 +283,43 @@ class HomePage extends React.Component {
                     <CardItem style={styles.cardHead1} >
                         <View style={{ flexDirection: 'row' }}>
                             <Text style={styles.head}>Total Sales: </Text>
-                            <Text style={styles.head1}>asd</Text>
+                            <Text style={styles.head1}>{this.state.transctions !== null ? this.state.transctions.length : "0" }</Text>
                         </View>
                     </CardItem>
                     <CardItem style={styles.cardHead1} >
                         <View style={{ flexDirection: 'row' }}>
                             <Text style={styles.head}>Month to Date: </Text>
-                            <Text style={styles.head1}>asd</Text>
+                            <Text style={styles.head1}>{totalVolume ? totalVolume : "0.00" } $</Text>
                         </View>
                     </CardItem>
                     <CardItem style={styles.cardHead1} >
                         <View style={{ flexDirection: 'row' }}>
                             <Text style={styles.head}>Commission: </Text>
-                            <Text style={styles.head1}>asd</Text>
+                            <Text style={styles.head1}>{totalCommission ? totalCommission : "0.00" } $</Text>
                         </View>
                     </CardItem>
                     <CardItem style={styles.cardHead1} >
                         <View style={{ flexDirection: 'row' }}>
                             <Text style={styles.head}>Bonus: </Text>
-                            <Text style={styles.head1}>asd</Text>
+                            <Text style={styles.head1}>{totalBonus ? totalBonus : "0.00" } $</Text>
                         </View>
                     </CardItem>
                     <CardItem style={styles.cardHead1} >
                         <View style={{ flexDirection: 'row' }}>
                             <Text style={styles.head}>Spiff: </Text>
-                            <Text style={styles.head1}>asd</Text>
+                            <Text style={styles.head1}>{totalSpiff ? totalSpiff : "0.00" } $</Text>
                         </View>
                     </CardItem>
                     <CardItem style={styles.cardHead1} >
                         <View style={{ flexDirection: 'row' }}>
                             <Text style={styles.head}>Goal: </Text>
-                            <Text style={styles.head1}>asd</Text>
+                            <Text style={styles.head1}>{this.state.goal !== null ? this.state.goal.volume : "0.00" } $</Text>
                         </View>
                     </CardItem>
                     <CardItem style={styles.cardHead1} >
                         <View style={{ flexDirection: 'row' }}>
                             <Text style={styles.head}>Remaining Goal: </Text>
-                            <Text style={styles.head1}>asd</Text>
+                            <Text style={styles.head1}>{totalIncome && this.state.goal !== null ? this.state.goal.volume - totalIncome : "0.00" }$</Text>
                         </View>
                     </CardItem>
                 </Card>
