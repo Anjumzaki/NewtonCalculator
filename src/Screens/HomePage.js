@@ -30,7 +30,7 @@ class HomePage extends React.Component {
             transctions: null,
             refreshing: true,
             goal: null,
-            calDate: new Date().getMonth(),
+            calDate: new Date().getMonth()+1,
             monthC: new Date().getMonth() +1
         };
     }
@@ -46,7 +46,7 @@ class HomePage extends React.Component {
             .catch(err => console.log(err))
     }
     getdata = () => {
-        axios.get('http://192.168.0.105:3000/get/all/transactions/monthly/' + this.props.user+'/'+this.state.calDate+1)
+        axios.get('http://192.168.0.105:3000/get/all/transactions/monthly/' + this.props.user+'/'+parseInt(this.state.calDate))
             .then(resp => {
                 // console.log(resp.data)
                 this.setState({ transctions: resp.data })
@@ -241,9 +241,15 @@ class HomePage extends React.Component {
                         // Hide day names. Default = false
                         // Show week numbers to the left. Default = false
                         // Handler which gets executed when press arrow icon left. It receive a callback can go back month
-                        onPressArrowLeft={substractMonth => substractMonth(this.setState({monthC: this.state.monthC+1}))}
+                        onPressArrowLeft={substractMonth => {
+                            substractMonth()
+                            this.setState({monthC: this.state.monthC-1})
+                        }}
                         // Handler which gets executed when press arrow icon left. It receive a callback can go next month
-                        onPressArrowRight={addMonth => addMonth(addMonth, console.log('rigtt preses',this.state.calDate + 1), this.setState({monthC: (this.state.monthC+1 % 12)}))}
+                        onPressArrowRight={addMonth => {
+                            addMonth(addMonth, console.log('rigtt preses',this.state.calDate + 1),)
+                            
+                        }}
                         // markingType={'custom'}
                         markedDates={mark}
                         dayComponent={({ date, state }) => {
