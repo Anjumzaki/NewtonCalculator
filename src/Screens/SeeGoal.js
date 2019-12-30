@@ -51,7 +51,6 @@ class SeeGoal extends React.Component {
                 this.setState({ goal: resp.data })
             })
             .catch(err => console.log(err))
-
     }
     componentDidMount() {
         this.getdata()
@@ -63,7 +62,6 @@ class SeeGoal extends React.Component {
         // console.log(this.state.transactions.spiff,'Spiff')
         console.log('I am in see goal')
         return (<View>
-          
             {this.state.goal !== null && <Card style={{ marginLeft: 10, marginRight: 10, padding: 0 }}>
                 <CardItem style={styles.cardHead} >
                     <Text style={styles.head}> Your Current Goal For {new Date().getFullYear()} </Text>
@@ -101,7 +99,7 @@ class SeeGoal extends React.Component {
 
                     <View>
                         <Text style={styles.head}>Spiff: </Text>
-                        <Text style={styles.head1}> $ {this.state.crSpiff} </Text>
+                        <Text style={styles.head1}> $ {Math.round(this.state.crSpiff) } </Text>
                     </View>
                 </CardItem>
                 <CardItem style={styles.cardHead1} >
@@ -109,11 +107,11 @@ class SeeGoal extends React.Component {
                         <Text style={styles.head}>Bonus: </Text>
                         {/* {console.log(this.state.transactions.bonus,'i am in render')}
                    {console.log(this.state.transactions,'i am in render')} */}
-                        <Text style={styles.head1}> $ {this.state.crBonus} </Text>
+                        <Text style={styles.head1}> $ {Math.round(this.state.crBonus)} </Text>
                     </View>
                     <View>
                         <Text style={styles.head}>Commission: </Text>
-                        <Text style={styles.head1}>$ {this.state.crCom} </Text>
+                        <Text style={styles.head1}>$ {Math.round(this.state.crCom)} </Text>
                     </View>
                 </CardItem>
             </Card>
@@ -126,7 +124,7 @@ class SeeGoal extends React.Component {
 
                     <View>
                         <Text style={styles.head}>Spiff: </Text>
-                        <Text style={styles.head1}> $ {  parseFloat(this.state.goal.spiff) - parseFloat(this.state.crSpiff ) }  </Text>
+                        <Text style={styles.head1}> $ {Math.round(  parseFloat(this.state.goal.spiff) - parseFloat(this.state.crSpiff )) }  </Text>
                     </View>
                 </CardItem>
                 <CardItem style={styles.cardHead1} >
@@ -134,11 +132,11 @@ class SeeGoal extends React.Component {
                         <Text style={styles.head}>Bonus: </Text>
                         {/* {console.log(this.state.transactions.bonus,'i am in render')}
                    {console.log(this.state.transactions,'i am in render')} */}
-                        <Text style={styles.head1}> $ {parseFloat(this.state.goal.bonus) - parseFloat(this.state.crBonus)  } </Text>
+                        <Text style={styles.head1}> $ {Math.round(parseFloat(this.state.goal.bonus) - parseFloat(this.state.crBonus))  } </Text>
                     </View>
                     <View>
                         <Text style={styles.head}>Commission: </Text>
-                        <Text style={styles.head1}>$ { parseFloat(this.state.goal.commission) - parseFloat(this.state.crCom)} </Text>
+                        <Text style={styles.head1}>$ {Math.round( parseFloat(this.state.goal.commission) - parseFloat(this.state.crCom))} </Text>
                     </View>
                 </CardItem>
             </Card>

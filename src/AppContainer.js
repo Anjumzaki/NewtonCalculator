@@ -15,11 +15,13 @@ import ChangeFixed from './Screens/ChangeFixed'
 import AddGoal from './Screens/AddGoal'
 import SeeGoal from './Screens/SeeGoal'
 import SingleTransactions from './Screens/SingleTransactions'
+import SingleTransDetails from './Screens/SingleTransDetail'
 const TransStack = createStackNavigator(
     {
         HomePage: HomePage,
         TransScreen: TransScreen,
-        SingleTransactions:SingleTransactions
+        SingleTransactions:SingleTransactions,
+        SingleTransDetails:SingleTransDetails
     },
     {
         initialRouteName: 'HomePage',
@@ -32,7 +34,6 @@ const DrawerNavigator = createDrawerNavigator({
     MonthlyReport,
     ChangeFixed,
     AddGoal,
-    SeeGoal
 }, {
     headerMode: 'float',
     navigationOptions: ({ navigation }) => ({

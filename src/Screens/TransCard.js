@@ -19,19 +19,22 @@ export default class TransCard extends React.Component {
         };
     }
     componentDidMount() {
-        console.log("card",this.props.transc)
+        console.log("card", this.props.transc)
     }
     render() {
+        const months = ['Jan', 'Feb', 'Mar', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', "Nov", "Dec"]
+        const saleDate = new Date(this.props.transc.soldDate)
+        const PayDate = new Date(this.props.transc.payDate)
         return (
             <Card style={{ marginLeft: 10, marginRight: 10, padding: 0 }}>
                 <CardItem style={styles.cardHead1} >
                     <View>
                         <Text style={styles.head}>Sold Date: </Text>
-                        <Text style={styles.head1}> {this.props.transc.soldDate}</Text>
+                        <Text style={styles.head1}> {months[saleDate.getMonth()+1]}-{saleDate.getDate()}-{saleDate.getFullYear()} </Text>
                     </View>
                     <View>
                         <Text style={styles.head}>Pay Date: </Text>
-                        <Text style={styles.head1}>{this.props.transc.payDate}</Text>
+                        <Text style={styles.head1}>{months[PayDate.getMonth()+1]}-{PayDate.getDate()}-{PayDate.getFullYear()}</Text>
                     </View>
                 </CardItem>
                 <CardItem style={styles.cardHead} >
@@ -59,19 +62,19 @@ export default class TransCard extends React.Component {
                 <CardItem style={styles.cardHead1} >
                     <View>
                         <Text style={styles.head}>Bonus: </Text>
-                        <Text style={styles.head1}> {this.props.transc.bonus} %</Text>
+                        <Text style={styles.head1}>$ {this.props.transc.bonus} </Text>
                     </View>
                     <View>
                         <Text style={styles.head}>Commission: </Text>
                         <Text style={styles.head1}>$ {this.props.transc.commission} </Text>
                     </View>
 
-                    <View>
-                        <Text style={styles.head}>PMD: </Text>
-                        <Text style={styles.head1}>$ {this.props.transc.pmdDeduction} </Text>
-                    </View>
+               
                 </CardItem>
-
+                <CardItem style={styles.cardHead} >
+                <Text style={styles.head}>Podium/Mentor/Deduction: </Text>
+                        <Text style={styles.head1}>$ {this.props.transc.pmdDeduction} </Text>
+                </CardItem>
                 <CardItem>
                     <Text>{this.props.transc.note}</Text>
                 </CardItem>

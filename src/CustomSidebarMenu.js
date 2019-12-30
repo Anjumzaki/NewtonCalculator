@@ -19,7 +19,7 @@ export default class CustomSidebarMenu extends Component {
       },
       {
         navOptionThumb: require('../assets/newICons/004-notebook.png'),
-        navOptionName: 'Yearly Report',
+        navOptionName: 'Search',
         screenToNavigate: 'YearlyReport',
       },
       {
@@ -38,11 +38,6 @@ export default class CustomSidebarMenu extends Component {
         navOptionThumb: require('../assets/newICons/012-piggy-bank.png'),
         navOptionName: 'Add Goal  ',
         screenToNavigate: 'AddGoal',
-      },
-      {
-        navOptionThumb: require('../assets/newICons/026-check.png'),
-        navOptionName: 'See Goal  ',
-        screenToNavigate: 'SeeGoal',
       },
     ];
   }
@@ -111,30 +106,6 @@ export default class CustomSidebarMenu extends Component {
               </View>
             </TouchableOpacity>
           ))}
-          <TouchableOpacity onPress={() => this.openModal()}>
-            <View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                paddingTop: 10,
-                paddingBottom: 10,
-                backgroundColor: '#ffffff',
-              }}
-
-            >
-              <View style={{ paddingRight: 10, paddingLeft: 20 }}>
-                <Image source={require('../assets/newICons/028-phone.png')} style={{ width: 30, height: 30 }}  />
-              </View>
-              <Text
-                style={{
-                  fontSize: 15,
-                  color: 'black',
-                }}
-              >
-                See Goals
-              </Text>
-            </View>
-          </TouchableOpacity>
         </View>
       </View>
     );

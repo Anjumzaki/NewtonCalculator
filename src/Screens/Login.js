@@ -21,7 +21,6 @@ class Login extends React.Component {
             Password: '',
             msg: "",
             loading: false
-
         };
     }
     async setId() {
