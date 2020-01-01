@@ -23,7 +23,7 @@ class ChangeFixed extends React.Component {
             pmdDeduction: '',
             pmdDeductionType: '%',
             years: ['2019', '2020', '2021', '2022', '2023', '2024', '2025'],
-            selectedYear: '2019',
+            selectedyear: '2020',
             msg: ''
         };
     }
@@ -62,7 +62,7 @@ class ChangeFixed extends React.Component {
     }
 
     saveTrasc() {
-        if( this.state.selectedYear &&
+        if( this.state.selectedyear &&
             this.state.commission &&
             this.state.bonus &&
             this.state.spiff &&
@@ -84,7 +84,7 @@ class ChangeFixed extends React.Component {
             }else{
                 if(!this.state.volume){
                     this.setState({msg: "Please Enter Volume"})
-                }else if(!this.state.selectedYear){
+                }else if(!this.state.selectedyear){
                     this.setState({msg: "Please Enter Year"})
                 }else if(!this.state.commission){
                     this.setState({msg: "Please Enter Commission"})

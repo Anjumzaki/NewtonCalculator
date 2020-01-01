@@ -74,7 +74,7 @@ class MonthlyReport extends React.Component {
              serachedTractions = this.state.transctions.filter(function (transc) {
                 return transc.name.toLowerCase().includes(key.toLowerCase())
                     
-            });
+            }); 
         }
 
 

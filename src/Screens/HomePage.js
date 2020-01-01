@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Button, ImageBackground, Image, TextInput, Dimensions, StyleSheet, ScrollView, RefreshControl, Alert } from 'react-native';
+import { View, Text, Button,TextInput, Modal, TouchableHighlight, Dimensions, StyleSheet, ScrollView, RefreshControl, Alert } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { NavigationActions, StackActions } from 'react-navigation';
@@ -31,13 +31,17 @@ class HomePage extends React.Component {
             refreshing: true,
             goal: null,
             calDate: new Date().getMonth()+1,
-            monthC: new Date().getMonth() +1
+            monthC: new Date().getMonth() +1,
+            modalVisible: false,
+            modalVisible1: false,
+            goalchange: '',
+            bonuschange: ''
         };
     }
 
 
     getGoal = () => {
-        axios.get('https://intense-harbor-45607.herokuapp.com/get/goal/' + this.props.user + '/' + new Date().getFullYear())
+        axios.get('http://192.168.0.105:3000/get/goal/' + this.props.user + '/' + new Date().getFullYear())
             .then(resp => {
                 console.log(resp.data, 'goal')
                 console.log(this.props.user)
@@ -45,6 +49,7 @@ class HomePage extends React.Component {
             })
             .catch(err => console.log(err))
     }
+
     getdata = () => {
         axios.get('https://intense-harbor-45607.herokuapp.com/get/all/transactions/monthly/' + this.props.user+'/'+parseInt(this.state.calDate))
             .then(resp => {
@@ -83,6 +88,17 @@ class HomePage extends React.Component {
             ],
             { cancelable: false }
         );
+    }
+
+    setModalVisible(visible) {
+        this.setState({modalVisible: visible});
+    }
+    setModalVisible1(visible) {
+        this.setState({modalVisible1: visible});
+    }
+
+    numberWithCommas(x) {
+        return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
     render() {
         console.log("stateeeee",this.state, this.props.user)
@@ -243,11 +259,10 @@ class HomePage extends React.Component {
                         // Handler which gets executed when press arrow icon left. It receive a callback can go back month
                         onPressArrowLeft={substractMonth => {
                             substractMonth()
-                            this.setState({monthC: this.state.monthC-1})
                         }}
                         // Handler which gets executed when press arrow icon left. It receive a callback can go next month
                         onPressArrowRight={addMonth => {
-                            addMonth(addMonth, console.log('rigtt preses',this.state.calDate + 1),)
+                            addMonth(addMonth, console.log('rigtt preses'),)
                             
                         }}
                         // markingType={'custom'}
@@ -267,12 +282,12 @@ class HomePage extends React.Component {
                                         </TouchableOpacity>
                                         :
                                         <TouchableOpacity style={styles.sold} onPress={() => this.showAlert(this.props.navigation, date)}>
-                                            <Text style={{ textAlign: 'center', color: 'green' }}>{date.day}</Text>
+                                            <Text style={{ textAlign: 'center', color: 'black' }}>{date.day}</Text>
                                             <Feather style={styles.myIcons} name="dollar-sign" size={32} color="green" />
                                         </TouchableOpacity>
                                     : payDates.indexOf(date.dateString) > -1 ?
                                         <TouchableOpacity style={styles.pay} onPress={() => this.showAlert(this.props.navigation, date)}>
-                                            <Text style={{ textAlign: 'center', color: 'blue' }}>{date.day}</Text>
+                                            <Text style={{ textAlign: 'center', color: 'black' }}>{date.day}</Text>
                                             <MaterialCommunityIcons style={styles.myIcons} name="cash-refund" size={32} color="green" />
                                         </TouchableOpacity> :
                                         <TouchableOpacity style={styles.simple} onPress={() => this.showAlert(this.props.navigation, date)}>
@@ -289,43 +304,51 @@ class HomePage extends React.Component {
                     <CardItem style={styles.cardHead1} >
                         <View style={{ flexDirection: 'row' }}>
                             <Text style={styles.head}>Total Sales: </Text>
-                            <Text style={styles.head1}>{this.state.transctions !== null ? this.state.transctions.length : "0" }</Text>
+                            <Text style={styles.head1}>{this.state.transctions !== null ? this.numberWithCommas(this.state.transctions.length) : "0" }</Text>
                         </View>
                     </CardItem>
                     <CardItem style={styles.cardHead1} >
                         <View style={{ flexDirection: 'row' }}>
                             <Text style={styles.head}>Month to Date: </Text>
-                            <Text style={styles.head1}>$ {totalVolume ? totalVolume : "0.00" } </Text>
+                            <Text style={styles.head1}>${totalVolume ? this.numberWithCommas(totalVolume) : "0.00" } </Text>
                         </View>
                     </CardItem>
                     <CardItem style={styles.cardHead1} >
                         <View style={{ flexDirection: 'row' }}>
                             <Text style={styles.head}>Commission: </Text>
-                            <Text style={styles.head1}>$ {totalCommission ? totalCommission : "0.00" } </Text>
+                            <Text style={styles.head1}>${totalCommission ? this.numberWithCommas(totalCommission) : "0.00" } </Text>
                         </View>
                     </CardItem>
                     <CardItem style={styles.cardHead1} >
+                    <TouchableHighlight onPress={() => {
+                            this.setModalVisible1(true);
+                        }} >
                         <View style={{ flexDirection: 'row' }}>
                             <Text style={styles.head}>Bonus: </Text>
-                            <Text style={styles.head1}>$ {totalBonus ? totalBonus : "0.00" } </Text>
+                            <Text style={styles.head1}>${totalBonus ? this.numberWithCommas(totalBonus) : "0.00" } </Text>
                         </View>
+                        </TouchableHighlight>
                     </CardItem>
                     <CardItem style={styles.cardHead1} >
                         <View style={{ flexDirection: 'row' }}>
                             <Text style={styles.head}>Spiff: </Text>
-                            <Text style={styles.head1}>$ {totalSpiff ? totalSpiff : "0.00" } </Text>
+                            <Text style={styles.head1}>${totalSpiff ? this.numberWithCommas(totalSpiff) : "0.00" } </Text>
                         </View>
                     </CardItem>
-                    <CardItem style={styles.cardHead1} >
+                    <CardItem style={styles.cardHead1}>
+                    <TouchableHighlight onPress={() => {
+                            this.setModalVisible(true);
+                        }} >
                         <View style={{ flexDirection: 'row' }}>
                             <Text style={styles.head}>Goal: </Text>
-                            <Text style={styles.head1}>$ {this.state.goal !== null ? this.state.goal.volume : "0.00" } </Text>
-                        </View>
+                            <Text style={styles.head1}>${this.state.goal !== null ? this.numberWithCommas(this.state.goal.volume) : "0.00" } </Text>
+                        </View> 
+                        </TouchableHighlight>
                     </CardItem>
                     <CardItem style={styles.cardHead1} >
                         <View style={{ flexDirection: 'row' }}>
                             <Text style={styles.head}>Remaining Goal: </Text>
-                            <Text style={styles.head1}>$ {totalIncome && this.state.goal !== null ? this.state.goal.volume - totalIncome : "0.00" }</Text>
+                            <Text style={styles.head1}>${totalIncome && this.state.goal !== null ? this.numberWithCommas(this.state.goal.volume - totalIncome) : "0.00" }</Text>
                         </View>
                     </CardItem>
                 </Card>
@@ -336,6 +359,81 @@ class HomePage extends React.Component {
                     <Text>3-Dot  Represents the Sold Date</Text>
                     <Text>4-Blue date Represents the Pay Date</Text>
                 </View> */}
+                <Modal
+                    animationType="slide"
+                    transparent={false}
+                    visible={this.state.modalVisible}
+                    onRequestClose={() => {
+                        Alert.alert('Modal has been closed.');
+                        this.setModalVisible(!this.state.modalVisible);
+                    }}>
+                    <View style={{marginTop: 100}}>
+                        <View>
+                        <Text style={{textAlign: 'center', fontWeight: 'bold'}}>Change Goal</Text>
+                        
+                        <View style={styles.SectionStyle}>
+                            <TextInput
+                                style={styles.forms1}
+                                onChangeText={goalchange => this.setState({ goalchange })}
+                                value={this.state.goalchange}
+                                placeholder="Goal "
+                                keyboardType="number-pad"
+                                returnKeyType="next"
+                            />
+                        </View>
+
+                        <TouchableHighlight
+                        // style={{flex: 1, alignItems: "center"}}
+                        
+                            onPress={() => {
+                            axios.put('http://192.168.0.105:3000/edit/goal/'+this.state.goal._id+'/'+this.state.goalchange)
+                            .then(resp => {
+                                this.setModalVisible(!this.state.modalVisible);
+                            })
+                            }}>
+                            <Text style={styles.saveBtn}>Save</Text>
+                        </TouchableHighlight>
+                        </View>
+                    </View>
+                    </Modal>
+
+                    <Modal
+                    animationType="slide"
+                    transparent={false}
+                    visible={this.state.modalVisible1}
+                    onRequestClose={() => {
+                        Alert.alert('Modal has been closed.');
+                        this.setModalVisible1(!this.state.modalVisible1);
+                    }}>
+                    <View style={{marginTop: 100}}>
+                        <View>
+                        <Text style={{textAlign: 'center', fontWeight: 'bold'}}>Change Bonus</Text>
+                        
+                        <View style={styles.SectionStyle}>
+                            <TextInput
+                                style={styles.forms1}
+                                onChangeText={bonuschange => this.setState({ bonuschange })}
+                                value={this.state.bonuschange}
+                                placeholder="Bonus "
+                                keyboardType="number-pad"
+                                returnKeyType="next"
+                            />
+                        </View>
+
+                        <TouchableHighlight
+                        // style={{flex: 1, alignItems: "center"}}
+                        
+                            onPress={() => {
+                            axios.put('http://192.168.0.105:3000/edit/bonus/'+this.props.user+'/'+this.state.goal.selectedYear+'/'+parseInt(this.state.calDate)+'/'+this.state.bonuschange)
+                            .then(resp => {
+                                this.setModalVisible1(!this.state.modalVisible1);
+                            })
+                            }}>
+                            <Text style={styles.saveBtn}>Save</Text>
+                        </TouchableHighlight>
+                        </View>
+                    </View>
+                    </Modal>
             </ScrollView>
         );
     }
@@ -358,6 +456,17 @@ const styles = StyleSheet.create({
         width: 10,
         resizeMode: 'stretch',
         alignItems: 'center'
+    },
+    saveBtn: {
+        paddingTop: 10,
+        paddingBottom: 10,
+        paddingLeft: 20,
+        paddingRight: 20,
+        backgroundColor: '#3f3fb9',
+        color: 'white',
+        borderRadius: 10,
+        marginBottom: 30,
+        textAlign: "center"
     },
     ImageStyle1: {
         padding: 10,
@@ -411,7 +520,7 @@ const styles = StyleSheet.create({
         fontSize: 14,
     },
     sold: {
-        flexDirection: 'row',
+        // flexDirection: 'row',
         borderWidth: 0.5,
         borderColor: 'silver',
         borderStyle: 'solid',
@@ -423,11 +532,12 @@ const styles = StyleSheet.create({
         paddingTop: 8,
         marginBottom: -2,
         alignContent: 'center',
-        marginTop: -12
+        marginTop: -12,
+        alignItems: "center"
 
     },
     pay: {
-        flexDirection: 'row',
+        // flexDirection: 'row',
         backgroundColor: 'yellow',
         padding: 5,
         borderWidth: 0.5,
@@ -439,7 +549,8 @@ const styles = StyleSheet.create({
         paddingTop: 8,
         marginBottom: -2,
         alignContent: 'center',
-        marginTop: -12
+        marginTop: -12,
+        alignItems: "center"
     },
     both: {
         padding: 5,
@@ -502,6 +613,17 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         margin: 10
     },
+    forms1: {
+        fontSize: 19,
+        padding: 8,
+        width: Dimensions.get('window').width - 25,
+        borderWidth: 1,
+        borderColor: 'black',
+        height: 50,
+        fontFamily: 'open-sans-bold',
+        color: 'black',
+        borderRadius: 10
+    },
     forms: {
         padding: 10,
         backgroundColor: '#fff',
@@ -523,6 +645,7 @@ const styles = StyleSheet.create({
     cardHead1: {
         flexDirection: "row",
         justifyContent: 'space-between',
+        marginBottom: -15
     },
     head1: {
         color: '#3f3fb9',

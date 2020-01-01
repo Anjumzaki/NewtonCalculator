@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Button, ImageBackground, Image, TextInput, Dimensions, StyleSheet, Picker, CheckBox, ScrollView } from 'react-native';
+import { View, Text, Button, Modal, Alert,TouchableHighlight, Image, TextInput, Dimensions, StyleSheet, Picker, CheckBox, ScrollView } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { NavigationActions, StackActions } from 'react-navigation';
@@ -23,7 +23,9 @@ class YearlyGoal extends React.Component {
             selectedYear: '',
             transctions: [],
             goal: [],
-            yearlyIncomeGoal: 0
+            yearlyIncomeGoal: 0,
+            modalVisible: false,
+
         };
     }
     login() {
@@ -81,6 +83,14 @@ class YearlyGoal extends React.Component {
 
         
     }
+    numberWithCommas(x) {
+        return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+
+    setModalVisible(visible) {
+        this.setState({modalVisible: visible});
+    }
+
     render() {
         console.log("stateeeee",this.state, this.props.user)
 
@@ -170,57 +180,61 @@ class YearlyGoal extends React.Component {
                     </View>
                     <Card style={{ marginLeft: 10, marginRight: 10, padding: 0 }}>
                     <CardItem style={styles.cardHead1} >
+                    <TouchableHighlight onPress={() => {
+                            this.setModalVisible(true);
+                        }} >
                         <View style={{ flexDirection: 'row' }}>
                             <Text style={{fontSize:20,width:Dimensions.get('window').width /2 +30}} >Yeary Volume Goal: </Text>
-                            <Text style={styles.head1}>{this.state.goal.volume ? this.state.goal.volume : "0.00" } $</Text>
+                            <Text style={styles.head1}>${this.state.goal.volume ? this.numberWithCommas(this.state.goal.volume) : "0.00" }</Text>
                         </View>
+                    </TouchableHighlight>
                     </CardItem>
                     <CardItem style={styles.cardHead1} >
                         <View style={{ flexDirection: 'row' }}>
                             <Text style={styles.head}>Current: </Text>
-                            <Text style={styles.head1}>{totalVolume ? totalVolume : "0.00" } $</Text>
+                            <Text style={styles.head1}>${totalVolume ? this.numberWithCommas(totalVolume) : "0.00" }</Text>
                         </View>
                     </CardItem>
                     <CardItem style={styles.cardHead1} >
                         <View style={{ flexDirection: 'row' }}>
                             <Text style={styles.head}>Remaining Goal </Text>
-                            <Text style={styles.head1}>{totalVolume && this.state.goal.volume ? this.state.goal.volume - totalVolume : "0.00" } $</Text>
+                            <Text style={styles.head1}>${totalVolume && this.state.goal.volume ? this.numberWithCommas(this.state.goal.volume - totalVolume) : "0.00" }</Text>
                         </View>
                     </CardItem>
                     <CardItem style={styles.cardHead1} >
                         <View style={{ flexDirection: 'row' }}>
                             <Text style={styles.head}>Total Commisions </Text>
-                            <Text style={styles.head1}>{totalCommission ? totalCommission : "0.00" } $</Text>
+                            <Text style={styles.head1}>${totalCommission ? this.numberWithCommas(totalCommission) : "0.00" }</Text>
                         </View>
                     </CardItem>
                     <CardItem style={styles.cardHead1} >
                         <View style={{ flexDirection: 'row' }}>
                             <Text style={styles.head}>Total Bonus </Text>
-                            <Text style={styles.head1}>{totalBonus ? totalBonus : "0.00" } $</Text>
+                            <Text style={styles.head1}>${totalBonus ? this.numberWithCommas(totalBonus) : "0.00" }</Text>
                         </View>
                     </CardItem>
                     <CardItem style={styles.cardHead1} >
                         <View style={{ flexDirection: 'row' }}>
                             <Text style={styles.head}>Total Spiff </Text>
-                            <Text style={styles.head1}>{totalSpiff ? totalSpiff : "0.00" } $</Text>
+                            <Text style={styles.head1}>${totalSpiff ? this.numberWithCommas(totalSpiff) : "0.00" }</Text>
                         </View>
                     </CardItem>
                     <CardItem style={styles.cardHead1} >
                         <View style={{ flexDirection: 'row' }}>
                             <Text style={styles.head}>Total Income </Text>
-                            <Text style={styles.head1}>{totalIncome ? totalIncome : "0.00" } $</Text>
+                            <Text style={styles.head1}>${totalIncome ? this.numberWithCommas(totalIncome) : "0.00" }</Text>
                         </View>
                     </CardItem>
                     <CardItem style={styles.cardHead1} >
                         <View style={{ flexDirection: 'row' }}>
                             <Text style={styles.head}>Yearly Income Goal </Text>
-                            <Text style={styles.head1}>{this.state.yearlyIncomeGoal ? this.state.yearlyIncomeGoal : "0.00" } $</Text>
+                            <Text style={styles.head1}>${this.state.yearlyIncomeGoal ? this.numberWithCommas(this.state.yearlyIncomeGoal) : "0.00" }</Text>
                         </View>
                     </CardItem>
                     <CardItem style={styles.cardHead1} >
                         <View style={{ flexDirection: 'row' }}>
                             <Text style={styles.head}>Remaining Income Goal</Text>
-                            <Text style={styles.head1}>{this.state.yearlyIncomeGoal && totalIncome ? this.state.yearlyIncomeGoal - totalIncome: "0.00" } $</Text>
+                            <Text style={styles.head1}>${this.state.yearlyIncomeGoal && totalIncome ? this.numberWithCommas(this.state.yearlyIncomeGoal - totalIncome): "0.00" }</Text>
                         </View>
                     </CardItem>
                 </Card>
@@ -230,6 +244,55 @@ class YearlyGoal extends React.Component {
                         )
                         : <Text> NO Data in Year {this.state.selectedYear} </Text> : <Text> NO I coming in Year {this.state.selectedYear} </Text>)} */}
                 </View>
+
+                <Modal
+                    animationType="slide"
+                    transparent={false}
+                    visible={this.state.modalVisible}
+                    onRequestClose={() => {
+                        Alert.alert('Modal has been closed.');
+                        this.setModalVisible(!this.state.modalVisible);
+                    }}>
+                    <View style={{marginTop: 100}}>
+                        <View>
+                        <Text style={{textAlign: 'center', fontWeight: 'bold'}}>Change Goal</Text>
+                        
+                        <View style={styles.SectionStyle}>
+                            <TextInput
+                                style={styles.forms1}
+                                onChangeText={goalchange => this.setState({ goalchange })}
+                                value={this.state.goalchange}
+                                placeholder="Goal "
+                                keyboardType="number-pad"
+                                returnKeyType="next"
+                            />
+                        </View>
+
+                        <TouchableHighlight
+                        // style={{flex: 1, alignItems: "center"}}
+                        
+                            onPress={() => {
+                            axios.put('http://192.168.0.105:3000/edit/goal/'+this.state.goal._id+'/'+this.state.goalchange)
+                            .then(resp => {
+                                this.setModalVisible(!this.state.modalVisible);
+
+                                axios.get('http://192.168.0.105:3000/get/goal/' + this.props.user+'/'+itemValue)
+                                .then(resp => {
+                                    // console.log(resp.data)
+                                    this.setState({ goal: resp.data, yearlyIncomeGoal: parseFloat(resp.data.commission) + parseFloat(resp.data.bonus) + parseFloat(resp.data.spiff) })
+
+                                })  
+                                .catch(err => console.log(err))
+
+                            })
+                            }}>
+                            <Text style={styles.saveBtn}>Save</Text>
+                        </TouchableHighlight>
+                        </View>
+                    </View>
+                    </Modal>
+
+
             </KeyboardAwareScrollView>
         );
     }
@@ -256,6 +319,17 @@ const styles = StyleSheet.create({
 
         elevation: 5,
     },
+    forms1: {
+        fontSize: 19,
+        padding: 8,
+        width: Dimensions.get('window').width - 25,
+        borderWidth: 1,
+        borderColor: 'black',
+        height: 50,
+        fontFamily: 'open-sans-bold',
+        color: 'black',
+        borderRadius: 10
+    },
     myDrops: {
         width: Dimensions.get('window').width / 2 - 20,
         alignItems: 'center',
@@ -270,6 +344,17 @@ const styles = StyleSheet.create({
         height: 40,
         width: '100%',
         color: '#3f3fb9',
+    },
+    saveBtn: {
+        paddingTop: 10,
+        paddingBottom: 10,
+        paddingLeft: 20,
+        paddingRight: 20,
+        backgroundColor: '#3f3fb9',
+        color: 'white',
+        borderRadius: 10,
+        marginBottom: 30,
+        textAlign: "center"
     },
     SectionStyle: {
         flexDirection: 'row',

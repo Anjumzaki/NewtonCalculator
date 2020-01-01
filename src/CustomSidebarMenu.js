@@ -20,30 +20,30 @@ export default class CustomSidebarMenu extends Component {
       {
         navOptionThumb: require('../assets/newICons/004-notebook.png'),
         navOptionName: 'Search',
-        screenToNavigate: 'YearlyReport',
+        screenToNavigate: 'MonthlyReport',
       },
       {
         navOptionThumb: require('../assets/newICons/006-formula.png'),
         navOptionName: 'Yearly Report ',
         screenToNavigate: 'YearlyGoal',
       },
-      {
-        navOptionThumb: require('../assets/newICons/005-bill.png'),
-        navOptionName: 'Monthly Report',
-        screenToNavigate: 'MonthlyReport',
-      },
+      // {
+      //   navOptionThumb: require('../assets/newICons/005-bill.png'),
+      //   navOptionName: 'Monthly Report',
+      //   screenToNavigate: 'MonthlyReport',
+      // },
 
-      {
-        navOptionThumb: require('../assets/newICons/046-invoice.png'),
-        navOptionName: 'Change Amounts',
-        screenToNavigate: 'ChangeFixed',
-      },
+      // {
+      //   navOptionThumb: require('../assets/newICons/046-invoice.png'),
+      //   navOptionName: 'Change Amounts',
+      //   screenToNavigate: 'ChangeFixed',
+      // },
       
-      {
-        navOptionThumb: require('../assets/newICons/012-piggy-bank.png'),
-        navOptionName: 'Add Goal  ',
-        screenToNavigate: 'AddGoal',
-      },
+      // {
+      //   navOptionThumb: require('../assets/newICons/012-piggy-bank.png'),
+      //   navOptionName: 'Add Goal  ',
+      //   screenToNavigate: 'AddGoal',
+      // },
     ];
   }
   openModal() {
