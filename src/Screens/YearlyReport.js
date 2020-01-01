@@ -127,7 +127,7 @@ class YearlyReport extends React.Component {
                                 style={{ height: 50, width: 105 }}
                                 onValueChange={(itemValue, itemIndex) =>
                                    this.setState({selectedYear:itemValue})
-                                }>
+                                }> 
                                     <Picker.Item  label='2020' value='2020' />
                                     <Picker.Item  label='2021' value='2021' />
                                     <Picker.Item  label='2022' value='2022' />
