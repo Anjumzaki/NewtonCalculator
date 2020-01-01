@@ -46,7 +46,7 @@ class HomePage extends React.Component {
             .catch(err => console.log(err))
     }
     getdata = () => {
-        axios.get('http://192.168.0.105:3000/get/all/transactions/monthly/' + this.props.user+'/'+parseInt(this.state.calDate))
+        axios.get('https://intense-harbor-45607.herokuapp.com/get/all/transactions/monthly/' + this.props.user+'/'+parseInt(this.state.calDate))
             .then(resp => {
                 // console.log(resp.data)
                 this.setState({ transctions: resp.data })
@@ -295,37 +295,37 @@ class HomePage extends React.Component {
                     <CardItem style={styles.cardHead1} >
                         <View style={{ flexDirection: 'row' }}>
                             <Text style={styles.head}>Month to Date: </Text>
-                            <Text style={styles.head1}>{totalVolume ? totalVolume : "0.00" } $</Text>
+                            <Text style={styles.head1}>$ {totalVolume ? totalVolume : "0.00" } </Text>
                         </View>
                     </CardItem>
                     <CardItem style={styles.cardHead1} >
                         <View style={{ flexDirection: 'row' }}>
                             <Text style={styles.head}>Commission: </Text>
-                            <Text style={styles.head1}>{totalCommission ? totalCommission : "0.00" } $</Text>
+                            <Text style={styles.head1}>$ {totalCommission ? totalCommission : "0.00" } </Text>
                         </View>
                     </CardItem>
                     <CardItem style={styles.cardHead1} >
                         <View style={{ flexDirection: 'row' }}>
                             <Text style={styles.head}>Bonus: </Text>
-                            <Text style={styles.head1}>{totalBonus ? totalBonus : "0.00" } $</Text>
+                            <Text style={styles.head1}>$ {totalBonus ? totalBonus : "0.00" } </Text>
                         </View>
                     </CardItem>
                     <CardItem style={styles.cardHead1} >
                         <View style={{ flexDirection: 'row' }}>
                             <Text style={styles.head}>Spiff: </Text>
-                            <Text style={styles.head1}>{totalSpiff ? totalSpiff : "0.00" } $</Text>
+                            <Text style={styles.head1}>$ {totalSpiff ? totalSpiff : "0.00" } </Text>
                         </View>
                     </CardItem>
                     <CardItem style={styles.cardHead1} >
                         <View style={{ flexDirection: 'row' }}>
                             <Text style={styles.head}>Goal: </Text>
-                            <Text style={styles.head1}>{this.state.goal !== null ? this.state.goal.volume : "0.00" } $</Text>
+                            <Text style={styles.head1}>$ {this.state.goal !== null ? this.state.goal.volume : "0.00" } </Text>
                         </View>
                     </CardItem>
                     <CardItem style={styles.cardHead1} >
                         <View style={{ flexDirection: 'row' }}>
                             <Text style={styles.head}>Remaining Goal: </Text>
-                            <Text style={styles.head1}>{totalIncome && this.state.goal !== null ? this.state.goal.volume - totalIncome : "0.00" }$</Text>
+                            <Text style={styles.head1}>$ {totalIncome && this.state.goal !== null ? this.state.goal.volume - totalIncome : "0.00" }</Text>
                         </View>
                     </CardItem>
                 </Card>

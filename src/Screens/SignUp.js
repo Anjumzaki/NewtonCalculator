@@ -39,7 +39,7 @@ class Login extends React.Component {
                                 axios
                                     .post('https://intense-harbor-45607.herokuapp.com/register', {
                                         userName: this.state.userName,
-                                        email: this.state.userName,
+                                        email: this.state.email,
                                         password: this.state.Password,
                                     })
                                     .then((response) => {

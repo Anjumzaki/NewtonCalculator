@@ -69,7 +69,7 @@ class ChangeFixed extends React.Component {
             this.state.volume
             ){
                 console.log("In call")
-                axios.post('http://192.168.0.105:3000/post/goals',{
+                axios.post('https://intense-harbor-45607.herokuapp.com/post/goals',{
                             selectedYear: this.state.selectedyear,
                             volume: this.state.volume,
                             commission: this.state.commission,
