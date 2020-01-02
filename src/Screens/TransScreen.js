@@ -350,7 +350,7 @@ class MainScreen extends React.Component {
                                     }
                                     this.setState({ commPer, commission: calc, commission1: calc })
                                 }}
-                                value={this.state.commPer}
+                                value={Math.round(this.state.commPer)}
                                 placeholder="Commision "
                                 keyboardType="number-pad"
                                 returnKeyType="next"
@@ -380,7 +380,7 @@ class MainScreen extends React.Component {
                                     }
                                     this.setState({ bonusPer, bonus: calc })
                                 }}
-                                value={this.state.bonusPer}
+                                value={Math.round(this.state.bonusPer)}
                                 placeholder="Bonus"
                                 keyboardType="number-pad"
                                 returnKeyType="next"
@@ -415,13 +415,13 @@ class MainScreen extends React.Component {
                                     }
                                     this.setState({ pmdDeductionPer, pmdDeduction: calc })
                                 }}
-                                value={this.state.pmdDeductionPer}
+                                value={Math.round(this.state.pmdDeductionPer)}
                                 placeholder="Podium/Mentor/Deduction"
                                 keyboardType="number-pad"
                                 returnKeyType="next"
                             />
                             <Picker
-                                selectedValue={this.state.pmdType}
+                                selectedValue={ this.state.pmdType}
                                 style={{ height: 50, width: 105 }}
                                 onValueChange={(itemValue, itemIndex) =>
                                     this.setState({ pmdType: itemValue })

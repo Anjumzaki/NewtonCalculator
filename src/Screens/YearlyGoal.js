@@ -272,11 +272,11 @@ class YearlyGoal extends React.Component {
                         // style={{flex: 1, alignItems: "center"}}
                         
                             onPress={() => {
-                            axios.put('http://192.168.0.105:3000/edit/goal/'+this.state.goal._id+'/'+this.state.goalchange)
+                            axios.put('https://intense-harbor-45607.herokuapp.com/edit/goal/'+this.state.goal._id+'/'+this.state.goalchange)
                             .then(resp => {
                                 this.setModalVisible(!this.state.modalVisible);
 
-                                axios.get('http://192.168.0.105:3000/get/goal/' + this.props.user+'/'+itemValue)
+                                axios.get('https://intense-harbor-45607.herokuapp.com/get/goal/' + this.props.user+'/'+itemValue)
                                 .then(resp => {
                                     // console.log(resp.data)
                                     this.setState({ goal: resp.data, yearlyIncomeGoal: parseFloat(resp.data.commission) + parseFloat(resp.data.bonus) + parseFloat(resp.data.spiff) })

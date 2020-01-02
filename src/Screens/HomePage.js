@@ -41,7 +41,7 @@ class HomePage extends React.Component {
 
 
     getGoal = () => {
-        axios.get('http://192.168.0.105:3000/get/goal/' + this.props.user + '/' + new Date().getFullYear())
+        axios.get('https://intense-harbor-45607.herokuapp.com/get/goal/' + this.props.user + '/' + new Date().getFullYear())
             .then(resp => {
                 console.log(resp.data, 'goal')
                 console.log(this.props.user)
@@ -98,6 +98,7 @@ class HomePage extends React.Component {
     }
 
     numberWithCommas(x) {
+        x = Math.round(x)
         return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
     render() {
@@ -296,7 +297,6 @@ class HomePage extends React.Component {
                                 }
                             </View>);
                         }}
-
                     />
                 </View>
                 <Card style={{ marginLeft: 10, marginRight: 10, padding: 0 }}>
@@ -386,7 +386,7 @@ class HomePage extends React.Component {
                         // style={{flex: 1, alignItems: "center"}}
                         
                             onPress={() => {
-                            axios.put('http://192.168.0.105:3000/edit/goal/'+this.state.goal._id+'/'+this.state.goalchange)
+                            axios.put('https://intense-harbor-45607.herokuapp.com/edit/goal/'+this.state.goal._id+'/'+this.state.goalchange)
                             .then(resp => {
                                 this.setModalVisible(!this.state.modalVisible);
                             })
@@ -424,7 +424,7 @@ class HomePage extends React.Component {
                         // style={{flex: 1, alignItems: "center"}}
                         
                             onPress={() => {
-                            axios.put('http://192.168.0.105:3000/edit/bonus/'+this.props.user+'/'+this.state.goal.selectedYear+'/'+parseInt(this.state.calDate)+'/'+this.state.bonuschange)
+                            axios.put('https://intense-harbor-45607.herokuapp.com/edit/bonus/'+this.props.user+'/'+this.state.goal.selectedYear+'/'+parseInt(this.state.calDate)+'/'+this.state.bonuschange)
                             .then(resp => {
                                 this.setModalVisible1(!this.state.modalVisible1);
                             })
