@@ -106,16 +106,16 @@ class MainScreen extends React.Component {
             loading: true
         })
         if (this.state.payDate &&
-            this.state.soldDate &&
+            // this.state.soldDate &&
             this.state.name &&
             this.state.contact &&
-            this.state.volume &&
-            this.state.downPay &&
-            this.state.spiff &&
-            this.state.note &&
-            this.state.commPer >= 0 &&
-            this.state.bonusPer >= 0 &&
-            this.state.pmdDeductionPer >= 0
+            this.state.volume
+            // this.state.downPay &&
+            // this.state.spiff &&
+            // this.state.note &&
+            // this.state.commPer >= 0 &&
+            // this.state.bonusPer >= 0 &&
+            // this.state.pmdDeductionPer >= 0
         ) {
             console.log("In call")
             axios.post('https://intense-harbor-45607.herokuapp.com/post/transaction', {
@@ -130,7 +130,6 @@ class MainScreen extends React.Component {
                 commission: this.state.commission,
                 bonus: this.state.bonus,
                 pmdDeduction: this.state.pmdDeduction,
-                payDate: this.state.payDate,
                 userId: this.props.user
             }).
                 then(
@@ -155,19 +154,20 @@ class MainScreen extends React.Component {
                 this.setState({ msg: "Please Enter Contact" })
             } else if (!this.state.volume) {
                 this.setState({ msg: "Please Enter Volume" })
-            } else if (!this.state.downPay) {
-                this.setState({ msg: "Please Enter Down pay" })
-            } else if (!this.state.spiff) {
-                this.setState({ msg: "Please Enter Spiff" })
-            } else if (!this.state.note) {
-                this.setState({ msg: "Please Enter Note" })
-            } else if (!(this.state.commission >= 0)) {
-                this.setState({ msg: "Please Enter Commission" })
-            } else if (!(this.state.bonus >= 0)) {
-                this.setState({ msg: "Please Enter Bonus" })
-            } else if (!(this.state.pmdDeduction >= 0)) {
-                this.setState({ msg: "Please Enter Podium/Mentor/Deduction" })
-            }
+            } 
+            // else if (!this.state.downPay) {
+            //     this.setState({ msg: "Please Enter Down pay" })
+            // } else if (!this.state.spiff) {
+            //     this.setState({ msg: "Please Enter Spiff" })
+            // } else if (!this.state.note) {
+            //     this.setState({ msg: "Please Enter Note" })
+            // } else if (!(this.state.commission >= 0)) {
+            //     this.setState({ msg: "Please Enter Commission" })
+            // } else if (!(this.state.bonus >= 0)) {
+            //     this.setState({ msg: "Please Enter Bonus" })
+            // } else if (!(this.state.pmdDeduction >= 0)) {
+            //     this.setState({ msg: "Please Enter Podium/Mentor/Deduction" })
+            // }
         }
         this.setState({
             loading: false

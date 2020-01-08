@@ -32,6 +32,7 @@ class HomePage extends React.Component {
             goal: null,
             calDate: new Date().getMonth()+1,
             monthC: new Date().getMonth() +1,
+            currYear: new Date().getFullYear(),
             modalVisible: false,
             modalVisible1: false,
             goalchange: '',
@@ -154,7 +155,8 @@ class HomePage extends React.Component {
                 totalSpiff+= parseFloat(this.state.transctions[i].spiff);
             }
             console.log(totalVolume, totalSpiff, totalCommission, totalBonus)
-            var totalIncome = totalSpiff+ totalCommission+ totalBonus
+            var totalIncome = totalVolume
+            var totalPay = totalSpiff+ totalCommission+ totalBonus
         }
 
         return (
@@ -351,6 +353,12 @@ class HomePage extends React.Component {
                             <Text style={styles.head1}>${totalIncome && this.state.goal !== null ? this.numberWithCommas(this.state.goal.volume - totalIncome) : "0.00" }</Text>
                         </View>
                     </CardItem>
+                    <CardItem style={styles.cardHead1} >
+                        <View style={{ flexDirection: 'row' }}>
+                            <Text style={styles.head}>Total Pay: </Text>
+                            <Text style={styles.head1}>${totalPay ? this.numberWithCommas(totalPay) : "0.00" }</Text>
+                        </View>
+                    </CardItem>
                 </Card>
                 {/* <SeeGoal/> */}
                 {/* <View style={{ paddingLeft: 20 }}>
@@ -386,7 +394,7 @@ class HomePage extends React.Component {
                         // style={{flex: 1, alignItems: "center"}}
                         
                             onPress={() => {
-                            axios.put('https://intense-harbor-45607.herokuapp.com/edit/goal/'+this.state.goal._id+'/'+this.state.goalchange)
+                            axios.post('https://intense-harbor-45607.herokuapp.com/edit/goal/'+this.props.user+'/'+this.state.currYear+'/'+this.state.goalchange)
                             .then(resp => {
                                 this.setModalVisible(!this.state.modalVisible);
                             })
@@ -632,7 +640,7 @@ const styles = StyleSheet.create({
         fontSize: 18,
     },
     head: {
-        fontSize: 16,
+        fontSize: 14,
         fontWeight: 'bold',
         color: 'gray',
         width: Dimensions.get('window').width / 2 + 30
@@ -648,9 +656,9 @@ const styles = StyleSheet.create({
         marginBottom: -15
     },
     head1: {
+        fontSize: 14,
         color: '#3f3fb9',
         alignSelf: 'center',
-        fontSize: 19
 
     }
 

@@ -225,7 +225,7 @@ class YearlyGoal extends React.Component {
                             <Text style={styles.head1}>${totalIncome ? this.numberWithCommas(totalIncome) : "0.00" }</Text>
                         </View>
                     </CardItem>
-                    <CardItem style={styles.cardHead1} >
+                    {/* <CardItem style={styles.cardHead1} >
                         <View style={{ flexDirection: 'row' }}>
                             <Text style={styles.head}>Yearly Income Goal </Text>
                             <Text style={styles.head1}>${this.state.yearlyIncomeGoal ? this.numberWithCommas(this.state.yearlyIncomeGoal) : "0.00" }</Text>
@@ -234,9 +234,9 @@ class YearlyGoal extends React.Component {
                     <CardItem style={styles.cardHead1} >
                         <View style={{ flexDirection: 'row' }}>
                             <Text style={styles.head}>Remaining Income Goal</Text>
-                            <Text style={styles.head1}>${this.state.yearlyIncomeGoal && totalIncome ? this.numberWithCommas(this.state.yearlyIncomeGoal - totalIncome): "0.00" }</Text>
+                            <Text style={styles.head1}>${this.state.goal.volume && totalIncome ? this.numberWithCommas(this.state.goal.volume - totalIncome): "0.00" }</Text>
                         </View>
-                    </CardItem>
+                    </CardItem> */}
                 </Card>
                     {/* {(this.state.transctions !== null ? myTransctions !== null ?
                         myTransctions.map(
@@ -272,7 +272,8 @@ class YearlyGoal extends React.Component {
                         // style={{flex: 1, alignItems: "center"}}
                         
                             onPress={() => {
-                            axios.put('https://intense-harbor-45607.herokuapp.com/edit/goal/'+this.state.goal._id+'/'+this.state.goalchange)
+
+                                axios.post('https://intense-harbor-45607.herokuapp.com/edit/goal/'+this.props.user+'/'+this.state.currYear+'/'+this.state.goalchange)
                             .then(resp => {
                                 this.setModalVisible(!this.state.modalVisible);
 

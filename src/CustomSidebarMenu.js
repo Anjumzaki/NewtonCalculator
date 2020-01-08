@@ -27,11 +27,11 @@ export default class CustomSidebarMenu extends Component {
         navOptionName: 'Yearly Report ',
         screenToNavigate: 'YearlyGoal',
       },
-      // {
-      //   navOptionThumb: require('../assets/newICons/005-bill.png'),
-      //   navOptionName: 'Monthly Report',
-      //   screenToNavigate: 'MonthlyReport',
-      // },
+      {
+        navOptionThumb: require('../assets/newICons/005-bill.png'),
+        navOptionName: 'Change Password',
+        screenToNavigate: 'ChangePassword',
+      },
 
       // {
       //   navOptionThumb: require('../assets/newICons/046-invoice.png'),
