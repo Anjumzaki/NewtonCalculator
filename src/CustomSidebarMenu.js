@@ -29,8 +29,8 @@ export default class CustomSidebarMenu extends Component {
       },
       {
         navOptionThumb: require('../assets/newICons/005-bill.png'),
-        navOptionName: 'Change Password',
-        screenToNavigate: 'ChangePassword',
+        navOptionName: 'Account',
+        screenToNavigate: 'Account',
       },
 
       // {

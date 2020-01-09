@@ -36,7 +36,8 @@ class HomePage extends React.Component {
             modalVisible: false,
             modalVisible1: false,
             goalchange: '',
-            bonuschange: ''
+            bonuschange: '',
+            cm: new Date().getMonth() +1
         };
     }
 
@@ -69,7 +70,7 @@ class HomePage extends React.Component {
         this.getdata()
     }
 
-    showAlert = (navigation, myDate) => {
+    showAlert1 = (navigation, myDate) => {
         Alert.alert(
             "Actions",
             "You want to add a Transaction",
@@ -80,16 +81,83 @@ class HomePage extends React.Component {
                 },
                 {
                     text: "Show Details",
-                    onPress: () => navigation.navigate('SingleTransactions', { sectedDate: myDate, transctions: this.state.transctions }),
+                    onPress: () => navigation.navigate('SingleTransactions', { sectedDate: myDate, transctions: this.state.transctions, type: 'sell' }),
+                },
+                {
+                    text: "Show Pay Details",
+                    onPress: () => navigation.navigate('SingleTransactions', { sectedDate: myDate, transctions: this.state.transctions, type: 'pay' }),
                 },
                 {
                     text: "Cancel", onPress: () => console.log("cancel Pressed", myDate),
                     style: 'cancel'
                 }
             ],
-            { cancelable: false }
+            { cancelable: true }
         );
     }
+
+    showAlert2 = (navigation, myDate) => {
+        Alert.alert(
+            "Actions",
+            "You want to add a Transaction",
+            [
+                {
+                    text: "Add Transaction",
+                    onPress: () => navigation.navigate('TransScreen', { sectedDate: myDate })
+                },
+                {
+                    text: "Show Details",
+                    onPress: () => navigation.navigate('SingleTransactions', { sectedDate: myDate, transctions: this.state.transctions, type: 'sell' }),
+                },
+                {
+                    text: "Cancel", onPress: () => console.log("cancel Pressed", myDate),
+                    style: 'cancel'
+                }
+            ],
+            { cancelable: true }
+        );
+    }
+
+    showAlert3 = (navigation, myDate) => {
+        Alert.alert(
+            "Actions",
+            "You want to add a Transaction",
+            [
+                {
+                    text: "Add Transaction",
+                    onPress: () => navigation.navigate('TransScreen', { sectedDate: myDate })
+                },
+                {
+                    text: "Show Pay Details",
+                    onPress: () => navigation.navigate('SingleTransactions', { sectedDate: myDate, transctions: this.state.transctions, type: 'pay' }),
+                },
+                {
+                    text: "Cancel", onPress: () => console.log("cancel Pressed", myDate),
+                    style: 'cancel'
+                }
+            ],
+            { cancelable: true }
+        );
+    }
+
+    showAlert4 = (navigation, myDate) => {
+        Alert.alert(
+            "Actions",
+            "You want to add a Transaction",
+            [
+                {
+                    text: "Add Transaction",
+                    onPress: () => navigation.navigate('TransScreen', { sectedDate: myDate })
+                },
+                {
+                    text: "Cancel", onPress: () => console.log("cancel Pressed", myDate),
+                    style: 'cancel'
+                }
+            ],
+            { cancelable: true }
+        );
+    }
+
 
     setModalVisible(visible) {
         this.setState({modalVisible: visible});
@@ -276,8 +344,7 @@ class HomePage extends React.Component {
                                 {/* {console.log(date.dateString, 'date String')} */}
                                 {nextDays.indexOf(date.dateString) > -1 ?
                                     payDates.indexOf(date.dateString) > -1 ?
-                                    //calls when paydate and sale are in the same date
-                                        <TouchableOpacity style={styles.both} onPress={() => this.showAlert(this.props.navigation, date)}>
+                                        <TouchableOpacity style={styles.both} onPress={() => this.showAlert1(this.props.navigation, date)}>
                                             <Text style={{ textAlign: 'center', color: 'white' }}>{date.day}</Text>
                                             <View >
                                                 <Feather style={styles.myIcons1} name="dollar-sign" size={32} color="white" />
@@ -285,19 +352,16 @@ class HomePage extends React.Component {
                                             </View>
                                         </TouchableOpacity>
                                         :
-                                        // only sale date
-                                        <TouchableOpacity style={styles.sold} onPress={() => this.showAlert(this.props.navigation, date)}>
+                                        <TouchableOpacity style={styles.sold} onPress={() => this.showAlert2(this.props.navigation, date)}>
                                             <Text style={{ textAlign: 'center', color: 'black' }}>{date.day}</Text>
                                             <Feather style={styles.myIcons} name="dollar-sign" size={32} color="green" />
                                         </TouchableOpacity>
                                     : payDates.indexOf(date.dateString) > -1 ?
-                                    // only payDate
-                                        <TouchableOpacity style={styles.pay} onPress={() => this.showAlert(this.props.navigation, date)}>
+                                        <TouchableOpacity style={styles.pay} onPress={() => this.showAlert3(this.props.navigation, date)}>
                                             <Text style={{ textAlign: 'center', color: 'black' }}>{date.day}</Text>
                                             <MaterialCommunityIcons style={styles.myIcons} name="cash-refund" size={32} color="green" />
                                         </TouchableOpacity> :
-                                      // nothing sale or pay  
-                                        <TouchableOpacity style={styles.simple} onPress={() => this.showAlert(this.props.navigation, date)}>
+                                        <TouchableOpacity style={styles.simple} onPress={() => this.showAlert4(this.props.navigation, date)}>
                                             <Text style={{ textAlign: 'center', color: 'black' }}>{date.day}</Text>
                                         </TouchableOpacity>
                                 }
