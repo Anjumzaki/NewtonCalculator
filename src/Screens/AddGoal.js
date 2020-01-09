@@ -176,8 +176,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         height: 50,
-        margin: 10
-
+        margin: 10,
     },
     ImageStyle: {
         padding: 10,

@@ -265,17 +265,18 @@ class HomePage extends React.Component {
                         }}
                         // Handler which gets executed when press arrow icon left. It receive a callback can go next month
                         onPressArrowRight={addMonth => {
-                            addMonth(addMonth, console.log('rigtt preses'),)
-                            
+                            addMonth()
                         }}
                         // markingType={'custom'}
                         markedDates={mark}
                         dayComponent={({ date, state }) => {
                             return (<View >
                                 {/* {console.log(date,'i am the calwendar')} */}
+                                {/* {26} */}
                                 {/* {console.log(date.dateString, 'date String')} */}
                                 {nextDays.indexOf(date.dateString) > -1 ?
                                     payDates.indexOf(date.dateString) > -1 ?
+                                    //calls when paydate and sale are in the same date
                                         <TouchableOpacity style={styles.both} onPress={() => this.showAlert(this.props.navigation, date)}>
                                             <Text style={{ textAlign: 'center', color: 'white' }}>{date.day}</Text>
                                             <View >
@@ -284,15 +285,18 @@ class HomePage extends React.Component {
                                             </View>
                                         </TouchableOpacity>
                                         :
+                                        // only sale date
                                         <TouchableOpacity style={styles.sold} onPress={() => this.showAlert(this.props.navigation, date)}>
                                             <Text style={{ textAlign: 'center', color: 'black' }}>{date.day}</Text>
                                             <Feather style={styles.myIcons} name="dollar-sign" size={32} color="green" />
                                         </TouchableOpacity>
                                     : payDates.indexOf(date.dateString) > -1 ?
+                                    // only payDate
                                         <TouchableOpacity style={styles.pay} onPress={() => this.showAlert(this.props.navigation, date)}>
                                             <Text style={{ textAlign: 'center', color: 'black' }}>{date.day}</Text>
                                             <MaterialCommunityIcons style={styles.myIcons} name="cash-refund" size={32} color="green" />
                                         </TouchableOpacity> :
+                                      // nothing sale or pay  
                                         <TouchableOpacity style={styles.simple} onPress={() => this.showAlert(this.props.navigation, date)}>
                                             <Text style={{ textAlign: 'center', color: 'black' }}>{date.day}</Text>
                                         </TouchableOpacity>
