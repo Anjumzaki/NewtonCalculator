@@ -334,14 +334,14 @@ class HomePage extends React.Component {
                         }}
                         // Handler which gets executed when press arrow icon left. It receive a callback can go next month
                         onPressArrowRight={addMonth => {
-                            addMonth(addMonth, console.log('rigtt preses'),)
-                            
+                            addMonth()
                         }}
                         // markingType={'custom'}
                         markedDates={mark}
                         dayComponent={({ date, state }) => {
                             return (<View >
                                 {/* {console.log(date,'i am the calwendar')} */}
+                                {/* {26} */}
                                 {/* {console.log(date.dateString, 'date String')} */}
                                 {nextDays.indexOf(date.dateString) > -1 ?
                                     payDates.indexOf(date.dateString) > -1 ?
