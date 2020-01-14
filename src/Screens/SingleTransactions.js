@@ -72,10 +72,11 @@ export default class SingleTransaction extends React.Component {
 
         return (
             <KeyboardAwareScrollView>
+                {this.state.type === "pay" ? (
                 <Card style={{ marginLeft: 10, marginRight: 10, padding: 0 }}>
                     <CardItem style={styles.cardHead1} >
                         <View style={{ flexDirection: 'row' }}>
-                            <Text style={styles.head}>Total Commissions(to Pay): </Text>
+                            <Text style={styles.head}>Total Commissions(to Pay)1: </Text>
                             <Text style={styles.head1}>$ {Math.round(commission)}</Text>
                         </View>
                     </CardItem>
@@ -92,6 +93,7 @@ export default class SingleTransaction extends React.Component {
                         </View>
                     </CardItem>
                 </Card>
+                ): null}
                 <View style={{ justifyContent: 'center' }}>
 
                     {this.state.transctions 

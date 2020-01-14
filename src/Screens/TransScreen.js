@@ -456,7 +456,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
-        height: 50,
+        height: 35,
         margin: 10
 
     },
@@ -486,7 +486,7 @@ const styles = StyleSheet.create({
         width: Dimensions.get('window').width - 25,
         borderWidth: 1,
         borderColor: 'black',
-        height: 50,
+        height: 40,
         fontFamily: 'open-sans-bold',
         color: 'black',
         borderRadius: 10

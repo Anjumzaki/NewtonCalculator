@@ -18,6 +18,7 @@ import SingleTransactions from './Screens/SingleTransactions'
 import SingleTransDetails from './Screens/SingleTransDetail'
 import YearlyGoal from './Screens/YearlyGoal'
 import ChangePassword from './Screens/ChangePassword'
+import ForgotPassword from './Screens/ForgotPassword'
 import Account from './Screens/Account'
 
 const TransStack = createStackNavigator(
@@ -40,7 +41,8 @@ const DrawerNavigator = createDrawerNavigator({
     AddGoal,
     YearlyGoal,
     ChangePassword,
-    Account
+    Account,
+    ForgotPassword
 }, {
     headerMode: 'float',
     navigationOptions: ({ navigation }) => ({

@@ -19,8 +19,8 @@ class YearlyGoal extends React.Component {
         super(props);
         this.state = {
             eye: true,
-            years: ['2019', '2020', '2021', '2022', '2023', '2024', '2025'],
-            selectedYear: '',
+            years: [ '2020', '2021', '2022', '2023', '2024', '2025'],
+            selectedYear: '2020',
             transctions: [],
             goal: [],
             yearlyIncomeGoal: 0,
@@ -58,7 +58,21 @@ class YearlyGoal extends React.Component {
         }))
     }
     componentDidMount() {
-       
+        axios.get('https://intense-harbor-45607.herokuapp.com/get/all/transactions/yearly/' + this.props.user+'/'+this.state.selectedYear)
+        .then(resp => {
+            // console.log(resp.data)
+            this.setState({ transctions: resp.data })
+        })
+        .catch(err => console.log(err))
+
+        axios.get('https://intense-harbor-45607.herokuapp.com/get/goal/' + this.props.user+'/'+this.state.selectedYear)
+        .then(resp => {
+            // console.log(resp.data)
+            this.setState({ goal: resp.data, yearlyIncomeGoal: parseFloat(resp.data.commission) + parseFloat(resp.data.bonus) + parseFloat(resp.data.spiff) })
+        })
+        .catch(err => console.log(err))
+
+
     }
     changeDrop = (itemValue) => {
         this.setState({ selectedYear: itemValue })
@@ -83,6 +97,22 @@ class YearlyGoal extends React.Component {
 
         
     }
+
+    changeDrop1 = (itemValue) => {
+        this.setState({ selectedYear: itemValue })
+        console.log('i am chgnes')
+        console.log(this.state.selectedYear)
+        console.log(itemValue)
+
+        axios.get('https://intense-harbor-45607.herokuapp.com/get/all/transactions/yearly/' + this.props.user+'/'+itemValue)
+        .then(resp => {
+            // console.log(resp.data)
+            this.setState({ transctions: resp.data })
+        })
+        .catch(err => console.log(err))
+        
+    }
+
     numberWithCommas(x) {
         return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
@@ -152,7 +182,6 @@ class YearlyGoal extends React.Component {
                                 onValueChange={(value) => this.changeDrop(value)}
                                 placeholder={placeholder}
                                 items={[
-                                    { label: '2019', value: '2019' },
                                     { label: '2020', value: '2020' },
                                     { label: '2021', value: '2021' },
                                     { label: '2022', value: '2022' },
@@ -160,22 +189,6 @@ class YearlyGoal extends React.Component {
                                     { label: '2024', value: '2024' },
                                 ]}
                             />
-                            {/* <Picker
-                                style={styles.myDrop}
-                                selectedValue={this.state.selectedyear}
-                                style={{ height: 50, width: 105 }}
-                                onValueChange={(itemValue, itemIndex) =>
-                                   this.setState({selectedYear:itemValue})
-                                }>
-                                    <Picker.Item  label='2020' value='2020' />
-                                    <Picker.Item  label='2021' value='2021' />
-                                    <Picker.Item  label='2022' value='2022' />
-                                    <Picker.Item  label='2023'  value='2023' />
-                                    <Picker.Item  label='2019' value='2019' />
-                                                                    {/* {this.state.years.map((item, i) => (
-                                    <Picker.Item key={i} label={item} value={item} />
-                                ))} 
-                            </Picker> */}
                         </View>
                     </View>
                     <Card style={{ marginLeft: 10, marginRight: 10, padding: 0 }}>
@@ -188,6 +201,12 @@ class YearlyGoal extends React.Component {
                             <Text style={styles.head1}>${this.state.goal.volume ? this.numberWithCommas(this.state.goal.volume) : "0.00" }</Text>
                         </View>
                     </TouchableHighlight>
+                    </CardItem>
+                    <CardItem style={styles.cardHead1} >
+                        <View style={{ flexDirection: 'row' }}>
+                            <Text style={styles.head}>Total # of sales: </Text>
+                            <Text style={styles.head1}>{this.state.transctions.length ? this.state.transctions.length : "0" }</Text>
+                        </View>
                     </CardItem>
                     <CardItem style={styles.cardHead1} >
                         <View style={{ flexDirection: 'row' }}>
@@ -276,7 +295,7 @@ class YearlyGoal extends React.Component {
                                 axios.post('https://intense-harbor-45607.herokuapp.com/edit/goal/'+this.props.user+'/'+this.state.currYear+'/'+this.state.goalchange)
                             .then(resp => {
                                 this.setModalVisible(!this.state.modalVisible);
-
+                                this.changeDrop1(this.state.selectedYear);
                                 axios.get('https://intense-harbor-45607.herokuapp.com/get/goal/' + this.props.user+'/'+itemValue)
                                 .then(resp => {
                                     // console.log(resp.data)

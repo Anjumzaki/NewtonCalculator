@@ -210,11 +210,11 @@ class HomePage extends React.Component {
         // var 
         // console.log(nextDays, 'I am the next Dates')
         // console.log(payDates, 'I am the next Dates')
-
-        if(this.state.transctions !== null && this.state.transctions.length >0){
+        var totalIncome =0, totalPay=0
+        if(this.state.transctions !== null && this.state.transctions.length > 0){
             var totalVolume=0, totalSpiff=0, totalCommission=0, totalBonus=0;
             for(var i=0; i<this.state.transctions.length; i++){
-                console.log("sssssssssssssssssss")
+                // console.log("sssssssssssssssssss")
                 // console.log(totalVolume, totalSpiff, totalCommission, totalBonus)
     
                 totalVolume+= parseFloat(this.state.transctions[i].volume);
@@ -223,8 +223,9 @@ class HomePage extends React.Component {
                 totalSpiff+= parseFloat(this.state.transctions[i].spiff);
             }
             console.log(totalVolume, totalSpiff, totalCommission, totalBonus)
-            var totalIncome = totalVolume
-            var totalPay = totalSpiff+ totalCommission+ totalBonus
+            totalIncome = totalVolume
+            totalPay = totalSpiff+ totalCommission+ totalBonus
+            console.log('totalPay',totalSpiff, totalCommission, totalBonus,totalPay)
         }
 
         return (
@@ -347,8 +348,8 @@ class HomePage extends React.Component {
                                         <TouchableOpacity style={styles.both} onPress={() => this.showAlert1(this.props.navigation, date)}>
                                             <Text style={{ textAlign: 'center', color: 'white' }}>{date.day}</Text>
                                             <View >
-                                                <Feather style={styles.myIcons1} name="dollar-sign" size={32} color="white" />
-                                                <MaterialCommunityIcons style={styles.myIcons1} name="cash-refund" size={32} color="white" />
+                                                <Feather style={styles.myIcons1} name="dollar-sign" size={32} color="green" />
+                                                <MaterialCommunityIcons style={styles.myIcons1} name="cash-refund" size={32} color="green" />
                                             </View>
                                         </TouchableOpacity>
                                         :
@@ -631,7 +632,7 @@ const styles = StyleSheet.create({
     both: {
         padding: 5,
         flexDirection: 'row',
-        backgroundColor: 'red',
+        backgroundColor: 'yellow',
         borderWidth: 0.5,
         borderColor: 'silver',
         borderStyle: 'solid',

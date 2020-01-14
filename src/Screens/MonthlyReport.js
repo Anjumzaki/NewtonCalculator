@@ -17,7 +17,7 @@ class MonthlyReport extends React.Component {
         super(props);
         this.state = {
             eye: true,
-            years: ['All','2019', '2020', '2021', '2022', '2023', '2024', '2025'],
+            years: ['All', '2020', '2021', '2022', '2023', '2024', '2025'],
             selectedyear: 'All',
             months: ['All','Jan', 'Feb', 'Mar', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', "Nov", "Dec"],
             selectedMonth: 'All',

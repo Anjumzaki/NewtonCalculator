@@ -29,7 +29,7 @@ export default class CustomSidebarMenu extends Component {
       },
       {
         navOptionThumb: require('../assets/newICons/005-bill.png'),
-        navOptionName: 'Account',
+        navOptionName: 'Account Info',
         screenToNavigate: 'Account',
       },
 

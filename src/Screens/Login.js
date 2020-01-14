@@ -132,6 +132,11 @@ class Login extends React.Component {
                                     style={{ width: 30, height: 30 }}
                                 /> : "Login"}  </Text>
                         </TouchableOpacity>
+                        <View style={{ flexDirection: 'row', marginTop: 15 }}>
+                            <TouchableOpacity onPress={() => this.props.navigation.navigate('ForgotPassword')}>
+                                <Text style={styles.reg} >Forgot password?</Text>
+                            </TouchableOpacity>
+                        </View>
                     </View>
                     <View style={{ alignItems: 'center' }}>
                         <View style={{ flexDirection: 'row' }}>
