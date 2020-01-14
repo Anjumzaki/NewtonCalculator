@@ -23,14 +23,19 @@ class ForgotPassword extends React.Component {
             msg: "",
             loading: false,
             userName: '',
+            start: true,
             state0: true,
             state1: false,
             state2: false,
-            state3: false,
+            state3: true,
+            state4: false,
+            emailChange: false,
+            passChange: false,
             user: null,
             emailCheck: '',
             msg: '',
-            showEmail: ''
+            showEmail: '',
+            newEmail: ''
         };
     }
     
@@ -75,6 +80,46 @@ class ForgotPassword extends React.Component {
         })
     }
 
+    emailChange() {
+        this.setState({ loading: true })
+       
+        if (this.state.newEmail) {
+                console.log("Loginpass")
+
+                axios
+                    .put('https://intense-harbor-45607.herokuapp.com/changeEmail', {
+                        newEmail: this.state.newEmail,
+                        uid: this.state.user._id
+                    })
+                    .then((response) => {
+                        console.log("resp1", response.data)
+                        
+                        if (response.data.success === "true") {
+                           this.setState({msg: "Email changed"})
+                            this.props.navigation.dispatch(StackActions.reset({
+                                index: 0,
+                                actions: [NavigationActions.navigate({ routeName: 'Login' }),],
+                            }))
+                            this.setState({ loading: false })
+
+                        } else if (response.data.error === "true") {
+                            this.setState({ msg: "Error" })
+                        }
+                    }).catch((error) => {
+                        console.log("mongodb get register error", error)
+                        this.setState({ msg: "Problem in changing Email" })
+                    })
+                }else {
+                this.setState({
+                    msg: 'Enter new Email'
+                })
+            }
+     
+        this.setState({
+            loading: false
+        })
+    }
+
     render() {
         console.log("state", this.state, this.props.user)
         if(this.state.user !== null){
@@ -93,7 +138,22 @@ class ForgotPassword extends React.Component {
             <ImageBackground source={require('../../assets/background.png')} style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
                 <KeyboardAwareScrollView enableOnAndroid={true}>
                     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', height: Dimensions.get('window').height - 70 }}>
-                        {this.state.state0 ? (
+                        
+                        {this.state.start? (
+                            <View>
+                                <Text style={{color: "#fff", fontSize: 26}}>What do you want to Change?</Text>
+                                <TouchableOpacity style={styles.regButton2} onPress={() => this.setState({emailChange: true, start: false})}>
+                                    <Text>Email</Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity  style={styles.regButton2} onPress={() => this.setState({passChange: true, start: false})}>
+                                    <Text>Password</Text>
+                                </TouchableOpacity>
+                            </View>
+                        ): null}
+
+                        {this.state.passChange ? (
+                        <View>
+                        { this.state.state0 ? (
                         <View>
                             <View style={styles.SectionStyle}>
                                 <TextInput
@@ -128,8 +188,8 @@ class ForgotPassword extends React.Component {
                                     <Text style={styles.regButton1} > Next </Text>
                              </TouchableOpacity>
 
-                        </View>
-                        ): null}
+                            </View>
+                            ): null}
 
                         {this.state.state1 && this.state.user.email ? (
                         <View>
@@ -170,18 +230,6 @@ class ForgotPassword extends React.Component {
 
                         {this.state.state2 ? (
                         <View>
-                            {/* <View style={styles.SectionStyle}>
-                                <TextInput
-                                    style={styles.forms
-                                    }
-                                    onChangeText={oldPass => this.setState({ oldPass })}
-                                    value={this.state.oldPass}
-                                    placeholder="Old Password"
-                                    keyboardType="default"
-                                    returnKeyType="next"
-                                />
-
-                            </View> */}
                             <View style={styles.SectionStyle}>
 
                                 <TextInput
@@ -225,6 +273,84 @@ class ForgotPassword extends React.Component {
                         </View>
                         ): null}
                         </View>
+                        ): null}
+
+                        {this.state.emailChange ?(
+                            <View>
+                            { this.state.state3 ? (
+                        <View>
+                            <View style={styles.SectionStyle}>
+                                <TextInput
+                                    style={styles.forms
+                                    }
+                                    onChangeText={userName => this.setState({ userName })}
+                                    value={this.state.userName}
+                                    placeholder="User Name"
+                                    keyboardType="default"
+                                    returnKeyType="next"
+                                />
+
+                            </View>
+                            <View><Text style={{textAlign: "center", color: "red"}}>{this.state.msg}</Text></View>
+                            <TouchableOpacity onPress={() =>{
+                                    if(this.state.userName){
+                                    axios.get('https://intense-harbor-45607.herokuapp.com/get/user/'+this.state.userName)
+                                    .then((resp) => {
+                                    this.setState({user: resp.data})
+                                    if(resp.data !== null){
+                                        this.setState({state4: true, state3: false, msg: ''})
+                                    }else{
+                                        this.setState({msg: "Incorrect userName"})
+                                    }
+                                    
+                                    })
+                                    .catch(err => console.log(err))
+                                    }else{
+                                        this.setState({msg: "Enter user Name"})
+                                    }
+                                }} style={styles.regButton} >
+                                    <Text style={styles.regButton1} > Next </Text>
+                             </TouchableOpacity>
+
+                            </View>
+                            ): null}  
+                            {this.state.state4 ? (  
+                             <View>
+                             <View style={styles.SectionStyle}>
+ 
+                                 <TextInput
+                                     style={styles.forms
+                                     }
+                                     onChangeText={newEmail => this.setState({ newEmail })}
+                                     value={this.state.newEmail}
+                                     placeholder="New Email"
+                                     keyboardType="default"
+                                     returnKeyType="next"
+                                    //  secureTextEntry={true}
+                                 />
+                             </View>
+                            
+                             <View>
+                                 <Text style={{ textAlign: "center", fontWeight: 'bold', color: '#ff1358', marginTop: 20, fontSize: 17 }}>
+                                     {this.state.msg}
+                                 </Text>
+                             </View>
+                             <TouchableOpacity onPress={() =>
+                                 this.emailChange()
+                             } style={styles.regButton} >
+                                 <Text style={styles.regButton1} >{this.state.loading ?
+                                     <Image
+                                         source={require('../../assets/Spin-1s.gif')}
+                                         style={{ width: 30, height: 30 }}
+                                     /> : "Change Email"}  </Text>
+                             </TouchableOpacity>
+                         </View>): null}
+                         </View>
+                        ): null}
+                        
+                     
+                       
+                         </View>
                 </KeyboardAwareScrollView>
             </ImageBackground>
 
@@ -278,6 +404,16 @@ const styles = StyleSheet.create({
     regButton: {
         fontFamily: 'open-sans-simple',
         width: Dimensions.get('window').width - 105,
+        alignItems: 'center',
+        backgroundColor: '#ff1358',
+        padding: 10,
+        borderRadius: 100,
+        marginTop: 60
+
+    },
+    regButton2: {
+        fontFamily: 'open-sans-simple',
+        // width: Dimensions.get('window').width - 105,
         alignItems: 'center',
         backgroundColor: '#ff1358',
         padding: 10,

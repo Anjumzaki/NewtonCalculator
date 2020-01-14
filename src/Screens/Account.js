@@ -27,7 +27,7 @@ class Login extends React.Component {
     }
 
     componentDidMount(){
-        axios.get('http://192.168.0.102:3000/get/user/'+this.props.user)
+        axios.get('https://intense-harbor-45607.herokuapp.com/get/user/'+this.props.user)
         .then(user => this.setState({userData: user.data}))
         .catch(err => console.log(err))
     }
