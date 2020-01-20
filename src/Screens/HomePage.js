@@ -484,19 +484,19 @@ class HomePage extends React.Component {
                     <View style={{ marginTop: 100 }}>
                         <View>
                             <Text style={{ textAlign: 'center', fontWeight: 'bold' }}>Change Bonus</Text>
-
-                            <View style={styles.SectionStyle}>
+                            <View  style={styles.SectionStyle} >
                                 <TextInput
-                                    style={styles.forms1}
+                                 style={{borderWidth:0}}
                                     onChangeText={bonuschange => this.setState({ bonuschange })}
                                     value={this.state.bonuschange}
-                                    placeholder="Bonus "
+                                    placeholder="Bonus %"
                                     keyboardType="number-pad"
                                     returnKeyType="next"
                                 />
                             </View>
 
                             <TouchableHighlight
+                           style={{marginHorizontal:20}}
                                 underlayColor={"transparent"}
                                 // style={{flex: 1, alignItems: "center"}}
 
@@ -506,7 +506,7 @@ class HomePage extends React.Component {
                                             this.setModalVisible1(!this.state.modalVisible1);
                                         })
                                 }}>
-                                <Text style={styles.saveBtn}>Save</Text>
+                                <Text  style={[styles.saveBtn]}>Save</Text>
                             </TouchableHighlight>
                         </View>
                     </View>
