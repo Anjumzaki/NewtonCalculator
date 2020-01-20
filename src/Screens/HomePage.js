@@ -45,7 +45,7 @@ class HomePage extends React.Component {
 
 
     getGoal = () => {
-        axios.get('http://192.168.0.102:3000/get/goal/month/' + this.props.user + '/' + new Date().getFullYear()+'/'+parseInt(this.state.calDate))
+        axios.get('https://intense-harbor-45607.herokuapp.com/get/goal/month/' + this.props.user + '/' + new Date().getFullYear()+'/'+parseInt(this.state.calDate))
             .then(resp => {
                 this.setState({ goal: resp.data, refreshing: false })
             })
@@ -462,7 +462,7 @@ class HomePage extends React.Component {
                                 // style={{flex: 1, alignItems: "center"}}
                                 underlayColor={"transparent"}
                                 onPress={() => {
-                                    axios.post('http://192.168.0.102:3000/edit/goal/month/' + this.props.user + '/' + this.state.currYear + '/' + parseInt(this.state.calDate) + '/' + this.state.goalchange)
+                                    axios.post('https://intense-harbor-45607.herokuapp.com/edit/goal/month/' + this.props.user + '/' + this.state.currYear + '/' + parseInt(this.state.calDate) + '/' + this.state.goalchange)
                                         .then(resp => {
                                             this.setModalVisible(!this.state.modalVisible);
                                         }).then(() => this._onRefresh)
