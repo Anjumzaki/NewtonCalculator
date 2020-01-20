@@ -142,11 +142,11 @@ class ForgotPassword extends React.Component {
                         {this.state.start? (
                             <View>
                                 <Text style={{color: "#fff", fontSize: 26}}>What do you want to Change?</Text>
-                                <TouchableOpacity style={styles.regButton2} onPress={() => this.setState({emailChange: true, start: false})}>
-                                    <Text>Email</Text>
+                                <TouchableOpacity style={styles.regButton} onPress={() => this.setState({emailChange: true, start: false})}>
+                                    <Text style={styles.regButton1}>Email</Text>
                                 </TouchableOpacity>
-                                <TouchableOpacity  style={styles.regButton2} onPress={() => this.setState({passChange: true, start: false})}>
-                                    <Text>Password</Text>
+                                <TouchableOpacity  style={styles.regButton} onPress={() => this.setState({passChange: true, start: false})}>
+                                    <Text  style={styles.regButton1}>Password</Text>
                                 </TouchableOpacity>
                             </View>
                         ): null}
@@ -338,11 +338,7 @@ class ForgotPassword extends React.Component {
                              <TouchableOpacity onPress={() =>
                                  this.emailChange()
                              } style={styles.regButton} >
-                                 <Text style={styles.regButton1} >{this.state.loading ?
-                                     <Image
-                                         source={require('../../assets/Spin-1s.gif')}
-                                         style={{ width: 30, height: 30 }}
-                                     /> : "Change Email"}  </Text>
+                                 <Text style={styles.regButton1} > Change Email  </Text>
                              </TouchableOpacity>
                          </View>): null}
                          </View>
@@ -403,13 +399,14 @@ const styles = StyleSheet.create({
     },
     regButton: {
         fontFamily: 'open-sans-simple',
-        width: Dimensions.get('window').width - 105,
+        width: Dimensions.get('window').width - 80,
         alignItems: 'center',
         backgroundColor: '#ff1358',
         padding: 10,
         borderRadius: 100,
-        marginTop: 60
-
+        marginTop: 60,
+        justifyContent:'center',
+        alignSelf:'center'
     },
     regButton2: {
         fontFamily: 'open-sans-simple',

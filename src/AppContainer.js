@@ -25,8 +25,8 @@ const TransStack = createStackNavigator(
     {
         HomePage: HomePage,
         TransScreen: TransScreen,
-        SingleTransactions:SingleTransactions,
-        SingleTransDetails:SingleTransDetails
+        SingleTransactions: SingleTransactions,
+        SingleTransDetails: SingleTransDetails
     },
     {
         initialRouteName: 'HomePage',
@@ -42,7 +42,6 @@ const DrawerNavigator = createDrawerNavigator({
     YearlyGoal,
     ChangePassword,
     Account,
-    ForgotPassword
 }, {
     headerMode: 'float',
     navigationOptions: ({ navigation }) => ({
@@ -64,8 +63,10 @@ const RootStack = createStackNavigator(
     {
         Login: Login,
         SignUp: SignUp,
+        ChangePassword: ChangePassword,
+        ForgotPassword: ForgotPassword,
         MainTabs: DrawerNavigator,
-        ChangePassword: ChangePassword
+
     },
     {
         initialRouteName: 'Login',

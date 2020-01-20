@@ -37,7 +37,8 @@ class HomePage extends React.Component {
             modalVisible1: false,
             goalchange: '',
             bonuschange: '',
-            cm: new Date().getMonth() +1
+            cm: new Date().getMonth() +1,
+            MonthAnjum: new Date().getMonth() +1,
         };
     }
 
@@ -45,17 +46,16 @@ class HomePage extends React.Component {
     getGoal = () => {
         axios.get('https://intense-harbor-45607.herokuapp.com/get/goal/' + this.props.user + '/' + new Date().getFullYear())
             .then(resp => {
-                console.log(resp.data, 'goal')
-                console.log(this.props.user)
                 this.setState({ goal: resp.data, refreshing: false })
             })
             .catch(err => console.log(err))
     }
 
     getdata = () => {
-        axios.get('https://intense-harbor-45607.herokuapp.com/get/all/transactions/monthly/' + this.props.user+'/'+parseInt(this.state.calDate))
+        console.log(this.state.calDate,'calDate')
+        axios.get('https://intense-harbor-45607.herokuapp.com/get/all/transactions/monthly/' + this.props.user+'/'+parseInt(this.state.calDate)+'/'+parseInt(this.state.currYear))
             .then(resp => {
-                // console.log(resp.data)
+                console.log(resp.data)
                 this.setState({ transctions: resp.data })
             })
             .catch(err => console.log(err))
@@ -160,10 +160,10 @@ class HomePage extends React.Component {
 
 
     setModalVisible(visible) {
-        this.setState({modalVisible: visible});
+        this.setState({modalVisible: visible},this._onRefresh);
     }
     setModalVisible1(visible) {
-        this.setState({modalVisible1: visible});
+        this.setState({modalVisible1: visible},this._onRefresh);
     }
 
     numberWithCommas(x) {
@@ -171,10 +171,8 @@ class HomePage extends React.Component {
         return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
     render() {
-        console.log("stateeeee",this.state, this.props.user)
         const { navigation } = this.props;
 
-        console.log("month cehck:",parseInt(this.state.monthC) % 12)
 
         var nextDays = [];
         var payDates = []
@@ -197,7 +195,6 @@ class HomePage extends React.Component {
         }
         nextDays.forEach(day => {
             mark[day] = { marked: true, selectedDotColor: 'yellow' };
-            console.log(day)
         });
         payDates.forEach(day => {
             mark[day] = { selected: true, selectedDotColor: 'yellow' };
@@ -222,12 +219,14 @@ class HomePage extends React.Component {
                 totalCommission+= parseFloat(this.state.transctions[i].commission);
                 totalSpiff+= parseFloat(this.state.transctions[i].spiff);
             }
-            console.log(totalVolume, totalSpiff, totalCommission, totalBonus)
+        
             totalIncome = totalVolume
             totalPay = totalSpiff+ totalCommission+ totalBonus
-            console.log('totalPay',totalSpiff, totalCommission, totalBonus,totalPay)
+            console.log(totalPay,'total pay')
+            console.log(totalBonus,'totalBonus')
+            console.log(totalCommission,'totalCommission')
+            console.log(totalSpiff,'totalSpiff')
         }
-
         return (
             // style={{ flex: 1, alignItems: 'center', justifyContent: 'center', height: Dimensions.get('window').height - 70 }}
             <ScrollView
@@ -301,7 +300,7 @@ class HomePage extends React.Component {
                             textMonthFontSize: 20,
                             textDayHeaderFontSize: 16
                         }}
-                        // current={new Date()}
+                        current={new Date()}
                         // Enable horizontal scrolling, default = false
                         horizontal={true}
                         // Enable paging on horizontal, default = false
@@ -329,20 +328,17 @@ class HomePage extends React.Component {
                         // Hide day names. Default = false
                         // Show week numbers to the left. Default = false
                         // Handler which gets executed when press arrow icon left. It receive a callback can go back month
-                        onPressArrowLeft={substractMonth => {
+                        onPressArrowLeft={(substractMonth) => {
                             substractMonth()
                         }}
                         // Handler which gets executed when press arrow icon left. It receive a callback can go next month
                         onPressArrowRight={addMonth => {
                             addMonth()
                         }}
-                        // markingType={'custom'}
+                        onVisibleMonthsChange={(month) =>{this.setState({calDate:month[0].month,currYear:month[0].year},this._onRefresh)} }
                         markedDates={mark}
                         dayComponent={({ date, state }) => {
                             return (<View >
-                                {/* {console.log(date,'i am the calwendar')} */}
-                                {/* {26} */}
-                                {/* {console.log(date.dateString, 'date String')} */}
                                 {nextDays.indexOf(date.dateString) > -1 ?
                                     payDates.indexOf(date.dateString) > -1 ?
                                         <TouchableOpacity style={styles.both} onPress={() => this.showAlert1(this.props.navigation, date)}>
@@ -461,12 +457,12 @@ class HomePage extends React.Component {
 
                         <TouchableHighlight
                         // style={{flex: 1, alignItems: "center"}}
-                        
+                        underlayColor={"transparent"}
                             onPress={() => {
                             axios.post('https://intense-harbor-45607.herokuapp.com/edit/goal/'+this.props.user+'/'+this.state.currYear+'/'+this.state.goalchange)
                             .then(resp => {
                                 this.setModalVisible(!this.state.modalVisible);
-                            })
+                            }).then(()=>this._onRefresh)
                             }}>
                             <Text style={styles.saveBtn}>Save</Text>
                         </TouchableHighlight>
@@ -498,6 +494,7 @@ class HomePage extends React.Component {
                         </View>
 
                         <TouchableHighlight
+                        underlayColor={"transparent"}
                         // style={{flex: 1, alignItems: "center"}}
                         
                             onPress={() => {
@@ -542,7 +539,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#3f3fb9',
         color: 'white',
         borderRadius: 10,
-        marginBottom: 30,
+        margin: 30,
         textAlign: "center"
     },
     ImageStyle1: {
@@ -694,8 +691,6 @@ const styles = StyleSheet.create({
         fontSize: 19,
         padding: 8,
         width: Dimensions.get('window').width - 25,
-        borderWidth: 1,
-        borderColor: 'black',
         height: 50,
         fontFamily: 'open-sans-bold',
         color: 'black',

@@ -209,7 +209,6 @@ const styles = StyleSheet.create({
         padding: 10,
         borderRadius: 100,
         marginTop: 60
-
     },
     reg: {
         textDecorationLine: 'underline',
