@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Button,TextInput, Modal, TouchableHighlight, Dimensions, StyleSheet, ScrollView, RefreshControl, Alert } from 'react-native';
+import { View, Text, Button, TextInput, Modal, TouchableHighlight, Dimensions, StyleSheet, ScrollView, RefreshControl, Alert } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { NavigationActions, StackActions } from 'react-navigation';
@@ -30,16 +30,17 @@ class HomePage extends React.Component {
             transctions: null,
             refreshing: true,
             goal: null,
-            calDate: new Date().getMonth()+1,
-            monthC: new Date().getMonth() +1,
+            calDate: new Date().getMonth() + 1,
+            monthC: new Date().getMonth() + 1,
             currYear: new Date().getFullYear(),
             modalVisible: false,
             modalVisible1: false,
             goalchange: '',
             bonuschange: '',
-            cm: new Date().getMonth() +1,
-            MonthAnjum: new Date().getMonth() +1,
+            cm: new Date().getMonth() + 1,
+            MonthAnjum: new Date().getMonth() + 1,
         };
+        this.getNewMonthData = this.getNewMonthData.bind(this)
     }
 
 
@@ -52,8 +53,8 @@ class HomePage extends React.Component {
     }
 
     getdata = () => {
-        console.log(this.state.calDate,'calDate')
-        axios.get('https://intense-harbor-45607.herokuapp.com/get/all/transactions/monthly/' + this.props.user+'/'+parseInt(this.state.calDate)+'/'+parseInt(this.state.currYear))
+        console.log(this.state.calDate, 'calDate')
+        axios.get('https://intense-harbor-45607.herokuapp.com/get/all/transactions/monthly/' + this.props.user + '/' + parseInt(this.state.calDate) + '/' + parseInt(this.state.currYear))
             .then(resp => {
                 console.log(resp.data)
                 this.setState({ transctions: resp.data })
@@ -160,16 +161,18 @@ class HomePage extends React.Component {
 
 
     setModalVisible(visible) {
-        this.setState({modalVisible: visible},this._onRefresh);
+        this.setState({ modalVisible: visible }, this._onRefresh);
     }
     setModalVisible1(visible) {
-        this.setState({modalVisible1: visible},this._onRefresh);
+        this.setState({ modalVisible1: visible }, this._onRefresh);
     }
 
     numberWithCommas(x) {
         x = Math.round(x)
         return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
+    getNewMonthData = (month) => { this.setState({ calDate: month[0].month, currYear: month[0].year }, this._onRefresh) }
+
     render() {
         const { navigation } = this.props;
 
@@ -207,25 +210,25 @@ class HomePage extends React.Component {
         // var 
         // console.log(nextDays, 'I am the next Dates')
         // console.log(payDates, 'I am the next Dates')
-        var totalIncome =0, totalPay=0
-        if(this.state.transctions !== null && this.state.transctions.length > 0){
-            var totalVolume=0, totalSpiff=0, totalCommission=0, totalBonus=0;
-            for(var i=0; i<this.state.transctions.length; i++){
+        var totalIncome = 0, totalPay = 0
+        if (this.state.transctions !== null && this.state.transctions.length > 0) {
+            var totalVolume = 0, totalSpiff = 0, totalCommission = 0, totalBonus = 0;
+            for (var i = 0; i < this.state.transctions.length; i++) {
                 // console.log("sssssssssssssssssss")
                 // console.log(totalVolume, totalSpiff, totalCommission, totalBonus)
-    
-                totalVolume+= parseFloat(this.state.transctions[i].volume);
-                totalBonus+= parseFloat(this.state.transctions[i].bonus);
-                totalCommission+= parseFloat(this.state.transctions[i].commission);
-                totalSpiff+= parseFloat(this.state.transctions[i].spiff);
+
+                totalVolume += parseFloat(this.state.transctions[i].volume);
+                totalBonus += parseFloat(this.state.transctions[i].bonus);
+                totalCommission += parseFloat(this.state.transctions[i].commission);
+                totalSpiff += parseFloat(this.state.transctions[i].spiff);
             }
-        
+
             totalIncome = totalVolume
-            totalPay = totalSpiff+ totalCommission+ totalBonus
-            console.log(totalPay,'total pay')
-            console.log(totalBonus,'totalBonus')
-            console.log(totalCommission,'totalCommission')
-            console.log(totalSpiff,'totalSpiff')
+            totalPay = totalSpiff + totalCommission + totalBonus
+            console.log(totalPay, 'total pay')
+            console.log(totalBonus, 'totalBonus')
+            console.log(totalCommission, 'totalCommission')
+            console.log(totalSpiff, 'totalSpiff')
         }
         return (
             // style={{ flex: 1, alignItems: 'center', justifyContent: 'center', height: Dimensions.get('window').height - 70 }}
@@ -335,7 +338,7 @@ class HomePage extends React.Component {
                         onPressArrowRight={addMonth => {
                             addMonth()
                         }}
-                        onVisibleMonthsChange={(month) =>{this.setState({calDate:month[0].month,currYear:month[0].year},this._onRefresh)} }
+                        onVisibleMonthsChange={(month)=>this.getNewMonthData(month)}
                         markedDates={mark}
                         dayComponent={({ date, state }) => {
                             return (<View >
@@ -371,57 +374,57 @@ class HomePage extends React.Component {
                     <CardItem style={styles.cardHead1} >
                         <View style={{ flexDirection: 'row' }}>
                             <Text style={styles.head}>Total Sales: </Text>
-                            <Text style={styles.head1}>{this.state.transctions !== null ? this.numberWithCommas(this.state.transctions.length) : "0" }</Text>
+                            <Text style={styles.head1}>{this.state.transctions !== null ? this.numberWithCommas(this.state.transctions.length) : "0"}</Text>
                         </View>
                     </CardItem>
                     <CardItem style={styles.cardHead1} >
                         <View style={{ flexDirection: 'row' }}>
                             <Text style={styles.head}>Month to Date: </Text>
-                            <Text style={styles.head1}>${totalVolume ? this.numberWithCommas(totalVolume) : "0.00" } </Text>
+                            <Text style={styles.head1}>${totalVolume ? this.numberWithCommas(totalVolume) : "0.00"} </Text>
                         </View>
                     </CardItem>
                     <CardItem style={styles.cardHead1} >
                         <View style={{ flexDirection: 'row' }}>
                             <Text style={styles.head}>Commission: </Text>
-                            <Text style={styles.head1}>${totalCommission ? this.numberWithCommas(totalCommission) : "0.00" } </Text>
+                            <Text style={styles.head1}>${totalCommission ? this.numberWithCommas(totalCommission) : "0.00"} </Text>
                         </View>
                     </CardItem>
                     <CardItem style={styles.cardHead1} >
-                    <TouchableHighlight onPress={() => {
+                        <TouchableHighlight onPress={() => {
                             this.setModalVisible1(true);
                         }} >
-                        <View style={{ flexDirection: 'row' }}>
-                            <Text style={styles.head}>Bonus: </Text>
-                            <Text style={styles.head1}>${totalBonus ? this.numberWithCommas(totalBonus) : "0.00" } </Text>
-                        </View>
+                            <View style={{ flexDirection: 'row' }}>
+                                <Text style={styles.head}>Bonus: </Text>
+                                <Text style={styles.head1}>${totalBonus ? this.numberWithCommas(totalBonus) : "0.00"} </Text>
+                            </View>
                         </TouchableHighlight>
                     </CardItem>
                     <CardItem style={styles.cardHead1} >
                         <View style={{ flexDirection: 'row' }}>
                             <Text style={styles.head}>Spiff: </Text>
-                            <Text style={styles.head1}>${totalSpiff ? this.numberWithCommas(totalSpiff) : "0.00" } </Text>
+                            <Text style={styles.head1}>${totalSpiff ? this.numberWithCommas(totalSpiff) : "0.00"} </Text>
                         </View>
                     </CardItem>
                     <CardItem style={styles.cardHead1}>
-                    <TouchableHighlight onPress={() => {
+                        <TouchableHighlight onPress={() => {
                             this.setModalVisible(true);
                         }} >
-                        <View style={{ flexDirection: 'row' }}>
-                            <Text style={styles.head}>Goal: </Text>
-                            <Text style={styles.head1}>${this.state.goal !== null ? this.numberWithCommas(this.state.goal.volume) : "0.00" } </Text>
-                        </View> 
+                            <View style={{ flexDirection: 'row' }}>
+                                <Text style={styles.head}>Goal: </Text>
+                                <Text style={styles.head1}>${this.state.goal !== null ? this.numberWithCommas(this.state.goal.volume) : "0.00"} </Text>
+                            </View>
                         </TouchableHighlight>
                     </CardItem>
                     <CardItem style={styles.cardHead1} >
                         <View style={{ flexDirection: 'row' }}>
                             <Text style={styles.head}>Remaining Goal: </Text>
-                            <Text style={styles.head1}>${totalIncome && this.state.goal !== null ? this.numberWithCommas(this.state.goal.volume - totalIncome) : "0.00" }</Text>
+                            <Text style={styles.head1}>${totalIncome && this.state.goal !== null ? this.numberWithCommas(this.state.goal.volume - totalIncome) : "0.00"}</Text>
                         </View>
                     </CardItem>
                     <CardItem style={styles.cardHead1} >
                         <View style={{ flexDirection: 'row' }}>
                             <Text style={styles.head}>Total Pay: </Text>
-                            <Text style={styles.head1}>${totalPay ? this.numberWithCommas(totalPay) : "0.00" }</Text>
+                            <Text style={styles.head1}>${totalPay ? this.numberWithCommas(totalPay) : "0.00"}</Text>
                         </View>
                     </CardItem>
                 </Card>
@@ -440,37 +443,37 @@ class HomePage extends React.Component {
                         Alert.alert('Modal has been closed.');
                         this.setModalVisible(!this.state.modalVisible);
                     }}>
-                    <View style={{marginTop: 100}}>
+                    <View style={{ marginTop: 100 }}>
                         <View>
-                        <Text style={{textAlign: 'center', fontWeight: 'bold'}}>Change Goal</Text>
-                        
-                        <View style={styles.SectionStyle}>
-                            <TextInput
-                                style={styles.forms1}
-                                onChangeText={goalchange => this.setState({ goalchange })}
-                                value={this.state.goalchange}
-                                placeholder="Goal "
-                                keyboardType="number-pad"
-                                returnKeyType="next"
-                            />
-                        </View>
+                            <Text style={{ textAlign: 'center', fontWeight: 'bold' }}>Change Goal</Text>
 
-                        <TouchableHighlight
-                        // style={{flex: 1, alignItems: "center"}}
-                        underlayColor={"transparent"}
-                            onPress={() => {
-                            axios.post('http://192.168.0.102:3000/edit/goal/month/'+this.props.user+'/'+this.state.currYear+'/'+parseInt(this.state.calDate)+'/'+this.state.goalchange)
-                            .then(resp => {
-                                this.setModalVisible(!this.state.modalVisible);
-                            }).then(()=>this._onRefresh)
-                            }}>
-                            <Text style={styles.saveBtn}>Save</Text>
-                        </TouchableHighlight>
+                            <View style={styles.SectionStyle}>
+                                <TextInput
+                                    style={styles.forms1}
+                                    onChangeText={goalchange => this.setState({ goalchange })}
+                                    value={this.state.goalchange}
+                                    placeholder="Goal "
+                                    keyboardType="number-pad"
+                                    returnKeyType="next"
+                                />
+                            </View>
+
+                            <TouchableHighlight
+                                // style={{flex: 1, alignItems: "center"}}
+                                underlayColor={"transparent"}
+                                onPress={() => {
+                                    axios.post('http://192.168.0.102:3000/edit/goal/month/' + this.props.user + '/' + this.state.currYear + '/' + parseInt(this.state.calDate) + '/' + this.state.goalchange)
+                                        .then(resp => {
+                                            this.setModalVisible(!this.state.modalVisible);
+                                        }).then(() => this._onRefresh)
+                                }}>
+                                <Text style={styles.saveBtn}>Save</Text>
+                            </TouchableHighlight>
                         </View>
                     </View>
-                    </Modal>
+                </Modal>
 
-                    <Modal
+                <Modal
                     animationType="slide"
                     transparent={false}
                     visible={this.state.modalVisible1}
@@ -478,36 +481,36 @@ class HomePage extends React.Component {
                         Alert.alert('Modal has been closed.');
                         this.setModalVisible1(!this.state.modalVisible1);
                     }}>
-                    <View style={{marginTop: 100}}>
+                    <View style={{ marginTop: 100 }}>
                         <View>
-                        <Text style={{textAlign: 'center', fontWeight: 'bold'}}>Change Bonus</Text>
-                        
-                        <View style={styles.SectionStyle}>
-                            <TextInput
-                                style={styles.forms1}
-                                onChangeText={bonuschange => this.setState({ bonuschange })}
-                                value={this.state.bonuschange}
-                                placeholder="Bonus "
-                                keyboardType="number-pad"
-                                returnKeyType="next"
-                            />
-                        </View>
+                            <Text style={{ textAlign: 'center', fontWeight: 'bold' }}>Change Bonus</Text>
 
-                        <TouchableHighlight
-                        underlayColor={"transparent"}
-                        // style={{flex: 1, alignItems: "center"}}
-                        
-                            onPress={() => {
-                            axios.put('https://intense-harbor-45607.herokuapp.com/edit/bonus/'+this.props.user+'/'+this.state.goal.selectedYear+'/'+parseInt(this.state.calDate)+'/'+this.state.bonuschange)
-                            .then(resp => {
-                                this.setModalVisible1(!this.state.modalVisible1);
-                            })
-                            }}>
-                            <Text style={styles.saveBtn}>Save</Text>
-                        </TouchableHighlight>
+                            <View style={styles.SectionStyle}>
+                                <TextInput
+                                    style={styles.forms1}
+                                    onChangeText={bonuschange => this.setState({ bonuschange })}
+                                    value={this.state.bonuschange}
+                                    placeholder="Bonus "
+                                    keyboardType="number-pad"
+                                    returnKeyType="next"
+                                />
+                            </View>
+
+                            <TouchableHighlight
+                                underlayColor={"transparent"}
+                                // style={{flex: 1, alignItems: "center"}}
+
+                                onPress={() => {
+                                    axios.put('https://intense-harbor-45607.herokuapp.com/edit/bonus/' + this.props.user + '/' + this.state.goal.selectedYear + '/' + parseInt(this.state.calDate) + '/' + this.state.bonuschange)
+                                        .then(resp => {
+                                            this.setModalVisible1(!this.state.modalVisible1);
+                                        })
+                                }}>
+                                <Text style={styles.saveBtn}>Save</Text>
+                            </TouchableHighlight>
                         </View>
                     </View>
-                    </Modal>
+                </Modal>
             </ScrollView>
         );
     }

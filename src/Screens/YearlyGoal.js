@@ -58,14 +58,14 @@ class YearlyGoal extends React.Component {
         }))
     }
     componentDidMount() {
-        axios.get('http://192.168.0.102:3000/get/all/transactions/yearly/' + this.props.user+'/'+this.state.selectedYear)
+        axios.get('https://intense-harbor-45607.herokuapp.com/get/all/transactions/yearly/' + this.props.user+'/'+this.state.selectedYear)
         .then(resp => {
             // console.log(resp.data)
             this.setState({ transctions: resp.data })
         })
         .catch(err => console.log(err))
 
-        axios.get('http://192.168.0.102:3000/get/goal/' + this.props.user+'/'+this.state.selectedYear)
+        axios.get('https://intense-harbor-45607.herokuapp.com/get/goal/' + this.props.user+'/'+this.state.selectedYear)
         .then(resp => {
             // console.log(resp.data)
             this.setState({ goal: resp.data, yearlyIncomeGoal: parseFloat(resp.data.commission) + parseFloat(resp.data.bonus) + parseFloat(resp.data.spiff) })
@@ -80,13 +80,13 @@ class YearlyGoal extends React.Component {
         console.log(this.state.selectedYear)
         console.log(itemValue)
 
-        axios.get('http://192.168.0.102:3000/get/all/transactions/yearly/' + this.props.user+'/'+itemValue)
+        axios.get('https://intense-harbor-45607.herokuapp.com/get/all/transactions/yearly/' + this.props.user+'/'+itemValue)
         .then(resp => {
             this.setState({ transctions: resp.data })
         })
         .catch(err => console.log(err))
 
-    axios.get('http://192.168.0.102:3000/get/goal/' + this.props.user+'/'+itemValue)
+    axios.get('https://intense-harbor-45607.herokuapp.com/get/goal/' + this.props.user+'/'+itemValue)
         .then(resp => {
             // console.log(resp.data)
             console.log("ssss",resp.data)
@@ -108,7 +108,7 @@ class YearlyGoal extends React.Component {
         console.log(this.state.selectedYear)
         console.log(itemValue)
 
-        axios.get('http://192.168.0.102:3000/get/all/transactions/yearly/' + this.props.user+'/'+itemValue)
+        axios.get('https://intense-harbor-45607.herokuapp.com/get/all/transactions/yearly/' + this.props.user+'/'+itemValue)
         .then(resp => {
             // console.log(resp.data)
             this.setState({ transctions: resp.data })
