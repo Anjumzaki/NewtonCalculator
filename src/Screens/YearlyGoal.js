@@ -86,7 +86,7 @@ class YearlyGoal extends React.Component {
         })
         .catch(err => console.log(err))
 
-    axios.get('https://intense-harbor-45607.herokuapp.com/get/goal/' + this.props.user+'/'+itemValue)
+    axios.get('http://192.168.0.102:3000/get/goal/' + this.props.user+'/'+itemValue)
         .then(resp => {
             // console.log(resp.data)
             console.log("ssss",resp.data)
@@ -296,7 +296,7 @@ class YearlyGoal extends React.Component {
                         
                             onPress={() => {
 
-                                axios.post('http://192.168.0.102:3000/edit/goal/'+this.props.user+'/'+this.state.selectedYear+'/'+this.state.goalchange)
+                                axios.post('https://intense-harbor-45607.herokuapp.com/edit/goal/'+this.props.user+'/'+this.state.selectedYear+'/'+this.state.goalchange)
                                 .then(resp => {
                                     this.setModalVisible(!this.state.modalVisible);
                                     this.changeDrop1(this.state.selectedYear);
