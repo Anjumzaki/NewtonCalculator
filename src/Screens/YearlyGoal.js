@@ -151,9 +151,42 @@ class YearlyGoal extends React.Component {
 
         if (!result.cancelled) {
             this.setState({ image: result.uri });
+            await this.uploadImage(result.uri)
         }
     };
 
+
+    uploadImage = async (uri) => {
+        let fileType = uri.substring(uri.lastIndexOf(".") + 1);
+        console.log("uriiiii", uri)
+        let formData = new FormData();
+        var myfileName = 'bg-' + this.props.user+"-"+new Date().getFullYear()+ '.' + "jpg"
+        this.setState({
+          myfileName
+        })
+        // if(this.state.myfileName === ""){
+        //   this.setState({msg: "Error in Image Uploading", check: false})
+        // }
+        formData.append("photo", {
+          uri,
+          name: myfileName,
+          type: `image/${fileType}`
+          // name: 'photo.jpg',
+          // type: 'image/jpeg',
+        });
+        let options = {
+          method: "POST",
+          body: formData,
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "multipart/form-data"
+          }
+        };
+        fetch("https://intense-harbor-45607.herokuapp.com/upload", options)
+          .then((checkStatusAndGetJSONResponse) => {
+            console.log("server resp", JSON.stringify(checkStatusAndGetJSONResponse));
+          }).catch((err) => { this.setState({msg: "Error in Image Uploading"}) });
+      }
 
     render() {
         console.log("stateeeee", this.state, this.props.user)
@@ -203,10 +236,14 @@ class YearlyGoal extends React.Component {
                 return transc.name.toLowerCase().includes(key.toLowerCase())
             });
         }
-
+        let Image_Http_URL=""
+        Image_Http_URL ={ uri: 'https://intense-harbor-45607.herokuapp.com/getImages/'+"bg-"+this.props.user+"-"+new Date().getFullYear()+".jpg"};
         return (
             <View>
-                <ImageBackground style={{ width: '100%', height: '100%' }} source={require('../../assets/background.png')}>
+                <ImageBackground style={{ width: '100%', height: '100%' }} 
+                 source={Image_Http_URL}
+                // source={require('../../assets/background.png')}
+                >
 
                     <KeyboardAwareScrollView>
                         <View >
