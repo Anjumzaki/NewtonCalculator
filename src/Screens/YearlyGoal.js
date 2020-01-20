@@ -144,7 +144,7 @@ class YearlyGoal extends React.Component {
     }
     
         const placeholder = {
-            label: 'Year',
+            label: '2020',
             value: null,
             color: '#9EA0A4',
           };

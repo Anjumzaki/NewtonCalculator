@@ -24,7 +24,7 @@ class MainScreen extends React.Component {
             volume: '',
             msg: "",
             downPay: '',
-            spiff: '0',
+            spiff: '',
             note: '',
             commission: '0.0',
             commPer: -1,
