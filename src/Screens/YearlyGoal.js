@@ -58,14 +58,14 @@ class YearlyGoal extends React.Component {
         }))
     }
     componentDidMount() {
-        axios.get('https://intense-harbor-45607.herokuapp.com/get/all/transactions/yearly/' + this.props.user+'/'+this.state.selectedYear)
+        axios.get('http://192.168.0.102:3000/get/all/transactions/yearly/' + this.props.user+'/'+this.state.selectedYear)
         .then(resp => {
             // console.log(resp.data)
             this.setState({ transctions: resp.data })
         })
         .catch(err => console.log(err))
 
-        axios.get('https://intense-harbor-45607.herokuapp.com/get/goal/' + this.props.user+'/'+this.state.selectedYear)
+        axios.get('http://192.168.0.102:3000/get/goal/' + this.props.user+'/'+this.state.selectedYear)
         .then(resp => {
             // console.log(resp.data)
             this.setState({ goal: resp.data, yearlyIncomeGoal: parseFloat(resp.data.commission) + parseFloat(resp.data.bonus) + parseFloat(resp.data.spiff) })
@@ -80,22 +80,26 @@ class YearlyGoal extends React.Component {
         console.log(this.state.selectedYear)
         console.log(itemValue)
 
-        axios.get('https://intense-harbor-45607.herokuapp.com/get/all/transactions/yearly/' + this.props.user+'/'+itemValue)
+        axios.get('http://192.168.0.102:3000/get/all/transactions/yearly/' + this.props.user+'/'+itemValue)
         .then(resp => {
-            // console.log(resp.data)
             this.setState({ transctions: resp.data })
         })
         .catch(err => console.log(err))
 
-    axios.get('https://intense-harbor-45607.herokuapp.com/get/goal/' + this.props.user+'/'+itemValue)
+    axios.get('http://192.168.0.102:3000/get/goal/' + this.props.user+'/'+itemValue)
         .then(resp => {
             // console.log(resp.data)
-            this.setState({ goal: resp.data, yearlyIncomeGoal: parseFloat(resp.data.commission) + parseFloat(resp.data.bonus) + parseFloat(resp.data.spiff) })
-
+            console.log("ssss",resp.data)
+            if(resp.data === null){
+                this.setState({ goal: 0, yearlyIncomeGoal: parseFloat(0) + parseFloat(0) + parseFloat(0) })
+                this.forceUpdate()
+            }else{
+                this.setState({ goal: 0, yearlyIncomeGoal: parseFloat(resp.data.commission) + parseFloat(resp.data.bonus) + parseFloat(resp.data.spiff) })
+                this.forceUpdate()
+            }
+            console.log("change state goal",this.state)
         })
         .catch(err => console.log(err))
-
-        
     }
 
     changeDrop1 = (itemValue) => {
@@ -104,7 +108,7 @@ class YearlyGoal extends React.Component {
         console.log(this.state.selectedYear)
         console.log(itemValue)
 
-        axios.get('https://intense-harbor-45607.herokuapp.com/get/all/transactions/yearly/' + this.props.user+'/'+itemValue)
+        axios.get('http://192.168.0.102:3000/get/all/transactions/yearly/' + this.props.user+'/'+itemValue)
         .then(resp => {
             // console.log(resp.data)
             this.setState({ transctions: resp.data })
@@ -292,14 +296,14 @@ class YearlyGoal extends React.Component {
                         
                             onPress={() => {
 
-                                axios.post('https://intense-harbor-45607.herokuapp.com/edit/goal/'+this.props.user+'/'+this.state.currYear+'/'+this.state.goalchange)
-                            .then(resp => {
-                                this.setModalVisible(!this.state.modalVisible);
-                                this.changeDrop1(this.state.selectedYear);
-                                axios.get('https://intense-harbor-45607.herokuapp.com/get/goal/' + this.props.user+'/'+itemValue)
+                                axios.post('http://192.168.0.102:3000/edit/goal/'+this.props.user+'/'+this.state.selectedYear+'/'+this.state.goalchange)
                                 .then(resp => {
-                                    // console.log(resp.data)
-                                    this.setState({ goal: resp.data, yearlyIncomeGoal: parseFloat(resp.data.commission) + parseFloat(resp.data.bonus) + parseFloat(resp.data.spiff) })
+                                    this.setModalVisible(!this.state.modalVisible);
+                                    this.changeDrop1(this.state.selectedYear);
+                                    axios.get('http://192.168.0.102:3000/get/goal/' + this.props.user+'/'+this.state.selectedYear)
+                                    .then(resp => {
+                                         console.log("as",resp.data)
+                                        this.setState({ goal: resp.data, yearlyIncomeGoal: parseFloat(resp.data.commission) + parseFloat(resp.data.bonus) + parseFloat(resp.data.spiff) })
 
                                 })  
                                 .catch(err => console.log(err))

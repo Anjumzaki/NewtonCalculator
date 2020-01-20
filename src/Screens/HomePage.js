@@ -459,7 +459,7 @@ class HomePage extends React.Component {
                         // style={{flex: 1, alignItems: "center"}}
                         underlayColor={"transparent"}
                             onPress={() => {
-                            axios.post('https://intense-harbor-45607.herokuapp.com/edit/goal/'+this.props.user+'/'+this.state.currYear+'/'+this.state.goalchange)
+                            axios.post('http://192.168.0.102:3000/edit/goal/month/'+this.props.user+'/'+this.state.currYear+'/'+parseInt(this.state.calDate)+'/'+this.state.goalchange)
                             .then(resp => {
                                 this.setModalVisible(!this.state.modalVisible);
                             }).then(()=>this._onRefresh)
