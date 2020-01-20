@@ -206,11 +206,8 @@ class YearlyGoal extends React.Component {
 
         return (
             <View>
-                <ImageBackground style={{width:'100%',height:'100%'}} source={require('../../assets/background.png')}>
-                    <Button
-                        title="Pick an yearly goal image"
-                        onPress={this._pickImage}
-                    />
+                <ImageBackground style={{ width: '100%', height: '100%' }} source={require('../../assets/background.png')}>
+
                     <KeyboardAwareScrollView>
                         <View >
                             {/* {console.log(this.state.selectedYear, 'i maslect4e')} */}
@@ -229,61 +226,70 @@ class YearlyGoal extends React.Component {
                                         ]}
                                     />
                                 </View>
+                                <View style={{padding:20}}>
+
+                                <Button
+                               
+                                    title="Add Photo"
+                                    onPress={this._pickImage}
+                                />
+                                </View>
+
                             </View>
                             {/* <View style={{ marginLeft: 10, marginRight: 10, padding: 0 ,backgroundColor:'transparent'}}> */}
-                                <CardItem style={styles.cardHead1} >
-                                    <TouchableHighlight onPress={() => {
-                                        this.setModalVisible(true);
-                                    }} >
-                                        <View style={{ flexDirection: 'row' }}>
-                                            <Text style={{ fontSize: 20, width: Dimensions.get('window').width / 2 + 30 }} >Yeary Volume Goal: </Text>
-                                            <Text style={styles.head1}>${this.state.goal.volume ? this.numberWithCommas(this.state.goal.volume) : "0.00"}</Text>
-                                        </View>
-                                    </TouchableHighlight>
-                                </CardItem>
-                                <CardItem style={styles.cardHead1} >
+                            <CardItem style={styles.cardHead1} >
+                                <TouchableHighlight onPress={() => {
+                                    this.setModalVisible(true);
+                                }} >
                                     <View style={{ flexDirection: 'row' }}>
-                                        <Text style={styles.head}>Total # of sales: </Text>
-                                        <Text style={styles.head1}>{this.state.transctions.length ? this.state.transctions.length : "0"}</Text>
+                                        <Text style={{ fontSize: 20, width: Dimensions.get('window').width / 2 + 30 }} >Yeary Volume Goal: </Text>
+                                        <Text style={styles.head1}>${this.state.goal.volume ? this.numberWithCommas(this.state.goal.volume) : "0.00"}</Text>
                                     </View>
-                                </CardItem>
-                                <CardItem style={styles.cardHead1} >
-                                    <View style={{ flexDirection: 'row' }}>
-                                        <Text style={styles.head}>Current: </Text>
-                                        <Text style={styles.head1}>${totalVolume ? this.numberWithCommas(totalVolume) : "0.00"}</Text>
-                                    </View>
-                                </CardItem>
-                                <CardItem style={styles.cardHead1} >
-                                    <View style={{ flexDirection: 'row' }}>
-                                        <Text style={styles.head}>Remaining Goal </Text>
-                                        <Text style={styles.head1}>${totalVolume && this.state.goal.volume ? this.numberWithCommas(this.state.goal.volume - totalVolume) : "0.00"}</Text>
-                                    </View>
-                                </CardItem>
-                                <CardItem style={styles.cardHead1} >
-                                    <View style={{ flexDirection: 'row' }}>
-                                        <Text style={styles.head}>Total Commisions </Text>
-                                        <Text style={styles.head1}>${totalCommission ? this.numberWithCommas(Math.round(totalCommission)) : "0.00"}</Text>
-                                    </View>
-                                </CardItem>
-                                <CardItem style={styles.cardHead1} >
-                                    <View style={{ flexDirection: 'row' }}>
-                                        <Text style={styles.head}>Total Bonus </Text>
-                                        <Text style={styles.head1}>${totalBonus ? this.numberWithCommas(Math.round(totalBonus)) : "0.00"}</Text>
-                                    </View>
-                                </CardItem>
-                                <CardItem style={styles.cardHead1} >
-                                    <View style={{ flexDirection: 'row' }}>
-                                        <Text style={styles.head}>Total Spiff </Text>
-                                        <Text style={styles.head1}>${totalSpiff ? this.numberWithCommas(Math.round(totalSpiff)) : "0.00"}</Text>
-                                    </View>
-                                </CardItem>
-                                <CardItem style={styles.cardHead1} >
-                                    <View style={{ flexDirection: 'row' }}>
-                                        <Text style={styles.head}>Total Income </Text>
-                                        <Text style={styles.head1}>${totalIncome ? this.numberWithCommas(Math.round(totalIncome)) : "0.00"}</Text>
-                                    </View>
-                                </CardItem>
-                                {/* <CardItem style={styles.cardHead1} >
+                                </TouchableHighlight>
+                            </CardItem>
+                            <CardItem style={styles.cardHead1} >
+                                <View style={{ flexDirection: 'row' }}>
+                                    <Text style={styles.head}>Total # of sales: </Text>
+                                    <Text style={styles.head1}>{this.state.transctions.length ? this.state.transctions.length : "0"}</Text>
+                                </View>
+                            </CardItem>
+                            <CardItem style={styles.cardHead1} >
+                                <View style={{ flexDirection: 'row' }}>
+                                    <Text style={styles.head}>Current: </Text>
+                                    <Text style={styles.head1}>${totalVolume ? this.numberWithCommas(totalVolume) : "0.00"}</Text>
+                                </View>
+                            </CardItem>
+                            <CardItem style={styles.cardHead1} >
+                                <View style={{ flexDirection: 'row' }}>
+                                    <Text style={styles.head}>Remaining Goal </Text>
+                                    <Text style={styles.head1}>${totalVolume && this.state.goal.volume ? this.numberWithCommas(this.state.goal.volume - totalVolume) : "0.00"}</Text>
+                                </View>
+                            </CardItem>
+                            <CardItem style={styles.cardHead1} >
+                                <View style={{ flexDirection: 'row' }}>
+                                    <Text style={styles.head}>Total Commisions </Text>
+                                    <Text style={styles.head1}>${totalCommission ? this.numberWithCommas(Math.round(totalCommission)) : "0.00"}</Text>
+                                </View>
+                            </CardItem>
+                            <CardItem style={styles.cardHead1} >
+                                <View style={{ flexDirection: 'row' }}>
+                                    <Text style={styles.head}>Total Bonus </Text>
+                                    <Text style={styles.head1}>${totalBonus ? this.numberWithCommas(Math.round(totalBonus)) : "0.00"}</Text>
+                                </View>
+                            </CardItem>
+                            <CardItem style={styles.cardHead1} >
+                                <View style={{ flexDirection: 'row' }}>
+                                    <Text style={styles.head}>Total Spiff </Text>
+                                    <Text style={styles.head1}>${totalSpiff ? this.numberWithCommas(Math.round(totalSpiff)) : "0.00"}</Text>
+                                </View>
+                            </CardItem>
+                            <CardItem style={styles.cardHead1} >
+                                <View style={{ flexDirection: 'row' }}>
+                                    <Text style={styles.head}>Total Income </Text>
+                                    <Text style={styles.head1}>${totalIncome ? this.numberWithCommas(Math.round(totalIncome)) : "0.00"}</Text>
+                                </View>
+                            </CardItem>
+                            {/* <CardItem style={styles.cardHead1} >
                         <View style={{ flexDirection: 'row' }}>
                             <Text style={styles.head}>Yearly Income Goal </Text>
                             <Text style={styles.head1}>${this.state.yearlyIncomeGoal ? this.numberWithCommas(this.state.yearlyIncomeGoal) : "0.00" }</Text>
@@ -295,8 +301,8 @@ class YearlyGoal extends React.Component {
                             <Text style={styles.head1}>${this.state.goal.volume && totalIncome ? this.numberWithCommas(this.state.goal.volume - totalIncome): "0.00" }</Text>
                         </View>
                     </CardItem> */}
-                            </View>
-                            {/* {(this.state.transctions !== null ? myTransctions !== null ?
+                        </View>
+                        {/* {(this.state.transctions !== null ? myTransctions !== null ?
                         myTransctions.map(
                             (transc, index) => <TransCard transc={transc} key={index} />
                         )
@@ -441,7 +447,7 @@ const styles = StyleSheet.create({
         fontSize: 16,
         fontWeight: 'bold',
         color: 'gray',
-        width: Dimensions.get('window').width / 2 
+        width: Dimensions.get('window').width / 2
     },
 
     cardHead: {
@@ -453,8 +459,8 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: "row",
         justifyContent: 'flex-start',
-        backgroundColor:'rgba(255,255,255,0.5)',
-        marginHorizontal:20
+        backgroundColor: 'rgba(255,255,255,0.5)',
+        marginHorizontal: 20
     },
     head1: {
         color: '#3f3fb9',
