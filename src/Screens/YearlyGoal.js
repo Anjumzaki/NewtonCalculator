@@ -206,7 +206,7 @@ class YearlyGoal extends React.Component {
 
         return (
             <View>
-                <ImageBackground style={{ width: '100%', height: '100%' }} source={require('../../assets/background.png')}>
+                <ImageBackground style={{ width: '100%', height: '100%' }} source={require('../../assets/Audi.png')}>
 
                     <KeyboardAwareScrollView>
                         <View >
