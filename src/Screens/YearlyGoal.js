@@ -86,15 +86,15 @@ class YearlyGoal extends React.Component {
         })
         .catch(err => console.log(err))
 
-    axios.get('http://192.168.0.102:3000/get/goal/' + this.props.user+'/'+itemValue)
+    axios.get('https://intense-harbor-45607.herokuapp.com/get/goal/' + this.props.user+'/'+itemValue)
         .then(resp => {
             // console.log(resp.data)
-            console.log("ssss",resp.data)
+            console.log("sssssssssssssssssssssssssssssssssssssss",resp.data)
             if(resp.data === null){
                 this.setState({ goal: 0, yearlyIncomeGoal: parseFloat(0) + parseFloat(0) + parseFloat(0) })
                 this.forceUpdate()
             }else{
-                this.setState({ goal: 0, yearlyIncomeGoal: parseFloat(resp.data.commission) + parseFloat(resp.data.bonus) + parseFloat(resp.data.spiff) })
+                this.setState({ goal: resp.data, yearlyIncomeGoal: parseFloat(resp.data.commission) + parseFloat(resp.data.bonus) + parseFloat(resp.data.spiff) })
                 this.forceUpdate()
             }
             console.log("change state goal",this.state)
@@ -300,7 +300,7 @@ class YearlyGoal extends React.Component {
                                 .then(resp => {
                                     this.setModalVisible(!this.state.modalVisible);
                                     this.changeDrop1(this.state.selectedYear);
-                                    axios.get('http://192.168.0.102:3000/get/goal/' + this.props.user+'/'+this.state.selectedYear)
+                                    axios.get('https://intense-harbor-45607.herokuapp.com/get/goal/' + this.props.user+'/'+this.state.selectedYear)
                                     .then(resp => {
                                          console.log("as",resp.data)
                                         this.setState({ goal: resp.data, yearlyIncomeGoal: parseFloat(resp.data.commission) + parseFloat(resp.data.bonus) + parseFloat(resp.data.spiff) })
