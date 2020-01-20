@@ -45,7 +45,7 @@ class HomePage extends React.Component {
 
 
     getGoal = () => {
-        axios.get('https://intense-harbor-45607.herokuapp.com/get/goal/' + this.props.user + '/' + new Date().getFullYear())
+        axios.get('http://192.168.0.102:3000/get/goal/month/' + this.props.user + '/' + new Date().getFullYear()+'/'+parseInt(this.state.calDate))
             .then(resp => {
                 this.setState({ goal: resp.data, refreshing: false })
             })

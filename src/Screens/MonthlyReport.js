@@ -42,7 +42,7 @@ class MonthlyReport extends React.Component {
         //                 index: 0,
         //                 actions: [NavigationActions.navigate({ routeName: 'MainTabs' })],
         //             }))
-        //         }else if(response.data === "wrong"){
+        //         }else if(response.data === "wrong"){ 
         //             this.setState({msg: "password is incorrect"})
         //         }
         //     }).catch((error) => { 
@@ -66,7 +66,7 @@ class MonthlyReport extends React.Component {
         .catch(err => console.log(err))
     }
     render() {
-        console.log("state", this.state)
+        console.log("state", this.state, this.props.user)
         var key = this.state.seName;
         var serachedTractions =[]
         if (this.state.seName) {

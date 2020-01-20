@@ -30,11 +30,11 @@ export default class TransCard extends React.Component {
                 <CardItem style={styles.cardHead1} >
                     <View>
                         <Text style={styles.head}>Sold Date: </Text>
-                        <Text style={styles.head1}> {months[saleDate.getMonth()+1]}-{saleDate.getDate()}-{saleDate.getFullYear()} </Text>
+                        <Text style={styles.head1}> {months[saleDate.getMonth()]}-{saleDate.getDate()}-{saleDate.getFullYear()} </Text>
                     </View>
                     <View>
                         <Text style={styles.head}>Pay Date: </Text>
-                        <Text style={styles.head1}>{months[PayDate.getMonth()+1]}-{PayDate.getDate()}-{PayDate.getFullYear()}</Text>
+                        <Text style={styles.head1}>{months[PayDate.getMonth()]}-{PayDate.getDate()}-{PayDate.getFullYear()}</Text>
                     </View>
                 </CardItem>
                 <CardItem style={styles.cardHead} >
