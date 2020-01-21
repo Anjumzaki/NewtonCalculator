@@ -20,7 +20,7 @@ class MonthlyReport extends React.Component {
             eye: true,
             years: ['All', '2020', '2021', '2022', '2023', '2024', '2025'],
             selectedyear: 'All',
-            months: ['All','Jan', 'Feb', 'Mar', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', "Nov", "Dec"],
+            months: ['All','Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', "Nov", "Dec"],
             selectedMonth: 'All',
             selectedMonthNo: 'All',
             transctions: null,
@@ -77,8 +77,8 @@ class MonthlyReport extends React.Component {
                                         }else{
                                             var that = this
                                             var filter = this.state.transctions.filter(function(transc) {
-                                                var monC=""
-                                                if(parseInt(that.state.selectedMonthNo) < 10){
+                                                var monC=that.state.selectedMonthNo
+                                                if(parseInt(that.state.selectedMonthNo) < 10 ){
                                                     console.log("inddddddddddddddddddddddddddddddddd")
                                                     monC = "0"+that.state.selectedMonthNo
                                                 }
@@ -90,18 +90,31 @@ class MonthlyReport extends React.Component {
                                             this.setState({filteredTransctions: filter})
                                         }
                                     }else{
-                                        var that = this
-                                        var filter = this.state.transctions.filter(function(transc) {
-                                        var monC=""
-                                        if(parseInt(that.state.selectedMonthNo) < 10){
-                                            console.log("inddddddddddddddddddddddddddddddddd")
-                                            monC = "0"+that.state.selectedMonthNo
-                                        }
-                                        console.log("yearfffffffffffffffffffffffff",transc.soldDate.substring(0,4))
-                                        return transc.soldDate.substring(0,4) == itemValue && parseInt(transc.soldDate.substring(5,7)) === parseInt(monC);
-                                    })
 
-                                    this.setState({filteredTransctions: filter})
+                                        if(this.state.selectedMonth === 'All'){
+                                            var filter = this.state.transctions.filter(function(transc) {
+                                               
+                                                console.log("yearfffffffffffffffffffffffff",transc.soldDate.substring(0,4))
+                                                return transc.soldDate.substring(0,4) == itemValue ;
+                                            })
+        
+                                            this.setState({filteredTransctions: filter})
+                                        }else {
+                                            var that = this
+                                            var filter = this.state.transctions.filter(function(transc) {
+                                            var monC=that.state.selectedMonthNo
+                                            if(parseInt(that.state.selectedMonthNo) < 10){
+                                                console.log("inddddddddddddddddddddddddddddddddd")
+                                                monC = "0"+that.state.selectedMonthNo
+                                            }
+                                            console.log("yearfffffffffffffffffffffffff",transc.soldDate.substring(0,4), parseInt(transc.soldDate.substring(5,7)) , parseInt(monC))
+                                            return transc.soldDate.substring(0,4) == itemValue && parseInt(transc.soldDate.substring(5,7)) === parseInt(monC);
+                                        })
+    
+                                        this.setState({filteredTransctions: filter})
+                                        }
+
+                                       
                                    } 
                                 }}>
                                 {this.state.years.map((item, i) => (
