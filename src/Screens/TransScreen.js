@@ -175,13 +175,15 @@ class MainScreen extends React.Component {
     }
     render() {
         console.log("state", this.state)
+        var pDate = new Date(this.state.soldDate.dateString)
+         var soldDate = (pDate.getMonth()+1) + '-' + pDate.getDate() + '-' + pDate.getFullYear()
         return (
             <KeyboardAwareScrollView enableOnAndroid={true}>
                 <View style={{ flex: 1, alignItems: 'center', marginTop: 10 }}>
                     <View style={styles.SectionStyle}>
                         <TextInput
                             style={styles.forms}
-                            value={this.state.soldDate.dateString}
+                            value={soldDate}
                             placeholder="Soll Date"
                             keyboardType="default"
                             returnKeyType="next"
@@ -189,12 +191,12 @@ class MainScreen extends React.Component {
                     </View>
                     <View style={styles.SectionStyle}>
                         <DatePicker
-                            style={styles.forms}
+                            style={[styles.forms,{paddingTop:-5}]}
                             date={this.state.payDate} //initial date from state
                             mode="date" //The enum of date, datetime and time
                             placeholder="Pay date"
                             allowFontScaling={false}
-                            format="YYYY-MM-DD"
+                            format="MM-DD-YYYY"
                             confirmBtnText="Confirm"
                             cancelBtnText="Cancel"
                             showIcon={false}
@@ -202,12 +204,13 @@ class MainScreen extends React.Component {
                                 dateIcon: {
                                     position: 'absolute',
                                     left: 0,
-                                    top: 4,
+                                    top: 0,
+                                    bottom:5,
                                     marginLeft: 0,
                                 },
                                 dateText: {
                                     fontSize: 19,
-                                    color: 'black'
+                                    color: 'black',
                                 },
                                 dateInput: {
                                     borderWidth: 0,
