@@ -19,36 +19,16 @@ class MonthlyReport extends React.Component {
             eye: true,
             years: ['All', '2020', '2021', '2022', '2023', '2024', '2025'],
             selectedyear: 'All',
-            months: ['Jan', 'Feb', 'Mar', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', "Nov", "Dec"],
+            months: ['All','Jan', 'Feb', 'Mar', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', "Nov", "Dec"],
             selectedMonth: 'All',
+            selectedMonthNo: 'All',
             transctions: null,
             filteredTransctions: null
 
         };
     }
     login() {
-        // console.log("login")
-        // axios
-        //     .post('https://blooming-ridge-94645.herokuapp.com/login',{
-        //         userName: this.state.userName,
-        //         password: this.state.Password
-        //     })
-        //     .then((response) => { 
-
-        //         console.log("resp1",response.data)
-        //         if(response.data === "match"){
-        //             this.props.navigation.navigate('MainTabs')
-        //             this.props.navigation.dispatch(StackActions.reset({
-        //                 index: 0,
-        //                 actions: [NavigationActions.navigate({ routeName: 'MainTabs' })],
-        //             }))
-        //         }else if(response.data === "wrong"){ 
-        //             this.setState({msg: "password is incorrect"})
-        //         }
-        //     }).catch((error) => { 
-        //     console.log("mongodb get register error",error)
-        //     this.setState({msg: "login info is incorrect"})
-        //     })
+    
         this.props.navigation.navigate('MainTabs')
         this.props.navigation.dispatch(StackActions.reset({
             index: 0,
@@ -65,6 +45,7 @@ class MonthlyReport extends React.Component {
         })
         .catch(err => console.log(err))
     }
+    
     render() {
         console.log("state", this.state, this.props.user)
         var key = this.state.seName;
@@ -90,11 +71,33 @@ class MonthlyReport extends React.Component {
                                 onValueChange={(itemValue, itemIndex) => {
                                     this.setState({ selectedyear: itemValue })
                                     if(itemValue === 'All'){
-                                        this.setState({filteredTransctions: this.state.transctions})
+                                        if(this.state.selectedMonth === 'All'){
+                                            this.setState({filteredTransctions: this.state.transctions})
+                                        }else{
+                                            var that = this
+                                            var filter = this.state.transctions.filter(function(transc) {
+                                                var monC=""
+                                                if(parseInt(that.state.selectedMonthNo) < 10){
+                                                    console.log("inddddddddddddddddddddddddddddddddd")
+                                                    monC = "0"+that.state.selectedMonthNo
+                                                }
+                                                console.log("yearrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr",transc.soldDate.substring(5,7),monC)
+                                                
+                                                return  parseInt(transc.soldDate.substring(5,7)) === parseInt(monC);
+                                            })
+        
+                                            this.setState({filteredTransctions: filter})
+                                        }
                                     }else{
-                                    var filter = this.state.transctions.filter(function(transc) {
-                                        console.log("year",transc.soldDate.substring(0,4))
-                                        return transc.soldDate.substring(0,4) == itemValue;
+                                        var that = this
+                                        var filter = this.state.transctions.filter(function(transc) {
+                                        var monC=""
+                                        if(parseInt(that.state.selectedMonthNo) < 10){
+                                            console.log("inddddddddddddddddddddddddddddddddd")
+                                            monC = "0"+that.state.selectedMonthNo
+                                        }
+                                        console.log("yearfffffffffffffffffffffffff",transc.soldDate.substring(0,4))
+                                        return transc.soldDate.substring(0,4) == itemValue && parseInt(transc.soldDate.substring(5,7)) === parseInt(monC);
                                     })
 
                                     this.setState({filteredTransctions: filter})
@@ -111,7 +114,7 @@ class MonthlyReport extends React.Component {
                                 selectedValue={this.state.selectedMonth}
                                 style={{ height: 50, width: 105 }}
                                 onValueChange={(itemValue, itemIndex) =>{
-                                    this.setState({ selectedMonth: itemValue })
+                                    this.setState({ selectedMonth: itemValue, selectedMonthNo: itemIndex })
                                     var sYear = this.state.selectedyear;
                                     console.log("sYear",sYear)
                                     if(sYear === 'All'){
@@ -119,8 +122,9 @@ class MonthlyReport extends React.Component {
                                             this.setState({filteredTransctions: this.state.transctions})
                                         }else{
                                         var filter = this.state.transctions.filter(function(transc) {
-                                            console.log("month",transc.soldDate.substring(5,7), itemIndex-1)
-                                            return (transc.soldDate.substring(5,7) == itemIndex-1);
+                                            console.log("monthccccccccccccccccccccccccccccc",
+                                            transc.soldDate.substring(5,7), itemIndex)
+                                            return (transc.soldDate.substring(5,7) == itemIndex);
                                         })
 
                                         this.setState({filteredTransctions: filter})
@@ -130,8 +134,8 @@ class MonthlyReport extends React.Component {
                                             this.setState({filteredTransctions: this.state.transctions})
                                         }else{
                                         var filter = this.state.transctions.filter(function(transc) {
-                                            console.log("month",transc.soldDate.substring(5,7), itemIndex-1)
-                                            return (transc.soldDate.substring(5,7) == itemIndex-1 &&  transc.soldDate.substring(0,4) === sYear);
+                                            console.log("month",transc.soldDate.substring(5,7), itemIndex)
+                                            return (transc.soldDate.substring(5,7) == itemIndex &&  transc.soldDate.substring(0,4) === sYear);
                                         })
 
                                         this.setState({filteredTransctions: filter})
