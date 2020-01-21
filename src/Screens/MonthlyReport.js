@@ -4,6 +4,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { NavigationActions, StackActions } from 'react-navigation';
 import TransCard from './TransCard'
+import {CardItem} from 'native-base'
 import { bindActionCreators } from "redux";
 import { userAsync } from "../store/actions";
 import { connect } from "react-redux";
@@ -23,7 +24,6 @@ class MonthlyReport extends React.Component {
             selectedMonth: 'All',
             transctions: null,
             filteredTransctions: null
-
         };
     }
     login() {
@@ -56,26 +56,27 @@ class MonthlyReport extends React.Component {
         }))
     }
     componentDidMount() {
-        console.log('state',this.state)
+        console.log('state', this.state)
 
-        axios.get('https://intense-harbor-45607.herokuapp.com/get/all/transactions/'+this.props.user)
-        .then(resp => {
-            // console.log(resp.data)
-            this.setState({transctions: resp.data, filteredTransctions: resp.data})
-        })
-        .catch(err => console.log(err))
+        axios.get('https://intense-harbor-45607.herokuapp.com/get/all/transactions/' + this.props.user)
+            .then(resp => {
+                // console.log(resp.data)
+                this.setState({ transctions: resp.data, filteredTransctions: resp.data })
+            })
+            .catch(err => console.log(err))
     }
     render() {
         console.log("state", this.state, this.props.user)
         var key = this.state.seName;
-        var serachedTractions =[]
+        var serachedTractions = []
         if (this.state.seName) {
 
-             serachedTractions = this.state.transctions.filter(function (transc) {
+            serachedTractions = this.state.transctions.filter(function (transc) {
                 return transc.name.toLowerCase().includes(key.toLowerCase())
-                    
-            }); 
+
+            });
         }
+        const months = ['Jan', 'Feb', 'Mar', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', "Nov", "Dec"]
 
 
         return (
@@ -89,16 +90,16 @@ class MonthlyReport extends React.Component {
                                 style={{ height: 50, width: 105 }}
                                 onValueChange={(itemValue, itemIndex) => {
                                     this.setState({ selectedyear: itemValue })
-                                    if(itemValue === 'All'){
-                                        this.setState({filteredTransctions: this.state.transctions})
-                                    }else{
-                                    var filter = this.state.transctions.filter(function(transc) {
-                                        console.log("year",transc.soldDate.substring(0,4))
-                                        return transc.soldDate.substring(0,4) == itemValue;
-                                    })
+                                    if (itemValue === 'All') {
+                                        this.setState({ filteredTransctions: this.state.transctions })
+                                    } else {
+                                        var filter = this.state.transctions.filter(function (transc) {
+                                            console.log("year", transc.soldDate.substring(0, 4))
+                                            return transc.soldDate.substring(0, 4) == itemValue;
+                                        })
 
-                                    this.setState({filteredTransctions: filter})
-                                   } 
+                                        this.setState({ filteredTransctions: filter })
+                                    }
                                 }}>
                                 {this.state.years.map((item, i) => (
                                     <Picker.Item key={i} label={item} value={item} />
@@ -110,31 +111,31 @@ class MonthlyReport extends React.Component {
                                 style={styles.myDrop}
                                 selectedValue={this.state.selectedMonth}
                                 style={{ height: 50, width: 105 }}
-                                onValueChange={(itemValue, itemIndex) =>{
+                                onValueChange={(itemValue, itemIndex) => {
                                     this.setState({ selectedMonth: itemValue })
                                     var sYear = this.state.selectedyear;
-                                    console.log("sYear",sYear)
-                                    if(sYear === 'All'){
-                                        if(itemValue === 'All'){
-                                            this.setState({filteredTransctions: this.state.transctions})
-                                        }else{
-                                        var filter = this.state.transctions.filter(function(transc) {
-                                            console.log("month",transc.soldDate.substring(5,7), itemIndex-1)
-                                            return (transc.soldDate.substring(5,7) == itemIndex-1);
-                                        })
+                                    console.log("sYear", sYear)
+                                    if (sYear === 'All') {
+                                        if (itemValue === 'All') {
+                                            this.setState({ filteredTransctions: this.state.transctions })
+                                        } else {
+                                            var filter = this.state.transctions.filter(function (transc) {
+                                                console.log("month", transc.soldDate.substring(5, 7), itemIndex - 1)
+                                                return (transc.soldDate.substring(5, 7) == itemIndex - 1);
+                                            })
 
-                                        this.setState({filteredTransctions: filter})
+                                            this.setState({ filteredTransctions: filter })
                                         }
-                                    }else{
-                                        if(itemValue === 'All'){
-                                            this.setState({filteredTransctions: this.state.transctions})
-                                        }else{
-                                        var filter = this.state.transctions.filter(function(transc) {
-                                            console.log("month",transc.soldDate.substring(5,7), itemIndex-1)
-                                            return (transc.soldDate.substring(5,7) == itemIndex-1 &&  transc.soldDate.substring(0,4) === sYear);
-                                        })
+                                    } else {
+                                        if (itemValue === 'All') {
+                                            this.setState({ filteredTransctions: this.state.transctions })
+                                        } else {
+                                            var filter = this.state.transctions.filter(function (transc) {
+                                                console.log("month", transc.soldDate.substring(5, 7), itemIndex - 1)
+                                                return (transc.soldDate.substring(5, 7) == itemIndex - 1 && transc.soldDate.substring(0, 4) === sYear);
+                                            })
 
-                                        this.setState({filteredTransctions: filter})
+                                            this.setState({ filteredTransctions: filter })
                                         }
                                     }
                                 }}>
@@ -157,10 +158,30 @@ class MonthlyReport extends React.Component {
                         />
                         <Image style={{ padding: 10, marginRight: 10, width: 20, height: 20 }} source={require('../../assets/newICons/042-magnifying-glass.png')} />
                     </View>
+                    <View style={{justifyContent:'center'}}>
 
-                    {this.state.seName ? (serachedTractions.length > 0 ? serachedTractions.map((transc, index) => <TransCard transc={transc} key={index}/>): null):
-                    (this.state.filteredTransctions !== null ? this.state.filteredTransctions.map((transc, index) => <TransCard transc={transc} key={index}/>): null)}
-
+                   
+                    {this.state.seName ? (serachedTractions.length > 0 ? serachedTractions.map((transc, index) => <TouchableOpacity onPress={() =>
+                        this.props.navigation.navigate('SingleTransDetails', { transction: transc })}>
+                        <CardItem key={index} style={styles.cardHead1} >
+                            <View style={styles.cardRow}>
+                                <Text style={styles.heada}>{transc.name} </Text>
+                                <Text style={styles.headb}>{months[new Date(transc.soldDate).getMonth()]}  {new Date(transc.soldDate).getDate()}</Text>
+                                <Text style={styles.headc}>$ {transc.volume} </Text>
+                            </View>
+                        </CardItem>
+                    </TouchableOpacity>) : null) :
+                        (this.state.filteredTransctions !== null ? this.state.filteredTransctions.map((transc, index) => <TouchableOpacity onPress={() =>
+                            this.props.navigation.navigate('SingleTransDetails', { transction: transc })}>
+                            <CardItem key={index} style={styles.cardHead1} >
+                                <View style={styles.cardRow}>
+                                    <Text style={styles.heada}>{transc.name} </Text>
+                                    <Text style={styles.headb}>{months[new Date(transc.soldDate).getMonth()]}  {new Date(transc.soldDate).getDate()}</Text>
+                                    <Text style={styles.headc}>$ {transc.volume} </Text>
+                                </View>
+                            </CardItem>
+                        </TouchableOpacity>) : null)}
+                        </View>
 
                 </View>
             </KeyboardAwareScrollView>
@@ -192,13 +213,13 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         borderColor: "#3f3fb9",
         borderWidth: 1,
-        margin:10
+        margin: 10
     },
     forms: {
-        paddingTop:12,
-        paddingBottom:12,
-        paddingLeft:20,
-        paddingRight:20,
+        paddingTop: 12,
+        paddingBottom: 12,
+        paddingLeft: 20,
+        paddingRight: 20,
         backgroundColor: '#fff',
         color: '#3f3fb9',
         width: Dimensions.get('window').width - 55,
@@ -223,8 +244,30 @@ const styles = StyleSheet.create({
         color: '#3f3fb9',
         alignSelf: 'center',
         fontSize: 19
+    },
+    cardHead1: {
+        flex: 1,
+    },
+    cardRow: {
+        flexDirection: 'row',
 
-    }
+        padding: 10,
+        paddingTop: 15,
+        paddingBottom: 15,
+        backgroundColor: '#e8f1ff',
+        width: '100%',
+        justifyContent: 'space-between',
+        borderRadius: 5,
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+
+        elevation: 5,
+    },
 });
 
 const mapStateToProps = state => ({

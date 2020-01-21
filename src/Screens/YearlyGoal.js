@@ -239,13 +239,13 @@ class YearlyGoal extends React.Component {
         let Image_Http_URL=""
         Image_Http_URL ={ uri: 'https://intense-harbor-45607.herokuapp.com/getImages/'+"bg-"+this.props.user+"-"+new Date().getFullYear()+".jpg"};
         return (
-            <View>
+            <View style={{backgroundColor: 'rgba(255,255,255,0.5)',}}>
                 <ImageBackground style={{ width: '100%', height: '100%' }} 
                  source={Image_Http_URL}
                 // source={require('../../assets/background.png')}
                 >
 
-                    <KeyboardAwareScrollView>
+                    <KeyboardAwareScrollView  style={{backgroundColor: 'rgba(255,255,255,0.5)',}}>
                         <View >
                             {/* {console.log(this.state.selectedYear, 'i maslect4e')} */}
 
@@ -279,7 +279,7 @@ class YearlyGoal extends React.Component {
                                     this.setModalVisible(true);
                                 }} >
                                     <View style={{ flexDirection: 'row' }}>
-                                        <Text style={{ fontSize: 20, width: Dimensions.get('window').width / 2 + 30 }} >Yeary Volume Goal: </Text>
+                                        <Text style={{ fontSize: 20, fontWeight:'bold', width: Dimensions.get('window').width / 2 + 30 }} >Yeary Volume Goal: </Text>
                                         <Text style={styles.head1}>${this.state.goal.volume ? this.numberWithCommas(this.state.goal.volume) : "0.00"}</Text>
                                     </View>
                                 </TouchableHighlight>
@@ -476,14 +476,14 @@ const styles = StyleSheet.create({
         paddingLeft: 20,
         paddingRight: 20,
         backgroundColor: '#fff',
-        color: '#3f3fb9',
+        color: 'black',
         width: Dimensions.get('window').width - 55,
         fontSize: 18,
     },
     head: {
-        fontSize: 16,
+        fontSize: 20,
         fontWeight: 'bold',
-        color: 'gray',
+        color: 'black',
         width: Dimensions.get('window').width / 2
     },
 
@@ -496,13 +496,14 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: "row",
         justifyContent: 'flex-start',
-        backgroundColor: 'rgba(255,255,255,0.5)',
+        backgroundColor: 'transparent',
         marginHorizontal: 20
     },
     head1: {
-        color: '#3f3fb9',
+        color: 'black',
         alignSelf: 'flex-end',
-        fontSize: 19,
+        fontSize: 20,
+        fontWeight:'bold'
     }
 });
 
