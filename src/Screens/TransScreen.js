@@ -354,9 +354,8 @@ class MainScreen extends React.Component {
                                 onValueChange={(itemValue, itemIndex) =>
                                     this.setState({ commType: itemValue, commission: '', commPer: '' })
                                 }>
-                                <Picker.Item label="" value="" />
+                                 <Picker.Item label="%" value="%" />
                                 <Picker.Item label="Fixed" value="Fixed" />
-                                <Picker.Item label="%" value="%" />
                             </Picker>
                         </View>
                         <View style={styles.commSection}>
@@ -384,9 +383,8 @@ class MainScreen extends React.Component {
                                 onValueChange={(itemValue, itemIndex) =>
                                     this.setState({ bonusType: itemValue, bonus: '', bonusPer: '' })
                                 }>
-                                <Picker.Item label="" value="" />
+                                 <Picker.Item label="%" value="%" />
                                 <Picker.Item label="Fixed" value="Fixed" />
-                                <Picker.Item label="%" value="%" />
                             </Picker>
                         </View>
                         <View style={styles.commSection}>
@@ -419,9 +417,8 @@ class MainScreen extends React.Component {
                                 onValueChange={(itemValue, itemIndex) =>
                                     this.setState({ pmdType: itemValue })
                                 }>
-                                <Picker.Item label="" value="" />
-                                <Picker.Item label="Fixed" value="Fixed" />
                                 <Picker.Item label="%" value="%" />
+                                <Picker.Item label="Fixed" value="Fixed" />
                             </Picker>
                         </View>
                     </View>
