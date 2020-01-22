@@ -35,11 +35,9 @@ class Login extends React.Component {
         await Storage.setItem("userId", { userId: response.data.response._id })
     }
     login() {
-        console.log("Login")
         this.setState({ loading: true })
        
         if (this.state.newPass === this.state.newPass1) {
-                console.log("Loginpass")
 
                 axios
                     .put('https://intense-harbor-45607.herokuapp.com/changePassword', {
@@ -48,7 +46,6 @@ class Login extends React.Component {
                         uid: this.props.user
                     })
                     .then((response) => {
-                        console.log("resp1", response.data)
                         
                         if (response.data === "match") {
                            this.setState({msg: "Password changed"})
@@ -62,7 +59,6 @@ class Login extends React.Component {
                             this.setState({ msg: "Old password is incorrect" })
                         }
                     }).catch((error) => {
-                        console.log("mongodb get register error", error)
                         this.setState({ msg: "Problem in changing password" })
                     })
                 }else {
@@ -95,7 +91,6 @@ class Login extends React.Component {
     }
 
     render() {
-        console.log("state", this.state, this.props.user)
         return (
             <ImageBackground source={require('../../assets/background.png')} style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
                 <KeyboardAwareScrollView enableOnAndroid={true}>

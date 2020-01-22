@@ -18,15 +18,11 @@ export default class TransCard extends React.Component {
             msg: ""
         };
     }
-    componentDidMount() {
-        console.log("card", this.props.transc)
-    }
+ 
     render() {
         const months = ['Jan', 'Feb', 'Mar', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', "Nov", "Dec"]
         const saleDate = new Date(this.props.transc.soldDate)
         const PayDate = new Date(this.props.transc.payDate)
-        console.log(saleDate,'sale Date')
-        console.log(PayDate,'pay Date')
         return (
             <Card style={{ marginLeft: 10, marginRight: 10, padding: 0 }}>
                 <CardItem style={styles.cardHead1} >

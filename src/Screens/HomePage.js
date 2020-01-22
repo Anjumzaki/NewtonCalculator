@@ -53,10 +53,8 @@ class HomePage extends React.Component {
     }
 
     getdata = () => {
-        console.log(this.state.calDate, 'calDate')
         axios.get('https://intense-harbor-45607.herokuapp.com/get/all/transactions/monthly/' + this.props.user + '/' + parseInt(this.state.calDate) + '/' + parseInt(this.state.currYear))
             .then(resp => {
-                console.log(resp.data)
                 this.setState({ transctions: resp.data })
             })
             .catch(err => console.log(err))
@@ -225,10 +223,6 @@ class HomePage extends React.Component {
 
             totalIncome = totalVolume
             totalPay = totalSpiff + totalCommission + totalBonus
-            console.log(totalPay, 'total pay')
-            console.log(totalBonus, 'totalBonus')
-            console.log(totalCommission, 'totalCommission')
-            console.log(totalSpiff, 'totalSpiff')
         }
         return (
             // style={{ flex: 1, alignItems: 'center', justifyContent: 'center', height: Dimensions.get('window').height - 70 }}

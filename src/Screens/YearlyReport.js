@@ -65,9 +65,6 @@ class YearlyReport extends React.Component {
    
     changeDrop = (itemValue) => {
         this.setState({ selectedYear: itemValue })
-        console.log('i am chgnes')
-        console.log(this.state.selectedYear)
-        console.log(itemValue)
     }
     render() {
         const placeholder = {
@@ -81,14 +78,9 @@ class YearlyReport extends React.Component {
             for (var i = 0; i < this.state.transctions.length; i++) {
                 if (new Date(trans[i].soldDate).getFullYear() == this.state.selectedYear) {
                     myTransctions.push(trans[i])
-                    console.log('I am amtched')
-                    console.log(new Date(trans[i].soldDate).getFullYear())
                     this.state.selectedYear
                 }
-                else {
-                    console.log('i am not')
-                    console.log(new Date(trans[i].soldDate).getFullYear())
-                }
+             
             }
         }
 

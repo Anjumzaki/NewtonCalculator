@@ -75,14 +75,10 @@ class YearlyGoal extends React.Component {
             })
             .catch(err => console.log(err))
         this.getPermissionAsync();
-        console.log('hi');
 
     }
     changeDrop = (itemValue) => {
         this.setState({ selectedYear: itemValue })
-        console.log('i am chgnes')
-        console.log(this.state.selectedYear)
-        console.log(itemValue)
 
         axios.get('https://intense-harbor-45607.herokuapp.com/get/all/transactions/yearly/' + this.props.user + '/' + itemValue)
             .then(resp => {
@@ -93,7 +89,6 @@ class YearlyGoal extends React.Component {
         axios.get('https://intense-harbor-45607.herokuapp.com/get/goal/' + this.props.user + '/' + itemValue)
             .then(resp => {
                 // console.log(resp.data)
-                console.log("sssssssssssssssssssssssssssssssssssssss", resp.data)
                 if (resp.data === null) {
                     this.setState({ goal: 0, yearlyIncomeGoal: parseFloat(0) + parseFloat(0) + parseFloat(0) })
                     this.forceUpdate()
@@ -101,16 +96,12 @@ class YearlyGoal extends React.Component {
                     this.setState({ goal: resp.data, yearlyIncomeGoal: parseFloat(resp.data.commission) + parseFloat(resp.data.bonus) + parseFloat(resp.data.spiff) })
                     this.forceUpdate()
                 }
-                console.log("change state goal", this.state)
             })
             .catch(err => console.log(err))
     }
 
     changeDrop1 = (itemValue) => {
         this.setState({ selectedYear: itemValue })
-        console.log('i am chgnes')
-        console.log(this.state.selectedYear)
-        console.log(itemValue)
 
         axios.get('https://intense-harbor-45607.herokuapp.com/get/all/transactions/yearly/' + this.props.user + '/' + itemValue)
             .then(resp => {
@@ -147,7 +138,6 @@ class YearlyGoal extends React.Component {
             quality: 1
         });
 
-        console.log(result);
 
         if (!result.cancelled) {
             this.setState({ image: result.uri });
@@ -158,7 +148,6 @@ class YearlyGoal extends React.Component {
 
     uploadImage = async (uri) => {
         let fileType = uri.substring(uri.lastIndexOf(".") + 1);
-        console.log("uriiiii", uri)
         let formData = new FormData();
         var myfileName = 'bg-' + this.props.user+"-"+new Date().getFullYear()+ '.' + "jpg"
         this.setState({
@@ -189,12 +178,10 @@ class YearlyGoal extends React.Component {
       }
 
     render() {
-        console.log("stateeeee", this.state, this.props.user)
 
         if (this.state.transctions.length > 0) {
             var totalVolume = 0, totalSpiff = 0, totalCommission = 0, totalBonus = 0;
             for (var i = 0; i < this.state.transctions.length; i++) {
-                console.log("sssssssssssssssssss")
                 // console.log(totalVolume, totalSpiff, totalCommission, totalBonus)
 
                 totalVolume += parseFloat(this.state.transctions[i].volume);
@@ -202,7 +189,6 @@ class YearlyGoal extends React.Component {
                 totalCommission += parseFloat(this.state.transctions[i].commission);
                 totalSpiff += parseFloat(this.state.transctions[i].spiff);
             }
-            console.log(totalVolume, totalSpiff, totalCommission, totalBonus)
             var totalIncome = totalSpiff + totalCommission + totalBonus
         }
 
@@ -217,14 +203,9 @@ class YearlyGoal extends React.Component {
             for (var i = 0; i < this.state.transctions.length; i++) {
                 if (new Date(trans[i].soldDate).getFullYear() == this.state.selectedYear) {
                     myTransctions.push(trans[i])
-                    console.log('I am amtched')
-                    console.log(new Date(trans[i].soldDate).getFullYear())
                     this.state.selectedYear
                 }
-                else {
-                    console.log('i am not')
-                    console.log(new Date(trans[i].soldDate).getFullYear())
-                }
+              
             }
         }
 

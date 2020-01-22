@@ -75,15 +75,12 @@ class MainScreen extends React.Component {
         return await Storage.getItem("userId")
     }
     componentDidMount() {
-        console.log(this.props.navigation.getParam('sectedDate'))
         this.setState({ soldDate: this.props.navigation.getParam('sectedDate') })
         var date =this.props.navigation.getParam('sectedDate').dateString;
         var year =new Date(date).getFullYear();
         var month = new Date(date).getMonth() + 1
-        console.log("dateeeeeeeeeeeeeeeeeeeeeeeeeeeeee",date,year,month)
         axios.get('https://intense-harbor-45607.herokuapp.com/get/fixedAmount/'+this.props.user+"/"+year.toString()+"/"+month.toString())
         .then(resp => {
-            console.log(resp.data)
             if(resp.data !== null){
             this.setState({
                 commPer: resp.data.commission, 
@@ -96,12 +93,9 @@ class MainScreen extends React.Component {
        
             }} )
         .catch(err => console.log(err))
-        console.log(this.getId()) 
-        console.log("thiss.props", this.props.user)
     }
 
     saveTrasc() {
-        console.log("ceck", this.state.commission >= 0, this.state.bonus >= 0, this.state.pmdDeduction >= 0)
         this.setState({
             loading: true
         })
@@ -117,7 +111,6 @@ class MainScreen extends React.Component {
             // this.state.bonusPer >= 0 &&
             // this.state.pmdDeductionPer >= 0
         ) {
-            console.log("In call")
             axios.post('https://intense-harbor-45607.herokuapp.com/post/transaction', {
                 payDate: this.state.payDate,
                 soldDate: this.state.soldDate.dateString,
@@ -140,12 +133,10 @@ class MainScreen extends React.Component {
                         else{
                             Alert.alert("Something Went Wrong!")
                         }
-                        console.log(resp.status)
                     }
                 )
                 .catch(err => Alert.alert("Something Went Wrong!"))
         } else {
-            console.log("iN ELSEEEEE")
             if (!this.state.payDate) {
                 this.setState({ msg: "Please Enter Date" })
             } else if (!this.state.name) {
@@ -174,7 +165,6 @@ class MainScreen extends React.Component {
         })
     }
     render() {
-        console.log("state", this.state)
         var pDate = new Date(this.state.soldDate.dateString)
         var soldDate = (pDate.getMonth()+1) + '-' + pDate.getDate() + '-' + pDate.getFullYear()
         return (

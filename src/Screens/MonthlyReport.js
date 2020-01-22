@@ -36,18 +36,16 @@ class MonthlyReport extends React.Component {
         }))
     }
     componentDidMount() {
-        console.log('state', this.state)
 
         axios.get('https://intense-harbor-45607.herokuapp.com/get/all/transactions/' + this.props.user)
             .then(resp => {
-                // console.log(resp.data)
                 this.setState({ transctions: resp.data, filteredTransctions: resp.data })
+
             })
             .catch(err => console.log(err))
     }
     
     render() {
-        console.log("state", this.state, this.props.user)
         var key = this.state.seName;
         var serachedTractions = []
         if (this.state.seName) {
@@ -79,10 +77,8 @@ class MonthlyReport extends React.Component {
                                             var filter = this.state.transctions.filter(function(transc) {
                                                 var monC=that.state.selectedMonthNo
                                                 if(parseInt(that.state.selectedMonthNo) < 10 ){
-                                                    console.log("inddddddddddddddddddddddddddddddddd")
                                                     monC = "0"+that.state.selectedMonthNo
                                                 }
-                                                console.log("yearrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr",transc.soldDate.substring(5,7),monC)
                                                 
                                                 return  parseInt(transc.soldDate.substring(5,7)) === parseInt(monC);
                                             })
@@ -94,7 +90,6 @@ class MonthlyReport extends React.Component {
                                         if(this.state.selectedMonth === 'All'){
                                             var filter = this.state.transctions.filter(function(transc) {
                                                
-                                                console.log("yearfffffffffffffffffffffffff",transc.soldDate.substring(0,4))
                                                 return transc.soldDate.substring(0,4) == itemValue ;
                                             })
         
@@ -104,10 +99,8 @@ class MonthlyReport extends React.Component {
                                             var filter = this.state.transctions.filter(function(transc) {
                                             var monC=that.state.selectedMonthNo
                                             if(parseInt(that.state.selectedMonthNo) < 10){
-                                                console.log("inddddddddddddddddddddddddddddddddd")
                                                 monC = "0"+that.state.selectedMonthNo
                                             }
-                                            console.log("yearfffffffffffffffffffffffff",transc.soldDate.substring(0,4), parseInt(transc.soldDate.substring(5,7)) , parseInt(monC))
                                             return transc.soldDate.substring(0,4) == itemValue && parseInt(transc.soldDate.substring(5,7)) === parseInt(monC);
                                         })
     
@@ -130,14 +123,12 @@ class MonthlyReport extends React.Component {
                                 onValueChange={(itemValue, itemIndex) =>{
                                     this.setState({ selectedMonth: itemValue, selectedMonthNo: itemIndex })
                                     var sYear = this.state.selectedyear;
-                                    console.log("sYear",sYear)
                                     if(sYear === 'All'){
                                         if(itemValue === 'All'){
                                             this.setState({filteredTransctions: this.state.transctions})
                                         }else{
                                         var filter = this.state.transctions.filter(function(transc) {
-                                            console.log("monthccccccccccccccccccccccccccccc",
-                                            transc.soldDate.substring(5,7), itemIndex)
+                                          
                                             return (transc.soldDate.substring(5,7) == itemIndex);
                                         })
 
@@ -148,7 +139,7 @@ class MonthlyReport extends React.Component {
                                             this.setState({filteredTransctions: this.state.transctions})
                                         }else{
                                         var filter = this.state.transctions.filter(function(transc) {
-                                            console.log("month",transc.soldDate.substring(5,7), itemIndex)
+                                          
                                             return (transc.soldDate.substring(5,7) == itemIndex &&  transc.soldDate.substring(0,4) === sYear);
                                         })
 

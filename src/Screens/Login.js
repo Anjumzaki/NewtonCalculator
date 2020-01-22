@@ -27,12 +27,10 @@ class Login extends React.Component {
         await Storage.setItem("userId", { userId: response.data.response._id })
     }
     login() {
-        console.log("Login")
         this.setState({ loading: true })
         if (this.state.userName) {
             // if (this.state.userName.length > 5) {
             if (this.state.Password) {
-                console.log("Loginpass")
 
                 axios
                     .post('https://intense-harbor-45607.herokuapp.com/login', {
@@ -40,7 +38,6 @@ class Login extends React.Component {
                         password: this.state.Password
                     })
                     .then((response) => {
-                        console.log("resp1", response.data.response._id)
                         // this.setId();
                         this.props.userAsync(response.data.response._id)
                         if (response.data.resp === "match") {
@@ -57,7 +54,6 @@ class Login extends React.Component {
                             this.setState({ msg: "password is incorrect" })
                         }
                     }).catch((error) => {
-                        console.log("mongodb get register error", error)
                         this.setState({ msg: "login info is incorrect" })
                     })
                 // this.props.navigation.navigate('MainTabs')

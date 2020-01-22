@@ -28,7 +28,6 @@ class Login extends React.Component {
     }
 
     signup() {
-        console.log("in login")
         this.setState({ loading: true })
         if (this.state.userName) {
             if (this.state.userName.length > 5) {
@@ -43,7 +42,6 @@ class Login extends React.Component {
                                         password: this.state.Password,
                                     })
                                     .then((response) => {
-                                        console.log("resp1", response.data)
                                         this.props.userAsync(response.data.response._id)
 
                                         if (response.data.resp === "registered") {
@@ -58,7 +56,6 @@ class Login extends React.Component {
                                             this.setState({ msg: "username already exist" })
                                         }
                                     }).catch((error) => {
-                                        console.log("mongodb get register error", error)
                                         this.setState({ msg: "signup info is incorrect" })
                                     })
                             }

@@ -57,7 +57,6 @@ class ChangeFixed extends React.Component {
         }))
     }
     componentDidMount() {
-        console.log(this.props.navigation.getParam('sectedDate'))
         this.setState({ soldDate: this.props.navigation.getParam('sectedDate') })
     }
 
@@ -68,7 +67,6 @@ class ChangeFixed extends React.Component {
             this.state.spiff &&
             this.state.volume
             ){
-                console.log("In call")
                 axios.post('https://intense-harbor-45607.herokuapp.com/post/goals',{
                             selectedYear: this.state.selectedyear,
                             volume: this.state.volume,
@@ -77,7 +75,6 @@ class ChangeFixed extends React.Component {
                             spiff: this.state.spiff,
                             userId: this.props.user
                         }).then(resp =>{
-                            console.log(resp)
                             this.setState({msg: "Goal saved",volume: '' ,spiff: '', commission: '', bonus: ''})
                         })
                         .catch(err => console.log(err))  
@@ -96,7 +93,6 @@ class ChangeFixed extends React.Component {
             } 
     }
     render() {
-        console.log("state", this.state)
         return (
             <KeyboardAwareScrollView enableOnAndroid={true}>
                 <View style={{ flex: 1, alignItems: 'center', marginTop: 10 }}>

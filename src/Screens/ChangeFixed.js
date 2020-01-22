@@ -98,7 +98,6 @@ class ChangeFixed extends React.Component {
             } 
     }
     render() {
-        console.log("state", this.state)
         return (
             <KeyboardAwareScrollView enableOnAndroid={true}>
                 <View style={{ flex: 1, alignItems: 'center', marginTop: 10 }}>

@@ -56,11 +56,6 @@ class SeeGoal extends React.Component {
         this.getdata()
     }
     render() {
-        console.log(this.state)
-        console.log(this.props.user)
-        console.log(this.state.goal)
-        // console.log(this.state.transactions.spiff,'Spiff')
-        console.log('I am in see goal')
         return (<View>
             {this.state.goal !== null && <Card style={{ marginLeft: 10, marginRight: 10, padding: 0 }}>
                 <CardItem style={styles.cardHead} >

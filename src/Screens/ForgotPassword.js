@@ -40,11 +40,9 @@ class ForgotPassword extends React.Component {
     }
     
     login() {
-        console.log("Login")
         this.setState({ loading: true })
        
         if (this.state.newPass === this.state.newPass1) {
-                console.log("Loginpass")
 
                 axios
                     .put('https://intense-harbor-45607.herokuapp.com/forgotPassword', {
@@ -52,7 +50,6 @@ class ForgotPassword extends React.Component {
                         uid: this.state.user._id
                     })
                     .then((response) => {
-                        console.log("resp1", response.data)
                         
                         if (response.data.success === "true") {
                            this.setState({msg: "Password changed"})
@@ -66,7 +63,6 @@ class ForgotPassword extends React.Component {
                             this.setState({ msg: "Error" })
                         }
                     }).catch((error) => {
-                        console.log("mongodb get register error", error)
                         this.setState({ msg: "Problem in changing password" })
                     })
                 }else {
@@ -84,7 +80,6 @@ class ForgotPassword extends React.Component {
         this.setState({ loading: true })
        
         if (this.state.newEmail) {
-                console.log("Loginpass")
 
                 axios
                     .put('https://intense-harbor-45607.herokuapp.com/changeEmail', {
@@ -92,7 +87,6 @@ class ForgotPassword extends React.Component {
                         uid: this.state.user._id
                     })
                     .then((response) => {
-                        console.log("resp1", response.data)
                         
                         if (response.data.success === "true") {
                            this.setState({msg: "Email changed"})
@@ -106,7 +100,6 @@ class ForgotPassword extends React.Component {
                             this.setState({ msg: "Error" })
                         }
                     }).catch((error) => {
-                        console.log("mongodb get register error", error)
                         this.setState({ msg: "Problem in changing Email" })
                     })
                 }else {
@@ -121,10 +114,8 @@ class ForgotPassword extends React.Component {
     }
 
     render() {
-        console.log("state", this.state, this.props.user)
         if(this.state.user !== null){
             var str =this.state.user.email;
-            console.log(str)
             // str ="hi aijaz"
             var ind= str.indexOf('@')
             var strc= ''
@@ -213,7 +204,6 @@ class ForgotPassword extends React.Component {
                             </View>
                             <View><Text style={{textAlign: "center", color: "red"}}>{this.state.msg}</Text></View>
                             <TouchableOpacity onPress={() =>{
-                                console.log(this.state.emailCheck , this.state.user.email)
                                 if(this.state.emailCheck === this.state.user.email){
                                     this.setState({state2: true, state1: false, msg: ''})
                                 }else{
