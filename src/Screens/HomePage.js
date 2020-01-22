@@ -495,8 +495,9 @@ class HomePage extends React.Component {
                                 // style={{flex: 1, alignItems: "center"}}
 
                                 onPress={() => {
-                                    axios.put('https://intense-harbor-45607.herokuapp.com/edit/bonus/' + this.props.user + '/' + this.state.goal.selectedYear + '/' + parseInt(this.state.calDate) + '/' + this.state.bonuschange)
+                                    axios.put('http://192.168.0.102:3000/edit/bonus/' + this.props.user + '/' + this.state.goal.selectedYear + '/' + parseInt(this.state.calDate) + '/' + this.state.bonuschange)
                                         .then(resp => {
+                                            console.log("hhhhhhhhhhhhhhhhhhhhhhhhhhh",resp)
                                             this.setModalVisible1(!this.state.modalVisible1);
                                         })
                                 }}>
