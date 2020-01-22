@@ -319,7 +319,7 @@ class HomePage extends React.Component {
                         firstDay={2}
                         onMonthChange={(month) => { console.log('month changed', month) }}
                         // Hide month navigation arrows. Default = false
-                        hideArrows={false}
+                        hideArrows={true}
                         // Replace default arrows with custom ones (direction can be 'left' or 'right')
                         // renderArrow={(direction) => (<Arrow />)}
                         // Do not show days of other months in month page. Default = false

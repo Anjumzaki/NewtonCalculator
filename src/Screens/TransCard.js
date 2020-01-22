@@ -25,12 +25,14 @@ export default class TransCard extends React.Component {
         const months = ['Jan', 'Feb', 'Mar', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', "Nov", "Dec"]
         const saleDate = new Date(this.props.transc.soldDate)
         const PayDate = new Date(this.props.transc.payDate)
+        console.log(saleDate,'sale Date')
+        console.log(PayDate,'pay Date')
         return (
             <Card style={{ marginLeft: 10, marginRight: 10, padding: 0 }}>
                 <CardItem style={styles.cardHead1} >
                     <View>
                         <Text style={styles.head}>Sold Date: </Text>
-                        <Text style={styles.head1}> {months[saleDate.getMonth()+1]}-{saleDate.getDate()}-{saleDate.getFullYear()} </Text>
+                        <Text style={styles.head1}> {months[saleDate.getMonth()]}-{saleDate.getDate()}-{saleDate.getFullYear()} </Text>
                     </View>
                     <View>
                         <Text style={styles.head}>Pay Date: </Text>

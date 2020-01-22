@@ -151,7 +151,7 @@ class MainScreen extends React.Component {
             } else if (!this.state.name) {
                 this.setState({ msg: "Please Enter Name" })
             } else if (!this.state.contact) {
-                this.setState({ msg: "Please Enter Contact" })
+                this.setState({ msg: "Please Enter Contract #" })
             } else if (!this.state.volume) {
                 this.setState({ msg: "Please Enter Volume" })
             } 
@@ -176,7 +176,7 @@ class MainScreen extends React.Component {
     render() {
         console.log("state", this.state)
         var pDate = new Date(this.state.soldDate.dateString)
-         var soldDate = (pDate.getMonth()+1) + '-' + pDate.getDate() + '-' + pDate.getFullYear()
+        var soldDate = (pDate.getMonth()+1) + '-' + pDate.getDate() + '-' + pDate.getFullYear()
         return (
             <KeyboardAwareScrollView enableOnAndroid={true}>
                 <View style={{ flex: 1, alignItems: 'center', marginTop: 10 }}>
@@ -184,7 +184,7 @@ class MainScreen extends React.Component {
                         <TextInput
                             style={styles.forms}
                             value={soldDate}
-                            placeholder="Soll Date"
+                            placeholder="Sold Date"
                             keyboardType="default"
                             returnKeyType="next"
                         />
@@ -196,7 +196,7 @@ class MainScreen extends React.Component {
                             mode="date" //The enum of date, datetime and time
                             placeholder="Pay date"
                             allowFontScaling={false}
-                            format="MM-DD-YYYY"
+                            format="YYYY-MM-DD"
                             confirmBtnText="Confirm"
                             cancelBtnText="Cancel"
                             showIcon={false}
@@ -445,8 +445,6 @@ class MainScreen extends React.Component {
                                 <Text style={{ color: 'white' }}>Save</Text>
                             </TouchableOpacity>
                         }
-
-
                     </View>
                 </View>
             </KeyboardAwareScrollView>
