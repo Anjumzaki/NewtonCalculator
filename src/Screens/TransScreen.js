@@ -10,7 +10,6 @@ import Storage from "../Storage";
 import { bindActionCreators } from "redux";
 import { userAsync } from "../store/actions";
 import { connect } from "react-redux";
-
 class MainScreen extends React.Component {
     static navigationOptions = {
         header: null
@@ -42,35 +41,12 @@ class MainScreen extends React.Component {
         };
     }
     login() {
-        // console.log("login")
-        // axios
-        //     .post('https://blooming-ridge-94645.herokuapp.com/login',{
-        //         userName: this.state.userName,
-        //         password: this.state.Password
-        //     })
-        //     .then((response) => { 
-
-        //         console.log("resp1",response.data)
-        //         if(response.data === "match"){
-        //             this.props.navigation.navigate('MainTabs')
-        //             this.props.navigation.dispatch(StackActions.reset({
-        //                 index: 0,
-        //                 actions: [NavigationActions.navigate({ routeName: 'MainTabs' })],
-        //             }))
-        //         }else if(response.data === "wrong"){
-        //             this.setState({msg: "password is incorrect"})
-        //         }
-        //     }).catch((error) => { 
-        //     console.log("mongodb get register error",error)
-        //     this.setState({msg: "login info is incorrect"})
-        //     })
         this.props.navigation.navigate('MainTabs')
         this.props.navigation.dispatch(StackActions.reset({
             index: 0,
             actions: [NavigationActions.navigate({ routeName: 'MainTabs' })],
         }))
     }
-
     async getId() {
         return await Storage.getItem("userId")
     }
@@ -94,8 +70,7 @@ class MainScreen extends React.Component {
             }} )
         .catch(err => console.log(err))
     }
-
-    saveTrasc() {
+    saveTrasc(navigation) {
         this.setState({
             loading: true
         })
@@ -103,8 +78,8 @@ class MainScreen extends React.Component {
             // this.state.soldDate &&
             this.state.name &&
             this.state.contact &&
-            this.state.volume
-            // this.state.downPay &&
+            this.state.volume &&
+            this.state.downPay < 101
             // this.state.spiff &&
             // this.state.note &&
             // this.state.commPer >= 0 &&
@@ -128,7 +103,17 @@ class MainScreen extends React.Component {
                 then(
                     resp => {
                         if(resp.status == 200){
-                            Alert.alert("Transaction Posted!")
+                            Alert.alert(
+                                "Actions",
+                                "Transaction Posted",
+                                [
+                                    {
+                                        text: "Okay",
+                                        onPress: () => navigation.navigate('HomePage')
+                                    }
+                                ],
+                                { cancelable: true }
+                            );
                         }
                         else{
                             Alert.alert("Something Went Wrong!")
@@ -145,20 +130,9 @@ class MainScreen extends React.Component {
                 this.setState({ msg: "Please Enter Contract #" })
             } else if (!this.state.volume) {
                 this.setState({ msg: "Please Enter Volume" })
-            } 
-            // else if (!this.state.downPay) {
-            //     this.setState({ msg: "Please Enter Down pay" })
-            // } else if (!this.state.spiff) {
-            //     this.setState({ msg: "Please Enter Spiff" })
-            // } else if (!this.state.note) {
-            //     this.setState({ msg: "Please Enter Note" })
-            // } else if (!(this.state.commission >= 0)) {
-            //     this.setState({ msg: "Please Enter Commission" })
-            // } else if (!(this.state.bonus >= 0)) {
-            //     this.setState({ msg: "Please Enter Bonus" })
-            // } else if (!(this.state.pmdDeduction >= 0)) {
-            //     this.setState({ msg: "Please Enter Podium/Mentor/Deduction" })
-            // }
+            } else if( this.state.downPay > 101){
+                this.setState({ msg: "Downpayment must be less than or equal 100 %" })
+            }
         }
         this.setState({
             loading: false
@@ -190,6 +164,7 @@ class MainScreen extends React.Component {
                             confirmBtnText="Confirm"
                             cancelBtnText="Cancel"
                             showIcon={false}
+                            minDate={this.state.soldDate.dateString}
                             customStyles={{
                                 dateIcon: {
                                     position: 'absolute',
@@ -259,7 +234,6 @@ class MainScreen extends React.Component {
                             onBlur={() =>{
                                 var calc;
                                 if (this.state.commType === "%") {
-                    
                                     calc = (this.state.commPer * this.state.volume) / 100
                                 } else {
                                     calc = this.state.commPer
@@ -317,16 +291,6 @@ class MainScreen extends React.Component {
                             returnKeyType="next"
                         />
                     </View>
-                    {/* <View style={{display: "flex", flexDirection: "row", alignItems: "center"}}>
-                        <View>
-                            <Text>Podium/Mentor/Deduction</Text>
-                        </View>
-                        <View>
-                            <CheckBox
-                            value={this.state.pmdDeduction}
-                            onValueChange={() => this.setState({ pmdDeduction: !this.state.pmdDeduction })} />
-                         </View>
-                    </View> */}
                     <View>
                         <View style={styles.commSection}>
                             <Text style={{ fontWeight: 'bold', marginRight: 10 }} >Commision</Text>
@@ -428,7 +392,7 @@ class MainScreen extends React.Component {
                     <View style={{ justifyContent: 'flex-end' }}>
                         {this.state.loading ?
                             <Spinner color='#3f3fb9' /> :
-                            <TouchableOpacity style={styles.saveBtn} onPress={() => this.saveTrasc()}>
+                            <TouchableOpacity style={styles.saveBtn} onPress={() => this.saveTrasc(this.props.navigation)}>
                                 <Text style={{ color: 'white' }}>Save</Text>
                             </TouchableOpacity>
                         }
@@ -508,13 +472,9 @@ const styles = StyleSheet.create({
 
     },
     commSection: {
-        // display: "flex",
         flexDirection: "row",
         justifyContent: "space-between",
         alignItems: "center",
-        // width:"100%"
-        // marginLeft:30,
-        // marginRight: 30
     },
     saveBtn: {
         paddingTop: 10,
