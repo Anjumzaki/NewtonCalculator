@@ -24,11 +24,12 @@ export default class SingleTransaction extends React.Component {
         };
     }
     componentWillMount() {
-        this.setState({ date: this.props.navigation.getParam('sectedDate').dateString, transctions: this.props.navigation.getParam('transctions'), type: this.props.navigation.getParam('type') }, this.renderTrans())
+        this.setState({ date: this.props.navigation.getParam('sectedDate').dateString, transctions: this.props.navigation.getParam('transctions'), type: this.props.navigation.getParam('type') })
     }
  
 
     render() {
+        console.log("stateeeeeeeeeeee",this.state)
         const months = ['Jan', 'Feb', 'Mar', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', "Nov", "Dec"]
         const myTrans = this.state.transctions
         var commission = 0
@@ -39,6 +40,7 @@ export default class SingleTransaction extends React.Component {
         if(this.state.type === 'sell'){
             if (myTrans.length > 0) {
                 for (var i = 0; i < myTrans.length; i++) {
+                    console.log(myTrans[i].payDate)
                     if (myTrans[i].soldDate == this.state.date) {
                         todays.push(myTrans[i])
     
@@ -52,6 +54,7 @@ export default class SingleTransaction extends React.Component {
         }else {
             if (myTrans.length > 0) {
                 for (var i = 0; i < myTrans.length; i++) {
+                    console.log(myTrans[i].payDate)
                     if (myTrans[i].payDate == this.state.date) {
                         todays.push(myTrans[i])
     

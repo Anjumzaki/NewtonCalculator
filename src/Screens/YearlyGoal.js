@@ -418,8 +418,6 @@ const styles = StyleSheet.create({
         fontSize: 19,
         padding: 8,
         width: Dimensions.get('window').width - 25,
-        borderWidth: 1,
-        borderColor: 'black',
         height: 50,
         fontFamily: 'open-sans-bold',
         color: 'black',
@@ -449,7 +447,8 @@ const styles = StyleSheet.create({
         color: 'white',
         borderRadius: 10,
         marginBottom: 30,
-        textAlign: "center"
+        textAlign: "center",
+        marginHorizontal:10
     },
     SectionStyle: {
         flexDirection: 'row',
