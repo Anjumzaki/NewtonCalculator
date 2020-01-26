@@ -145,6 +145,11 @@ class YearlyGoal extends React.Component {
         }
     };
 
+    _deleteImage = async () => {
+        axios.delete('https://intense-harbor-45607.herokuapp.com/delete/photo/'+'bg-' + this.props.user+"-"+new Date().getFullYear()+ '.' + "jpg")
+        .then((resp => console.log(resp)))
+        .catch((err => console.log(err)))
+    };
 
     uploadImage = async (uri) => {
         let fileType = uri.substring(uri.lastIndexOf(".") + 1);
@@ -246,11 +251,16 @@ class YearlyGoal extends React.Component {
                                 </View>
                                 <View style={{padding:20}}>
 
-                                <Button
-                               
-                                    title="Add Photo"
-                                    onPress={this._pickImage}
-                                />
+                                    <Button
+                                        style={{margin:20}}
+                                        title="Add Photo"
+                                        onPress={this._pickImage}
+                                    />
+                                    <Button
+                                        style={{marginTop:20}}
+                                        title="Delete Photo"
+                                        onPress={this._deleteImage}
+                                    />
                                 </View>
 
                             </View>
