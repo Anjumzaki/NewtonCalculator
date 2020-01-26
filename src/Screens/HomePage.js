@@ -97,6 +97,9 @@ class HomePage extends React.Component {
   componentDidMount() {
     this.getdata();
     this.getAllData();
+    alert( new Date(this.state.currYear+'01-'+'0'+this.state.calDate))
+    // alert( new Date('2020-01-01'))
+
   }
   _onRefresh = () => {
     this.setState({ refreshing: true });
@@ -233,11 +236,9 @@ class HomePage extends React.Component {
     );
   };
   render() {
-    console.log(this.state.getAllData, "all transactions");
-    console.log(this.props.user, "all transactions user");
 
+   
     const { navigation } = this.props;
-    console.log("this.state", this.state);
     var nextDays = [];
     var payDates = [];
     // console.log("state", this.state)
@@ -360,9 +361,11 @@ class HomePage extends React.Component {
               textMonthFontSize: 20,
               textDayHeaderFontSize: 16
             }}
-            current={new Date()}
+            // current={new Date(`01-${this.state.calDate}-${this.state.currYear}`)}
+            // onMonthChange={(month) => {alert('month changed', month)}}
             // Enable horizontal scrolling, default = false
             horizontal={true}
+            current={new Date('01-'+this.state.calDate+'-'+this.state.currYear)}
             // Enable paging on horizontal, default = false
             pagingEnabled={true}
             // Set custom calendarWidth.
@@ -374,6 +377,7 @@ class HomePage extends React.Component {
                 transctions: this.state.transctions
               });
             }}
+            disableMonthChange={true}
             // Handler which gets executed on day long press. Default = undefined
             onDayLongPress={day =>
               this.props.navigation.navigate("TransScreen", { sectedDate: day })
@@ -381,9 +385,9 @@ class HomePage extends React.Component {
             // Month format in calendar title. Formatting values: http://arshaw.com/xdate/#Formatting
             monthFormat={"MMM yyyy"}
             firstDay={2}
-            onMonthChange={month => {
-              console.log("month changed", month);
-            }}
+            // onMonthChange={month => {
+            //   console.log("month changed", month);
+            // }}
             // Hide month navigation arrows. Default = false
             hideArrows={true}
             // Replace default arrows with custom ones (direction can be 'left' or 'right')
@@ -397,21 +401,12 @@ class HomePage extends React.Component {
             // Hide day names. Default = false
             // Show week numbers to the left. Default = false
             // Handler which gets executed when press arrow icon left. It receive a callback can go back month
-            onPressArrowLeft={substractMonth => {
-              substractMonth();
-            }}
-            // Handler which gets executed when press arrow icon left. It receive a callback can go next month
-            onPressArrowRight={addMonth => {
-              addMonth();
-            }}
-            pastScrollRange={24}
-            futureScrollRange={24}
-            horizontal
-            pagingEnabled
+
             // onVisibleMonthsChange={(months) => {console.log('asd')}}
-            loadItemsForMonth={date => console.log("Month Changed", date)}
-            // onVisibleMonthsChange={async (months)=>{alert(  nowMonth =  months[0].month)}}
+            // loadItemsForMonth={date => console.log("Month Changed", date)}
+            onVisibleMonthsChange={(months)=>{this.setState({calDate: months[0].month, currYear: months[0].year},alert(this.state.calDate)) }}
             markedDates={mark}
+            // onDayChange={alert('changes')}
             dayComponent={({ date, state }) => {
               return (
                 <View>
