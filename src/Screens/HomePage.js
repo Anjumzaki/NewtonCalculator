@@ -1,4 +1,4 @@
-import React from "react";
+import React, { PureComponent } from "react";
 import {
   View,
   Text,
@@ -14,7 +14,11 @@ import {
 } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import { NavigationActions, StackActions,NavigationEvents  } from "react-navigation";
+import {
+  NavigationActions,
+  StackActions,
+  NavigationEvents
+} from "react-navigation";
 import * as Font from "expo-font";
 import axios from "axios";
 import { bindActionCreators } from "redux";
@@ -24,6 +28,80 @@ import { connect } from "react-redux";
 import { Calendar, CalendarList, Agenda } from "react-native-calendars";
 import { AntDesign, Feather, MaterialCommunityIcons } from "@expo/vector-icons";
 import SeeGoal from "./SeeGoal";
+class MyDay extends PureComponent {
+  render() {
+    const { date, nextDays, payDates } = this.props;
+    return (
+      <View>
+        {nextDays.indexOf(date.dateString) > -1 ? (
+          payDates.indexOf(date.dateString) > -1 ? (
+            <TouchableOpacity
+              style={styles.both}
+              onPress={() => this.showAlert1(this.props.navigation, date)}
+            >
+              <Text style={{ textAlign: "center", color: "white" }}>
+                {date.day}
+              </Text>
+              <View>
+                <Feather
+                  style={styles.myIcons1}
+                  name="dollar-sign"
+                  size={32}
+                  color="green"
+                />
+                <MaterialCommunityIcons
+                  style={styles.myIcons1}
+                  name="cash-refund"
+                  size={32}
+                  color="green"
+                />
+              </View>
+            </TouchableOpacity>
+          ) : (
+            <TouchableOpacity
+              style={styles.sold}
+              onPress={() => this.showAlert2(this.props.navigation, date)}
+            >
+              <Text style={{ textAlign: "center", color: "black" }}>
+                {date.day}
+              </Text>
+              <Feather
+                style={styles.myIcons}
+                name="dollar-sign"
+                size={32}
+                color="green"
+              />
+            </TouchableOpacity>
+          )
+        ) : payDates.indexOf(date.dateString) > -1 ? (
+          <TouchableOpacity
+            style={styles.pay}
+            onPress={() => this.showAlert3(this.props.navigation, date)}
+          >
+            <Text style={{ textAlign: "center", color: "black" }}>
+              {date.day}
+            </Text>
+            <MaterialCommunityIcons
+              style={styles.myIcons}
+              name="cash-refund"
+              size={32}
+              color="green"
+            />
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity
+            style={styles.simple}
+            onPress={this.showAlert4(this.props.navigation, date)}
+          >
+            <Text style={{ textAlign: "center", color: "black" }}>
+              {date.day}
+            </Text>
+          </TouchableOpacity>
+        )}
+      </View>
+    );
+  }
+}
 class HomePage extends React.Component {
   static navigationOptions = {
     header: null
@@ -47,19 +125,16 @@ class HomePage extends React.Component {
       bonuschange: "",
       cm: new Date().getMonth() + 1,
       MonthAnjum: new Date().getMonth() + 1,
-      newMonth: ""
+      newMonth: "",
+      currentMonths: new Date().getFullYear()+'-'+new Date().getMonth() + 1 +'-' +new Date().getDate()
     };
     this.getNewMonthData = this.getNewMonthData.bind(this);
   }
   getGoal = () => {
     axios
       .get(
-        "https://intense-harbor-45607.herokuapp.com/get/goal/month/" +
-          this.props.user +
-          "/" +
-          new Date().getFullYear() +
-          "/" +
-          parseInt(this.state.calDate)
+        "https://intense-harbor-45607.herokuapp.com/get/all/goals/" +
+          this.props.user 
       )
       .then(resp => {
         this.setState({ goal: resp.data, refreshing: false });
@@ -97,14 +172,15 @@ class HomePage extends React.Component {
   componentDidMount() {
     this.getdata();
     this.getAllData();
-    alert( new Date(this.state.currYear+'01-'+'0'+this.state.calDate))
+    this.getGoal()
+    // alert(new Date(this.state.currYear + "01-" + "0" + this.state.calDate));
     // alert( new Date('2020-01-01'))
-
   }
   _onRefresh = () => {
     this.setState({ refreshing: true });
     this.getdata();
     this.getAllData();
+    this.getGoal()
   };
   showAlert1 = (navigation, myDate) => {
     Alert.alert(
@@ -121,7 +197,7 @@ class HomePage extends React.Component {
           onPress: () =>
             navigation.navigate("SingleTransactions", {
               sectedDate: myDate,
-              transctions: this.state.transctions,
+              transctions: this.state.allTransactions,
               type: "sell"
             })
         },
@@ -130,13 +206,12 @@ class HomePage extends React.Component {
           onPress: () =>
             navigation.navigate("SingleTransactions", {
               sectedDate: myDate,
-              transctions: this.state.transctions,
+              transctions: this.state.allTransactions,
               type: "pay"
             })
         },
         {
           text: "Cancel",
-          onPress: () => console.log("cancel Pressed", myDate),
           style: "cancel"
         }
       ],
@@ -158,13 +233,12 @@ class HomePage extends React.Component {
           onPress: () =>
             navigation.navigate("SingleTransactions", {
               sectedDate: myDate,
-              transctions: this.state.transctions,
+              transctions: this.state.allTransactions,
               type: "sell"
             })
         },
         {
           text: "Cancel",
-          onPress: () => console.log("cancel Pressed", myDate),
           style: "cancel"
         }
       ],
@@ -186,13 +260,12 @@ class HomePage extends React.Component {
           onPress: () =>
             navigation.navigate("SingleTransactions", {
               sectedDate: myDate,
-              transctions: this.state.transctions,
+              transctions: this.state.allTransactions,
               type: "pay"
             })
         },
         {
           text: "Cancel",
-          onPress: () => console.log("cancel Pressed", myDate),
           style: "cancel"
         }
       ],
@@ -211,7 +284,6 @@ class HomePage extends React.Component {
         },
         {
           text: "Cancel",
-          onPress: () => console.log("cancel Pressed", myDate),
           style: "cancel"
         }
       ],
@@ -235,13 +307,14 @@ class HomePage extends React.Component {
       this._onRefresh
     );
   };
+  //   componentDidUpdate(){
+  //     this._onRefresh
+  //   }
   render() {
-
-   
+    const { currentMonths } = this.state;
     const { navigation } = this.props;
     var nextDays = [];
     var payDates = [];
-    // console.log("state", this.state)
     if (this.state.allTransactions !== null) {
       var trans = this.state.allTransactions;
       for (var i = 0; i < trans.length; i++) {
@@ -270,18 +343,36 @@ class HomePage extends React.Component {
     });
     var totalIncome = 0,
       totalPay = 0;
-    if (this.state.transctions !== null && this.state.transctions.length > 0) {
+    if (
+      this.state.allTransactions !== null &&
+      this.state.allTransactions.length > 0 &&  
+      this.state.goal !== null &&
+      this.state.goal.length > 0 
+    ) {
+        var goal = 0
       var totalVolume = 0,
         totalSpiff = 0,
         totalCommission = 0,
         totalBonus = 0;
-      for (var i = 0; i < this.state.transctions.length; i++) {
-        totalVolume += parseFloat(this.state.transctions[i].volume);
-        totalBonus += parseFloat(this.state.transctions[i].bonus);
-        totalCommission += parseFloat(this.state.transctions[i].commission);
-        totalSpiff += parseFloat(this.state.transctions[i].spiff);
+      var transes = this.state.allTransactions;
+      var month = new Date(currentMonths).getMonth();
+      var year = new Date(currentMonths).getFullYear();
+      if(this.state.goal[month]){
+        goal = this.state.goal[month].volume
       }
-
+      var totalSales = 0
+      for (var i = 0; i < transes.length; i++) {
+        if (
+            new Date(transes[i].soldDate).getMonth() == month &&
+            new Date(transes[i].soldDate).getFullYear()  == year
+        ) {
+          totalVolume += parseFloat(transes[i].volume);
+          totalBonus += parseFloat(transes[i].bonus);
+          totalCommission += parseFloat(transes[i].commission);
+          totalSpiff += parseFloat(transes[i].spiff);
+          totalSales = totalSales + 1
+        }
+      }
       totalIncome = totalVolume;
       totalPay = totalSpiff + totalCommission + totalBonus;
     }
@@ -365,7 +456,7 @@ class HomePage extends React.Component {
             // onMonthChange={(month) => {alert('month changed', month)}}
             // Enable horizontal scrolling, default = false
             horizontal={true}
-            current={new Date('01-'+this.state.calDate+'-'+this.state.currYear)}
+            // current={new Date( this.state.currentMonths)}
             // Enable paging on horizontal, default = false
             pagingEnabled={true}
             // Set custom calendarWidth.
@@ -377,7 +468,7 @@ class HomePage extends React.Component {
                 transctions: this.state.transctions
               });
             }}
-            disableMonthChange={true}
+            // disableMonthChange={true}
             // Handler which gets executed on day long press. Default = undefined
             onDayLongPress={day =>
               this.props.navigation.navigate("TransScreen", { sectedDate: day })
@@ -404,86 +495,90 @@ class HomePage extends React.Component {
 
             // onVisibleMonthsChange={(months) => {console.log('asd')}}
             // loadItemsForMonth={date => console.log("Month Changed", date)}
-            onVisibleMonthsChange={(months)=>{this.setState({calDate: months[0].month, currYear: months[0].year},alert(this.state.calDate)) }}
+            // onVisibleMonthsChange={(months)=>{this.setState({currentMonths:months[0].dateString},console.log(this.state.currentMonths))}}
             markedDates={mark}
+            onVisibleMonthsChange={months =>
+              this.state.currentMonths == months[0].dateString
+                ? console.log(currentMonths)
+                :
+                setTimeout(
+                    function() {
+                        this.setState({currentMonths:  months[0].dateString});
+                    }
+                    .bind(this),
+                    1500
+                )
+            }
             // onDayChange={alert('changes')}
             dayComponent={({ date, state }) => {
               return (
                 <View>
-                  {nextDays.indexOf(date.dateString) > -1 ? (
-                    payDates.indexOf(date.dateString) > -1 ? (
-                      <TouchableOpacity
-                        style={styles.both}
-                        onPress={() =>
-                          this.showAlert1(this.props.navigation, date)
-                        }
-                      >
-                        <Text style={{ textAlign: "center", color: "white" }}>
-                          {date.day}
-                        </Text>
-                        <View>
-                          <Feather
-                            style={styles.myIcons1}
-                            name="dollar-sign"
-                            size={32}
-                            color="green"
-                          />
-                          <MaterialCommunityIcons
-                            style={styles.myIcons1}
-                            name="cash-refund"
-                            size={32}
-                            color="green"
-                          />
-                        </View>
-                      </TouchableOpacity>
-                    ) : (
-                      <TouchableOpacity
-                        style={styles.sold}
-                        onPress={() =>
-                          this.showAlert2(this.props.navigation, date)
-                        }
-                      >
-                        <Text style={{ textAlign: "center", color: "black" }}>
-                          {date.day}
-                        </Text>
+                {nextDays.indexOf(date.dateString) > -1 ? (
+                  payDates.indexOf(date.dateString) > -1 ? (
+                    <TouchableOpacity
+                      style={styles.both}
+                      onPress={() => this.showAlert1(this.props.navigation, date)}
+                    >
+                      <Text style={{ textAlign: "center", color: "white" }}>
+                        {date.day}
+                      </Text>
+                      <View>
                         <Feather
-                          style={styles.myIcons}
+                          style={styles.myIcons1}
                           name="dollar-sign"
                           size={32}
                           color="green"
                         />
-                      </TouchableOpacity>
-                    )
-                  ) : payDates.indexOf(date.dateString) > -1 ? (
+                        <MaterialCommunityIcons
+                          style={styles.myIcons1}
+                          name="cash-refund"
+                          size={32}
+                          color="green"
+                        />
+                      </View>
+                    </TouchableOpacity>
+                  ) : (
                     <TouchableOpacity
-                      style={styles.pay}
-                      onPress={() =>
-                        this.showAlert3(this.props.navigation, date)
-                      }
+                      style={styles.sold}
+                      onPress={() => this.showAlert2(this.props.navigation, date)}
                     >
                       <Text style={{ textAlign: "center", color: "black" }}>
                         {date.day}
                       </Text>
-                      <MaterialCommunityIcons
+                      <Feather
                         style={styles.myIcons}
-                        name="cash-refund"
+                        name="dollar-sign"
                         size={32}
                         color="green"
                       />
                     </TouchableOpacity>
-                  ) : (
-                    <TouchableOpacity
-                      style={styles.simple}
-                      onPress={() =>
-                        this.showAlert4(this.props.navigation, date)
-                      }
-                    >
-                      <Text style={{ textAlign: "center", color: "black" }}>
-                        {date.day}
-                      </Text>
-                    </TouchableOpacity>
-                  )}
-                </View>
+                  )
+                ) : payDates.indexOf(date.dateString) > -1 ? (
+                  <TouchableOpacity
+                    style={styles.pay}
+                    onPress={() => this.showAlert3(this.props.navigation, date)}
+                  >
+                    <Text style={{ textAlign: "center", color: "black" }}>
+                      {date.day}
+                    </Text>
+                    <MaterialCommunityIcons
+                      style={styles.myIcons}
+                      name="cash-refund"
+                      size={32}
+                      color="green"
+                    />
+                  </TouchableOpacity>
+                ) : (
+                  <TouchableOpacity
+                    style={styles.simple}
+                    onPress={()=>this.showAlert4(this.props.navigation, date)}
+                  >
+                    <Text style={{ textAlign: "center", color: "black" }}>
+                      {date.day}
+                    </Text>
+                  </TouchableOpacity>
+                )}
+              </View>
               );
             }}
           />
@@ -493,8 +588,8 @@ class HomePage extends React.Component {
             <View style={{ flexDirection: "row" }}>
               <Text style={styles.head}>Total Sales: </Text>
               <Text style={styles.head1}>
-                {this.state.transctions !== null
-                  ? this.numberWithCommas(this.state.transctions.length)
+                {this.state.allTransactions !== null
+                  ? totalSales
                   : "0"}
               </Text>
             </View>
@@ -551,7 +646,7 @@ class HomePage extends React.Component {
                 <Text style={styles.head1}>
                   $
                   {this.state.goal !== null
-                    ? this.numberWithCommas(this.state.goal.volume)
+                    ? this.numberWithCommas(goal)
                     : "0.00"}{" "}
                 </Text>
               </View>
@@ -563,7 +658,7 @@ class HomePage extends React.Component {
               <Text style={styles.head1}>
                 $
                 {totalIncome && this.state.goal !== null
-                  ? this.numberWithCommas(this.state.goal.volume - totalIncome)
+                  ? this.numberWithCommas(goal - totalIncome)
                   : "0.00"}
               </Text>
             </View>
@@ -680,7 +775,6 @@ class HomePage extends React.Component {
                         this.state.bonuschange
                     )
                     .then(resp => {
-                      console.log("hhhhhhhhhhhhhhhhhhhhhhhhhhh", resp);
                       this.setModalVisible1(!this.state.modalVisible1);
                     });
                 }}
