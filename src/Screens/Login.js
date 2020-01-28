@@ -83,7 +83,6 @@ class Login extends React.Component {
             loading: false
         })
     }
-
     render() {
         return (
             <ImageBackground source={require('../../assets/background.png')} style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
