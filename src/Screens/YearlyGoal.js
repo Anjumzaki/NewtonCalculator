@@ -114,7 +114,7 @@ class YearlyGoal extends React.Component {
 
 
     axios.get('https://intense-harbor-45607.herokuapp.com/get/image/'+this.props.user+"/2020")
-    .then((resp) => this.setState({imgURL: resp.data}))
+    .then((resp) => this.setState({imgURL: resp.data, isDeleted: false}))
     .catch((err) => console.log(err))
 
 
@@ -262,6 +262,7 @@ class YearlyGoal extends React.Component {
           "server resp",
           JSON.stringify(checkStatusAndGetJSONResponse)
         );
+        this.setState({isDeleted: false})
       })
       .catch(err => {
         this.setState({ msg: "Error in Image Uploading" });
