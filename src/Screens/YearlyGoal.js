@@ -146,7 +146,7 @@ class YearlyGoal extends React.Component {
     };
 
     _deleteImage = async () => {
-        axios.delete('https://intense-harbor-45607.herokuapp.com/delete/photo/'+'bg-' + this.props.user+"-"+new Date().getFullYear()+ '.' + "jpg")
+        axios.delete('http://192.168.0.102:3000/delete/photo/'+'bg-' + this.props.user+"-"+new Date().getFullYear()+ '.' + "jpg")
         .then((resp => console.log(resp)))
         .catch((err => console.log(err)))
     };
@@ -176,9 +176,10 @@ class YearlyGoal extends React.Component {
             "Content-Type": "multipart/form-data"
           }
         };
-        fetch("https://intense-harbor-45607.herokuapp.com/upload", options)
+        fetch("http://192.168.0.102:3000/upload", options)
           .then((checkStatusAndGetJSONResponse) => {
             console.log("server resp", JSON.stringify(checkStatusAndGetJSONResponse));
+            this.setState({a:"asd"})
           }).catch((err) => { this.setState({msg: "Error in Image Uploading"}) });
       }
 
@@ -223,7 +224,7 @@ class YearlyGoal extends React.Component {
             });
         }
         let Image_Http_URL=""
-        Image_Http_URL ={ uri: 'https://intense-harbor-45607.herokuapp.com/getImages/'+"bg-"+this.props.user+"-"+new Date().getFullYear()+".jpg"};
+        Image_Http_URL ={ uri: 'http://192.168.0.102:3000/getImages/'+"bg-"+this.props.user+"-"+new Date().getFullYear()+".jpg"};
         return (
             <View style={{backgroundColor: 'rgba(255,255,255,0.5)',}}>
                 <ImageBackground style={{ width: '100%', height: '100%' }} 
